@@ -1,0 +1,25 @@
+cask "discord"
+cask "dropbox"
+cask "firefox"
+cask "github"
+cask "google-chrome"
+cask "microsoft-excel"
+cask "microsoft-powerpoint"
+cask "microsoft-teams"
+cask "microsoft-word"
+cask "signal"
+cask "skype"
+cask "slack"
+cask "spotify"
+cask "tor-browser"
+cask "transmission"
+cask "tunnelblick"
+cask "visual-studio-code"
+cask "vlc"
+cask "whatsapp"
+mas "Keynote", id: 409183694
+mas "Messenger", id: 1480068668
+mas "Spark", id: 1176895641
+mas "Stockfish", id: 801463932
+mas "Telegram", id: 747648890
+mas "Trello", id: 1278508951
