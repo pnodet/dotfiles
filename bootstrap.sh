@@ -88,13 +88,20 @@ linuxify_check_dirs
 
 # install utils via brew bundle
 brew bundle -f ~/.dotfiles/Brewfile
+
 # allow mtr to run without sudo
 mtrlocation=$(brew info mtr | grep Cellar | sed -e 's/ (.*//')
-#  e.g. `/Users/paulirish/.homebrew/Cellar/mtr/0.86`
+
+# e.g. `/Users/paulirish/.homebrew/Cellar/mtr/0.86`
 sudo chmod 4755 "$mtrlocation"/sbin/mtr
 sudo chown root "$mtrlocation"/sbin/mtr
 
-LANG=en_EN git lfs install #otherwise might cuz trouble see : https://github.com/git-lfs/git-lfs/issues/2837
+# Otherwise might cuz trouble see : https://github.com/git-lfs/git-lfs/issues/2837
+LANG=en_EN git lfs install 
+
+# Quicklook stuff
+xattr -d -r com.apple.quarantine ~/Library/QuickLook
+qlmanage -r
 
 # *******************************************************************
 

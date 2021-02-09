@@ -73,7 +73,6 @@ brew "php"
 brew "rsync"
 brew "ruby"
 brew "screen"
-brew "screenfetch"
 brew "subversion"
 brew "syncthing"
 brew "the_silver_searcher"
@@ -86,40 +85,16 @@ brew "wdiff"
 brew "wget"
 brew "wifi-password"
 brew "youtube-dl"
+
 cask "apparency"
-cask "discord"
-cask "dropbox"
-cask "firefox"
-cask "github"
-cask "google-chrome"
-cask "iina"
-cask "microsoft-auto-update"
-cask "microsoft-excel"
-cask "microsoft-powerpoint"
-cask "microsoft-teams"
-cask "microsoft-word"
-cask "qlcolorcode"
-cask "qlimagesize"
-cask "qlmarkdown"
-cask "qlstephen"
-cask "qlvideo"
-cask "quicklook-json"
-cask "quicklookase"
-cask "rocket"
-cask "signal"
-cask "skype"
-cask "slack"
-cask "spotify"
 cask "suspicious-package"
-cask "tor-browser"
-cask "transmission"
-cask "tunnelblick"
-cask "visual-studio-code"
-cask "vlc"
-cask "whatsapp"
-mas "Keynote", id: 409183694
-mas "Messenger", id: 1480068668
-mas "Spark", id: 1176895641
-mas "Stockfish", id: 801463932
-mas "Telegram", id: 747648890
-mas "Trello", id: 1278508951
+cask 'qlcolorcode'
+cask 'qlstephen'
+cask 'qlmarkdown'
+cask 'quicklook-json'
+cask 'quicklook-csv'
+cask 'qlimagesize'
+cask 'qlvideo'
+cask 'apparency'
+cask 'WebPQuickLook'
+cask 'suspicious-package'
