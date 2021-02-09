@@ -77,8 +77,8 @@ declare -a mas_apps=(
     'Messenger'
     'Helium'
 )
-# TODO : Adobe ?
-# TODO : improve by making the signing process auto ?
+# TODO: Adobe ?
+# TODO: improve by making the signing process auto ?
 echo "What's your Apple Store account?"
 read ACCOUNT
 echo "Enter the password for $ACCOUNT"
