@@ -54,7 +54,7 @@ for ((i = 0; i < ${#npm_formulas[@]}; i++)); do
     sudo npm install --global ${npm_formulas[i]}
 done
 
-#Pip
+# Pip
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python3 get-pip.py
 
