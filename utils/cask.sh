@@ -1,9 +1,5 @@
 #!/bin/sh
 
-# Paul Nodet
-# paul.nodet@gmail.com
-# ressources from various github users configs, thanks to http://dotfiles.github.io
-
 function require_cask() {
     echo "brew cask $1"
     brew list $1 --cask >/dev/null 2>&1 | true
