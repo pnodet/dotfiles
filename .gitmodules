@@ -1,0 +1,12 @@
+[submodule "zsh-config"]
+	path = zsh-config
+	url = https://github.com/pnxdxt/zsh-config
+[submodule "git-config"]
+	path = git-config
+	url = https://gist.github.com/pnxdxt/185aae95d2ef2a8d8ad8a2d711746436
+[submodule "vscode-config"]
+	path = vscode-config
+	url = https://gist.github.com/pnxdxt/6e9805ecc9cb7a7934235afcec51ac3a
+[submodule "vim-config"]
+	path = vim-config
+	url = https://github.com/pnxdxt/vim-config
