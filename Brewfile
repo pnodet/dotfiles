@@ -37,6 +37,7 @@ brew "gh"
 brew "gist"
 brew "git"
 brew "git-lfs"
+brew "git-delta"
 brew "gnu-getopt"
 brew "gnu-indent"
 brew "gnu-sed"
@@ -98,3 +99,15 @@ cask 'qlvideo'
 cask 'apparency'
 cask 'WebPQuickLook'
 cask 'suspicious-package'
+
+tap "bramstein/webfonttools"
+tap "homebrew/cask-fonts"
+brew "bramstein/webfonttools/sfnt2woff"
+brew "bramstein/webfonttools/sfnt2woff-zopfli"
+brew "woff2"
+cask "font-awesome-terminal-fonts"
+cask "font-fira-code"
+cask "font-fira-mono"
+cask "font-fontawesome"
+cask "font-roboto-mono"
+cask "font-source-code-pro"
