@@ -15,6 +15,17 @@ function run_script() {
   cd ~ && source $HOME/.dotfiles/"$1"
 }
 
+function prompt_user() {
+  printf "Do you want to install $1 [y|N]"
+  read response
+  if [[ $response =~ (y|yes|Y) ]]; then
+    run_script "$1"
+    echo "Done!"
+  else
+    echo "Ok, skipped"
+  fi
+}
+
 # Close any open System Preferences panes, to prevent them from overriding settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'
 
@@ -53,8 +64,6 @@ if ! xcode-select --print-path &>/dev/null; then
   print_result $? 'Agree with the XCode Command Line Tools licence'
 
 fi
-
-cd ~/.dotfiles && git pull --recurse-submodules
 
 if test ! "$(command -v brew)"; then
   echo 'Installing Homebrew'
@@ -103,15 +112,8 @@ LANG=en_EN git lfs install
 xattr -d -r com.apple.quarantine ~/Library/QuickLook
 qlmanage -r
 
-# *******************************************************************
-
-read -r -p "Install fonts? [y|N] " response
-if [[ $response =~ (y|yes|Y) ]]; then
-  brew bundle -f ~/.dotfiles/Brewfile-fonts
-  echo "Done!"
-else
-  echo "skipped"
-fi
+# Submodule stuff
+cd ~/.dotfiles && git submodule update --init --recursive
 
 # *******************************************************************
 
@@ -132,50 +134,30 @@ npm config set prefix "${HOME}/.npm-packages" # Tell npm where to store globally
 
 # *******************************************************************
 
-read -r -p "config zsh? [y|N] " response
-if [[ $response =~ (y|yes|Y) ]]; then
-  run_script "utils/zsh-config.sh"
-  echo "Done!"
-else
-  echo "skipped"
-fi
+echo 'This script will configure zsh'
+prompt_user "utils/zsh-config.sh"
 
 # *******************************************************************
 
-read -r -p "config vim? [y|N] " response
-if [[ $response =~ (y|yes|Y) ]]; then
-  run_script "utils/vim-config.sh"
-  echo "Done!"
-else
-  echo "skipped"
-fi
+echo 'This script will configure vim'
+prompt_user "utils/vim-config.sh"
 
 # *******************************************************************
 
-read -r -p "config git? [y|N] " response
-if [[ $response =~ (y|yes|Y) ]]; then
-  run_script "utils/git-config.sh"
-  echo "Done!"
-else
-  echo "skipped"
-fi
+echo 'This script will configure git'
+prompt_user "utils/git-config.sh"
 
 # *******************************************************************
 
-read -r -p "config vscode? [y|N] " response
-if [[ $response =~ (y|yes|Y) ]]; then
-  run_script "utils/vscode-config.sh"
-  echo "Done!"
-else
-  echo "skipped"
-fi
+echo 'This script will configure VS Code settings'
+prompt_user "utils/vscode-config.sh"
 
 # *******************************************************************
 
 # TODO: Adobe ?
 # TODO: improve by making the signing process auto ?
 
-read -r -p "Install apps? If yes please login the App Store before ! [y|N] " response
+read -r -p "Install apps? WARNING : If yes please login the App Store before ! [y|N] " response
 if [[ $response =~ (y|yes|Y) ]]; then
   brew bundle -f ~/.dotfiles/apps/Brewfile
   echo "Done!"
@@ -185,31 +167,21 @@ fi
 
 # *******************************************************************
 
-read -r -p "Do you want to update the system security? [y|n]] " response
-if [[ $response =~ (yes|y|Y) ]]; then
-  run_script "settings/01_security.sh"
-  echo "Your security settings have been updated!"
-else
-  echo "skipped"
-fi
+echo 'Do you want to update the system security?'
+prompt_user "settings/security.sh"
 
 # *******************************************************************
 
-read -r -p "Do you want to update the system configurations? [y|n]] " response
-if [[ $response =~ (yes|y|Y) ]]; then
-  run_script "settings/02_settings.sh"
-  echo "Your settings have been updated!"
-else
-  echo "skipped"
-fi
+echo 'Do you want to update the system configurations?'
+prompt_user "settings/settings.sh"
 
 # *******************************************************************
 
 if groups "${USER}" | grep -q -w admin; then
   echo "${USER} is admin"
-  read -r -p "Do you want to create an hidden admin user and demote this user? [y|n]] " response
+  read -r -p "Do you want to create an hidden admin user and demote this user? [y|N] " response
   if [[ $response =~ (yes|y|Y) ]]; then
-    run_script "settings/05_admin.sh"
+    run_script "settings/admin.sh"
     echo "ok"
   else
     echo "skipped"
@@ -221,7 +193,7 @@ fi
 # *******************************************************************
 
 echo "Almost done"
-read -r -p "Do you wanna restart your mac to apply all changes ? [y|n] " response
+read -r -p "Do you wanna restart your mac to apply all changes ? [y|N] " response
 if [[ -z $response || $response =~ ^(y|Y) ]]; then
   echo "Restarting..."
   sudo fdesetup authrestart
