@@ -3,10 +3,17 @@
 # Make sure you are using zsh 
 chsh -s /bin/zsh
 
-# get to the home folder move zsh config to home
-ln -sf ~/.dotfiles/zsh-config ~/.zsh-config
+# remove old zsh files if 
+rm -rf ${HOME}/.zsh-config
+rm -rf ${HOME}/.zinit
+rm -rf ${HOME}/.zlogin
+rm -rf ${HOME}/.zprofile
+rm -rf ${HOME}/.zshenv
+rm -rf ${HOME}/.zshrc
+
+# get to the home folder link zsh-config to home
+ln -sf ${HOME}/.dotfiles/zsh-config ${HOME}/.zsh-config
 # then link the startup files
-zsh ~/.zsh-config/bootstrap.sh
-# init plugins
-zinit update
-sleep 5
+zsh ${HOME}/.zsh-config/bootstrap.sh
+
+echo "Shell restart needed"
