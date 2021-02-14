@@ -1,5 +1,27 @@
 #!/bin/sh
 
+# Setting up the computer label & name
+printf "What is this machine's label (Example: Paul's MacBook Pro) ?"
+read mac_os_label
+if [[ -z "$mac_os_label" ]]; then
+    echo "ERROR: Invalid MacOS label."
+    exit 1
+fi
+
+printf "What is this machine's name (Example: paul-macbook-pro) ?"
+read mac_os_label
+if [[ -z "$mac_os_name" ]]; then
+    echo "ERROR: Invalid MacOS name."
+    exit 1
+fi
+
+echo "Setting system Label and Name..."
+sudo scutil --set ComputerName "$mac_os_label"
+sudo scutil --set HostName "$mac_os_name"
+sudo scutil --set LocalHostName "$mac_os_name"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$mac_os_name"
+
+
 ###############################################################################
 # SSD-specific tweaks                                                         #
 ###############################################################################
