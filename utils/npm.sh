@@ -1,11 +1,10 @@
 #!/bin/sh
 
-echo "node -v"
-node -v
-if [[ $? != 0 ]]; then
-    echo "node not found, installing via homebrew"
-    brew install node
-    node -v
+if [ ! -d "$HOME/.nvm" ]; then
+    mkdir $HOME/.nvm && git clone --quiet https://github.com/nvm-sh/nvm.git $HOME/.nvm
+    nvm install node 
+else
+    cd $HOME/.nvm && git fetch origin && source $HOME/.nvm/nvm.sh
 fi
 
 echo "Updating npm..."
@@ -22,8 +21,6 @@ cd ~ && mkdir "${HOME}/.npm-packages"         # Create a directory for global pa
 npm config set prefix "${HOME}/.npm-packages" # Tell npm where to store globally installed packages
 
 ##############################################################################################################
-
-echo "Installing NPM utilities..."
 
 npm_formulas=(
     "fkill-cli"

@@ -20,9 +20,9 @@ function prompt_user() {
   read response
   if [[ $response =~ (y|yes|Y) ]]; then
     run_script "$1"
-    echo "Done!"
+    echo_ok "Done!"
   else
-    echo "Ok, skipped"
+    echo_ok "Ok, skipped"
   fi
 }
 
@@ -48,52 +48,47 @@ fi
 # XCode Command Line Tools
 # thanks to https://github.com/alrra/dotfiles/blob/ff123ca9b9b/os/os_x/installs/install_xcode.sh
 
-echo "Installing Xcode CLI tools..."
+echo_warn "Installing Xcode CLI tools..."
 if ! xcode-select --print-path &>/dev/null; then
-
-  xcode-select --install &>/dev/null # Prompt user to install the XCode Command Line Tools
-
+  xcode-select --install &>/dev/null
   until xcode-select --print-path &>/dev/null; do
     sleep 5 # Wait until the XCode Command Line Tools are installed
   done
-
   print_result $? ' XCode Command Line Tools Installed'
-  # Prompt user to agree to the terms of the Xcode license
-  # https://github.com/alrra/dotfiles/issues/10
   sudo xcodebuild -license
   print_result $? 'Agree with the XCode Command Line Tools licence'
 
 fi
 
 if test ! "$(command -v brew)"; then
-  echo 'Installing Homebrew'
+  echo_warn 'Installing Homebrew'
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   sudo chown -R $(whoami) $(brew --prefix)/*
   sudo chown -R $(whoami) .config
   sudo chown -R $(whoami) .gitconfig
 fi
-brew -v
-brew analytics off
 
 # Just to avoid a potential bug
+brew -v
+brew analytics off
 mkdir -p ~/Library/Caches/Homebrew/Formula
 brew doctor
 
 linuxify_check_dirs() {
   result=0
-
   for dir in /usr/local/bin /usr/local/sbin; do
     if [[ ! -d $dir || ! -w $dir ]]; then
-      echo "$dir must exist and be writeable"
+      echo_error "$dir must exist and be writeable"
       result=1
     fi
   done
-
   return $result
 }
 
 set -euo pipefail
 linuxify_check_dirs
+
+# *******************************************************************
 
 # install utils via brew bundle
 brew bundle -f ~/.dotfiles/Brewfile
@@ -108,6 +103,15 @@ sudo chown root "$mtrlocation"/sbin/mtr
 # Otherwise might cuz trouble see : https://github.com/git-lfs/git-lfs/issues/2837
 LANG=en_EN git lfs install 
 
+#Setting up QLColorCode
+defaults write org.n8gray.QLColorCode textEncoding UTF-16
+defaults write org.n8gray.QLColorCode webkitTextEncoding UTF-16
+defaults write org.n8gray.QLColorCode font "Fira Code Pro"
+defaults write org.n8gray.QLColorCode fontSizePoints 10
+defaults write org.n8gray.QLColorCode hlTheme zenburn
+defaults write org.n8gray.QLColorCode extraHLFlags "-W -J 160"
+defaults write org.n8gray.QLColorCode pathHL /usr/local/bin/highlight
+
 # Quicklook stuff
 xattr -d -r com.apple.quarantine ~/Library/QuickLook
 qlmanage -r
@@ -117,40 +121,34 @@ cd ~/.dotfiles && git submodule update --init --recursive
 
 # *******************************************************************
 
-echo "node -v"
-node -v
-if [[ $? != 0 ]]; then
-    echo "node not found, installing via homebrew"
-    brew install node
-    node -v
-fi
-
-sudo npm install npm@latest -g
-npm -v
-
-# Install npm packages globally without sudo on macOS
-cd ~ && mkdir "${HOME}/.npm-packages"         # Create a directory for global packages
-npm config set prefix "${HOME}/.npm-packages" # Tell npm where to store globally installed packages
+echo_warn 'This script will configure some global npm packages'
+prompt_user "utils/npm.sh"
+echo_ok "Done!" 
 
 # *******************************************************************
 
-echo 'This script will configure zsh'
+echo_warn 'This script will configure zsh'
 prompt_user "utils/zsh-config.sh"
+echo_ok "Done!"
 
 # *******************************************************************
 
-echo 'This script will configure vim'
-prompt_user "utils/vim-config.sh"
+echo_warn 'This script will configure vim'
+ln -sf ~/.dotfiles/vim-config/vimrc ${HOME}/.vimrc
+ln -sf ~/.dotfiles/vim-config/init.vim ${HOME}/.config/nvim
+echo_ok "Done!"
 
 # *******************************************************************
 
-echo 'This script will configure git'
+echo_warn 'This script will configure git'
 prompt_user "utils/git-config.sh"
+echo_ok "Done!"
 
 # *******************************************************************
 
-echo 'This script will configure VS Code settings'
+echo_warn 'This script will configure VS Code settings'
 prompt_user "utils/vscode-config.sh"
+echo_ok "Done!"
 
 # *******************************************************************
 
@@ -160,31 +158,33 @@ prompt_user "utils/vscode-config.sh"
 read -r -p "Install apps? WARNING : If yes please login the App Store before ! [y|N] " response
 if [[ $response =~ (y|yes|Y) ]]; then
   brew bundle -f ~/.dotfiles/apps/Brewfile
-  echo "Done!"
+  echo_ok "Done!"
 else
-  echo "skipped"
+  echo_ok "skipped"
 fi
 
 # *******************************************************************
 
-echo 'Do you want to update the system security?'
+echo_warn 'Do you want to update the system security?'
 prompt_user "settings/security.sh"
+echo_ok "Done!"
 
 # *******************************************************************
 
-echo 'Do you want to update the system configurations?'
+echo_warn 'Do you want to update the system configurations?'
 prompt_user "settings/settings.sh"
+echo_ok "Done!"
 
 # *******************************************************************
 
 if groups "${USER}" | grep -q -w admin; then
-  echo "${USER} is admin"
+  echo_warn "${USER} is admin"
   read -r -p "Do you want to create an hidden admin user and demote this user? [y|N] " response
   if [[ $response =~ (yes|y|Y) ]]; then
     run_script "settings/admin.sh"
-    echo "ok"
+    echo_ok "ok"
   else
-    echo "skipped"
+    echo_ok "skipped"
   fi
 else
   echo "${USER} is not admin"
@@ -192,10 +192,13 @@ fi
 
 # *******************************************************************
 
-echo "Almost done"
+killall -HUP SystemUIServer
+
+
+echo_warn "Almost done"
 read -r -p "Do you wanna restart your mac to apply all changes ? [y|N] " response
 if [[ -z $response || $response =~ ^(y|Y) ]]; then
-  echo "Restarting..."
+  echo_warn "Restarting..."
   sudo fdesetup authrestart
   exit
 fi
