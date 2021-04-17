@@ -145,7 +145,7 @@ echo_ok "Done!"
 
 read -r -p "Install apps? WARNING : If yes please login the App Store before ! [y|N] " response
 if [[ $response =~ (y|yes|Y) ]]; then
-  brew bundle -f ~/.dotfiles/apps/Brewfile
+  brew bundle install -v --no-lock ~/.dotfiles/apps/Brewfile
   echo_ok "Done!"
 else
   echo_ok "skipped"
