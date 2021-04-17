@@ -133,8 +133,9 @@ echo_ok "Done!"
 
 # *******************************************************************
 
-echo_warn 'This script will configure VS Code settings'
-prompt_user "utils/vscode-config.sh"
+echo_warn 'Configuring VS Code settings'
+rm -rf ~/Library/Application\ Support/Code/User
+ln -s ${HOME}/dotfiles/vscode-config ~/Library/Application\ Support/Code/User
 echo_ok "Done!"
 
 # *******************************************************************
