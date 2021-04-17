@@ -120,7 +120,7 @@ echo_ok "Done!"
 
 # *******************************************************************
 
-echo_warn 'This script will configure vim'
+echo_warn 'Configuring vim'
 ln -sf ~/.dotfiles/vim-config/vimrc ${HOME}/.vimrc
 ln -sf ~/.dotfiles/vim-config/init.vim ${HOME}/.config/nvim
 echo_ok "Done!"
