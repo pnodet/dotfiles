@@ -31,8 +31,6 @@ npm_formulas=(
     "vtop"
     "spoof"
     "iponmap"
-    "is-up"
-    "is-online"
     "emoj"
     "gh-home"
     "webtorrent-cli"
