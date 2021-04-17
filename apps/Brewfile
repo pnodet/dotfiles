@@ -1,25 +1,61 @@
+# Collection of apps and services for photography, design, video, web, and UX
+cask "adobe-creative-cloud"
+# Databases & SQL IDE
+cask "datagrip"
+# Voice and text chat software
 cask "discord"
+# Client for the Dropbox cloud storage service
 cask "dropbox"
 cask "docker"
+# Web browser
+cask "firefox"
+# Desktop client for GitHub repositories
 cask "github"
+# Git client focusing on productivity
+cask "gitkraken"
+# Web browser
 cask "google-chrome"
+# Free and open-source media player
+cask "iina"
+# Java IDE by JetBrains
+cask "intellij-idea"
+cask "megasync"
+# Provides updates to various Microsoft products
+cask "microsoft-auto-update"
 cask "microsoft-excel"
 cask "microsoft-powerpoint"
 cask "microsoft-teams"
 cask "microsoft-word"
+# App to write, plan, collaborate, and get organized
 cask "notion"
+# Emoji picker optimized for blind people
+cask "rocket"
 cask "rectangle"
+# Instant messaging application focusing on security
 cask "signal"
+# Video chat, voice call and instant messaging application
+cask "skype"
+# Team communication and collaboration software
 cask "slack"
+# Music streaming service
 cask "spotify"
+# Web browser focusing on security
 cask "tor-browser"
+# Open-source BitTorrent client
 cask "transmission"
+# Free and open-source OpenVPN client
 cask "tunnelblick"
+# Open-source code editor
 cask "visual-studio-code"
+# Multimedia player
 cask "vlc"
+# JavaScript IDE
+cask "webstorm"
+# Desktop client for WhatsApp
 cask "whatsapp"
+# Video communication and virtual meeting platform
 cask "zoom"
-cask "megasync"
+mas "Ka-Block!", id: 1335413823
 mas "Keynote", id: 409183694
 mas "Messenger", id: 1480068668
 mas "Spark", id: 1176895641

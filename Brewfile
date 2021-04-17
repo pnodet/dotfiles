@@ -193,20 +193,10 @@ brew "0xmachos/mosl/mosl"
 brew "bramstein/webfonttools/sfnt2woff"
 # WOFF utilities with Zopfli compression
 brew "bramstein/webfonttools/sfnt2woff-zopfli"
-# Collection of apps and services for photography, design, video, web, and UX
-cask "adobe-creative-cloud"
 # Inspect application bundles
 cask "apparency"
 # Screen saver based on animations presented during Apple Special Event Brooklyn
 cask "brooklyn"
-# Databases & SQL IDE
-cask "datagrip"
-# Voice and text chat software
-cask "discord"
-# Client for the Dropbox cloud storage service
-cask "dropbox"
-# Web browser
-cask "firefox"
 cask "font-awesome-terminal-fonts"
 cask "font-fira-code"
 cask "font-fira-mono"
@@ -214,26 +204,8 @@ cask "font-fira-mono"
 cask "font-fontawesome"
 cask "font-roboto-mono"
 cask "font-source-code-pro"
-# Desktop client for GitHub repositories
-cask "github"
-# Git client focusing on productivity
-cask "gitkraken"
-# Web browser
-cask "google-chrome"
-# Free and open-source media player
-cask "iina"
-# Java IDE by JetBrains
-cask "intellij-idea"
 # Penetration testing framework
 cask "metasploit"
-# Provides updates to various Microsoft products
-cask "microsoft-auto-update"
-cask "microsoft-excel"
-cask "microsoft-powerpoint"
-cask "microsoft-teams"
-cask "microsoft-word"
-# App to write, plan, collaborate, and get organized
-cask "notion"
 # QuickLook plug-in that renders source code with syntax highlighting
 cask "qlcolorcode"
 # Display image info and preview unsupported formats in QuickLook
@@ -244,38 +216,5 @@ cask "qlstephen"
 cask "qlvideo"
 cask "quicklook-json"
 cask "quicklookase"
-# Emoji picker optimized for blind people
-cask "rocket"
-# Instant messaging application focusing on security
-cask "signal"
-# Video chat, voice call and instant messaging application
-cask "skype"
-# Team communication and collaboration software
-cask "slack"
-# Music streaming service
-cask "spotify"
 # Application for inspecting installer packages
 cask "suspicious-package"
-# Web browser focusing on security
-cask "tor-browser"
-# Open-source BitTorrent client
-cask "transmission"
-# Free and open-source OpenVPN client
-cask "tunnelblick"
-# Open-source code editor
-cask "visual-studio-code"
-# Multimedia player
-cask "vlc"
-# JavaScript IDE
-cask "webstorm"
-# Desktop client for WhatsApp
-cask "whatsapp"
-# Video communication and virtual meeting platform
-cask "zoom"
-mas "Ka-Block!", id: 1335413823
-mas "Keynote", id: 409183694
-mas "Messenger", id: 1480068668
-mas "Spark", id: 1176895641
-mas "Stockfish", id: 801463932
-mas "Telegram", id: 747648890
-mas "Trello", id: 1278508951
