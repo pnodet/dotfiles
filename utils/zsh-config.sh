@@ -17,3 +17,6 @@ ln -sf ${HOME}/.dotfiles/zsh-config ${HOME}/.zsh-config
 zsh ${HOME}/.zsh-config/bootstrap.sh
 
 echo "Shell restart needed"
+
+
+mkdir -p ~/.config && ln -s ~/.dotfiles/tilde/starship.toml ~/.config/
