@@ -1,6 +1,6 @@
 #!/bin/sh
-
-ln -sf ${HOME}/.dotfiles/git-config/.gitconfig ${HOME}/.gitconfig
+rm ~/.gitconfig
+ln -sf ~/.dotfiles/git-config/.gitconfig ~/.gitconfig
 
 ## Github
 # TODO: setup ssh : use this from https://gist.github.com/kevinelliott/7152e00d6567e223902a4775b5a0a0be
