@@ -135,7 +135,7 @@ echo_ok "Done!"
 
 echo_warn 'Configuring VS Code settings'
 rm -rf ~/Library/Application\ Support/Code/User
-ln -s ${HOME}/dotfiles/vscode-config ~/Library/Application\ Support/Code/User
+ln -s ~/.dotfiles/vscode-config ~/Library/Application\ Support/Code/User
 echo_ok "Done!"
 
 # *******************************************************************
