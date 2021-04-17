@@ -29,25 +29,12 @@ function prompt_user() {
 # Close any open System Preferences panes, to prevent them from overriding settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'
 
-# Do we need to ask for sudo password or is it already passwordless?
+# Keep-alive: update existing sudo time stamp until the script has finished
+echo_warn "The Script Require Root Access. Please Enter Your Password."
+sudo -v
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-grep -q 'NOPASSWD:     ALL' /etc/sudoers.d/$LOGNAME >/dev/null 2>&1
-if [ $? -ne 0 ]; then
-  echo_warn "The Script Require Root Access. Please Enter Your Password."
-  sudo -v
-
-  # Keep-alive: update existing sudo time stamp until the script has finished
-  while true; do
-    sudo -n true
-    sleep 60
-    kill -0 "$$" || exit
-  done 2>/dev/null &
-
-fi
-
-# XCode Command Line Tools
-# thanks to https://github.com/alrra/dotfiles/blob/ff123ca9b9b/os/os_x/installs/install_xcode.sh
-
+# XCode Command Line Tools from https://github.com/alrra/dotfiles/
 echo_warn "Installing Xcode CLI tools..."
 if ! xcode-select --print-path &>/dev/null; then
   xcode-select --install &>/dev/null
@@ -57,9 +44,9 @@ if ! xcode-select --print-path &>/dev/null; then
   print_result $? ' XCode Command Line Tools Installed'
   sudo xcodebuild -license
   print_result $? 'Agree with the XCode Command Line Tools licence'
-
 fi
 
+# Homebrew
 if test ! "$(command -v brew)"; then
   echo_warn 'Installing Homebrew'
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -193,7 +180,6 @@ fi
 # *******************************************************************
 
 killall -HUP SystemUIServer
-
 
 echo_warn "Almost done"
 read -r -p "Do you wanna restart your mac to apply all changes ? [y|N] " response
