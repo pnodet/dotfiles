@@ -7,9 +7,9 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
 fi
 
 # helpers
-function echo_ok { echo -e '\033[1;32m'"$1"'\033[0m'; }
-function echo_warn { echo -e '\033[1;33m'"$1"'\033[0m'; }
-function echo_error  { echo -e '\033[1;31mERROR: '"$1"'\033[0m'; }
+function echo_ok { echo '\033[1;32m'"$1"'\033[0m'; }
+function echo_warn { echo '\033[1;33m'"$1"'\033[0m'; }
+function echo_error  { echo '\033[1;31mERROR: '"$1"'\033[0m'; }
 
 function run_script() {
   cd ~ && source $HOME/.dotfiles/"$1"
@@ -78,7 +78,7 @@ linuxify_check_dirs
 # *******************************************************************
 
 # install utils via brew bundle
-brew bundle -f ~/.dotfiles/Brewfile
+brew bundle install -v --no-lock ~/.dotfiles/Brewfile
 
 # allow mtr to run without sudo
 mtrlocation=$(brew info mtr | grep Cellar | sed -e 's/ (.*//')
@@ -104,7 +104,7 @@ xattr -d -r com.apple.quarantine ~/Library/QuickLook
 qlmanage -r
 
 # Submodule stuff
-cd ~/.dotfiles && git submodule update --init --recursive
+cd ~/.dotfiles && git submodule update --init --recursive && cd ~
 
 # *******************************************************************
 
@@ -135,7 +135,7 @@ echo_ok "Done!"
 
 echo_warn 'Configuring VS Code settings'
 rm -rf ~/Library/Application\ Support/Code/User
-ln -s ~/.dotfiles/vscode-config ~/Library/Application\ Support/Code/User
+ln -s ~/.dotfiles/vscode-config/User ~/Library/Application\ Support/Code/User
 echo_ok "Done!"
 
 # *******************************************************************
