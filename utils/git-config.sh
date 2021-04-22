@@ -5,11 +5,11 @@ ln -sf ~/.dotfiles/git-config/.gitconfig ~/.gitconfig
 ## Github
 # TODO: setup ssh : use this from https://gist.github.com/kevinelliott/7152e00d6567e223902a4775b5a0a0be
 
-#Generate new ssh-key
-#$ ssh-keygen -t rsa -b 4096 -C "paul.nodet@gmail.com"
+# Generate new ssh-key
+# ssh-keygen -t rsa -b 4096 -C "paul.nodet@gmail.com"
 
 # Copy public key to Github.com
-#cat ~/.ssh/id_rsa.pub
+# cat ~/.ssh/id_rsa.pub
 
 # Test connection
 #ssh -T git@github.com

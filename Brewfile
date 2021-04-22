@@ -197,10 +197,10 @@ brew "bramstein/webfonttools/sfnt2woff-zopfli"
 cask "apparency"
 # Screen saver based on animations presented during Apple Special Event Brooklyn
 cask "brooklyn"
+# Fonts
 cask "font-awesome-terminal-fonts"
 cask "font-fira-code"
 cask "font-fira-mono"
-# Icon set and toolkit
 cask "font-fontawesome"
 cask "font-roboto-mono"
 cask "font-source-code-pro"
