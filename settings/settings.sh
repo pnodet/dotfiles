@@ -9,7 +9,7 @@ if [[ -z "$mac_os_label" ]]; then
 fi
 
 printf "What is this machine's name (Example: paul-macbook-pro) ?"
-read mac_os_label
+read mac_os_name
 if [[ -z "$mac_os_name" ]]; then
     echo "ERROR: Invalid MacOS name."
     exit 1
