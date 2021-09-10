@@ -174,6 +174,8 @@ brew "pinentry-mac"
 brew "rsync"
 # Powerful, clean, object-oriented scripting language
 brew "ruby"
+# Safe, concurrent, practical language
+brew "rust"
 # Build tool for Scala projects
 brew "sbt"
 # Terminal multiplexer with VT100/ANSI terminal emulation
