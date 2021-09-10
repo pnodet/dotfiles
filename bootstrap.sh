@@ -1,11 +1,5 @@
 #!/bin/sh
 
-# Check if running macOS
-if ! [[ "$OSTYPE" =~ darwin* ]]; then
-  echo "Sorry, this is meant to be run on macOS only"
-  exit
-fi
-
 # helpers
 function echo_ok { echo '\033[1;32m'"$1"'\033[0m'; }
 function echo_warn { echo '\033[1;33m'"$1"'\033[0m'; }
@@ -26,6 +20,12 @@ function prompt_user() {
   fi
 }
 
+# Check if running macOS
+if ! [[ "$OSTYPE" =~ darwin* ]]; then
+  echo_error "Sorry, this is meant to be run on macOS only"
+  exit
+fi
+
 # Close any open System Preferences panes, to prevent them from overriding settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'
 
@@ -35,7 +35,7 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # XCode Command Line Tools from https://github.com/alrra/dotfiles/
-echo_warn "Installing Xcode CLI tools..."
+echo_warn "Checking Xcode CLI tools..."
 if ! xcode-select --print-path &>/dev/null; then
   xcode-select --install &>/dev/null
   until xcode-select --print-path &>/dev/null; do
@@ -50,9 +50,10 @@ fi
 if test ! "$(command -v brew)"; then
   echo_warn 'Installing Homebrew'
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  sudo chown -R $(whoami) $(brew --prefix)/*
   sudo chown -R $(whoami) .config
   sudo chown -R $(whoami) .gitconfig
+  sudo chown -R $(whoami) $(brew --prefix)/*
+  sudo chown -R $(whoami) /usr/local/*
 fi
 
 # Just to avoid a potential bug
@@ -78,12 +79,14 @@ linuxify_check_dirs
 # *******************************************************************
 
 # install utils via brew bundle
-brew bundle install -v --no-lock ~/.dotfiles/Brewfile
+cd ~ && brew bundle install -v --no-lock --file=~/.dotfiles/Brewfile
+
+# install link completions
+brew completions link
 
 # allow mtr to run without sudo
-mtrlocation=$(brew info mtr | grep Cellar | sed -e 's/ (.*//')
-
 # e.g. `/Users/paulirish/.homebrew/Cellar/mtr/0.86`
+mtrlocation=$(brew info mtr | grep Cellar | sed -e 's/ (.*//')
 sudo chmod 4755 "$mtrlocation"/sbin/mtr
 sudo chown root "$mtrlocation"/sbin/mtr
 
@@ -104,7 +107,11 @@ xattr -d -r com.apple.quarantine ~/Library/QuickLook
 qlmanage -r
 
 # Submodule stuff
-cd ~/.dotfiles && git submodule update --init --recursive && cd ~
+cd ${HOME}/.dotfiles && git submodule update --init --recursive && cd ~
+
+# Pip
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python3 get-pip.py
 
 # *******************************************************************
 
@@ -121,8 +128,19 @@ echo_ok "Done!"
 # *******************************************************************
 
 echo_warn 'Configuring vim'
-ln -sf ~/.dotfiles/vim-config/vimrc ${HOME}/.vimrc
-ln -sf ~/.dotfiles/vim-config/init.vim ${HOME}/.config/nvim
+
+if [ ! -f "${HOME}/.vimrc" ]; then
+  ln -sf ${HOME}/.dotfiles/vim-config/vimrc ${HOME}/.vimrc
+fi
+
+if [ ! -d "${HOME}/.config/nvim" ]; then
+  mkdir ${HOME}/.config/nvim
+fi
+
+if [ ! -f "${HOME}/.config/nvim/init.vim" ]; then
+  ln -s ${HOME}/.vimrc ${HOME}/.config/nvim/init.vim
+fi
+
 echo_ok "Done!"
 
 # *******************************************************************
@@ -140,12 +158,11 @@ echo_ok "Done!"
 
 # *******************************************************************
 
-# TODO: Adobe ?
-# TODO: improve by making the signing process auto ?
+# TODO improve by making the signing process auto ?
 
 read -r -p "Install apps? WARNING : If yes please login the App Store before ! [y|N] " response
 if [[ $response =~ (y|yes|Y) ]]; then
-  brew bundle install -v --no-lock ~/.dotfiles/apps/Brewfile
+  brew bundle install -v --no-lock --file=~/.dotfiles/apps/Brewfile
   echo_ok "Done!"
 else
   echo_ok "skipped"
