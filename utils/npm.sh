@@ -3,7 +3,10 @@
 sudo npm install npm@latest -g
 
 # always pin versions (no surprises, consistent dev/build machines)
-sudo npm config set save-exact true
+savExact=$(sudo npm config get save-exact)
+if [ savExact = false ]; then
+    sudo npm config set save-exact true
+fi
 
 # Install npm packages globally without sudo on macOS
 if [ ! -d "${HOME}/.npm-packages" ]; then

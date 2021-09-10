@@ -159,13 +159,26 @@ echo_ok "Done!"
 # *******************************************************************
 
 # TODO improve by making the signing process auto ?
-
 read -r -p "Install apps? WARNING : If yes please login the App Store before ! [y|N] " response
 if [[ $response =~ (y|yes|Y) ]]; then
   brew bundle install -v --no-lock --file=~/.dotfiles/apps/Brewfile
   echo_ok "Done!"
 else
   echo_ok "skipped"
+fi
+
+# *******************************************************************
+
+echo_warn 'Do you want to update apps preferences? [y|N]'
+read response
+if [[ $response =~ (y|yes|Y) ]]; then
+  for file in ~/.dotfiles/apps/*
+  do
+    sh "$file"
+  done
+  echo_ok "Done!"
+else
+  echo_ok "Ok, skipped"
 fi
 
 # *******************************************************************
