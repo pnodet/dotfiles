@@ -1,14 +1,15 @@
-tap "0xmachos/mosl"
-tap "bramstein/webfonttools"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-drivers"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
+tap "homebrew/command-not-found"
 tap "homebrew/core"
+tap "homebrew/services"
 tap "ldez/tap"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@1.1"
+tap "bramstein/webfonttools"
+tap "mongodb/brew"
+tap "stripe/stripe-cli"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # Bourne-Again SHell, a UNIX command interpreter
@@ -23,12 +24,18 @@ brew "binutils"
 brew "bison"
 # Fish completion for brew-cask
 brew "brew-cask-completion"
+# Core application library for C
+brew "glib"
 # Color-highlighted diff(1) output
 brew "colordiff"
 # Dependency Manager for PHP
 brew "composer"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
+# C library implementing the SSH2 protocol
+brew "libssh2"
+# Open source suite of directory software
+brew "openldap"
 # Secure runtime for JavaScript and TypeScript
 brew "deno"
 # File comparison utilities
@@ -36,9 +43,9 @@ brew "diffutils"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # Pack, ship and run any application as a lightweight container
-brew "docker", link: false
+brew "docker"
 # Isolated development environments using Docker
-brew "docker-compose", link: false
+brew "docker-compose"
 # Create Docker hosts locally and on cloud providers
 brew "docker-machine"
 # Convert text between DOS, UNIX, and Mac formats
@@ -55,6 +62,8 @@ brew "emacs"
 brew "exa"
 # OpenType text shaping engine
 brew "harfbuzz"
+# Subtitle renderer for the ASS/SSA subtitle format
+brew "libass"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
 # Utility to determine file types
@@ -65,6 +74,8 @@ brew "findutils"
 brew "flex"
 # Fast and simple Node.js version manager
 brew "fnm"
+# Libraries to talk to Microsoft SQL Server and Sybase databases
+brew "freetds"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # GNU awk utility
@@ -73,6 +84,8 @@ brew "gawk"
 brew "gdb"
 # GitHub command-line tool
 brew "gh"
+# Interpreter for PostScript and PDF
+brew "ghostscript"
 # Command-line utility for uploading Gists
 brew "gist"
 # Distributed revision control system
@@ -109,12 +122,10 @@ brew "hugo"
 brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
-# Network authentication protocol
-brew "krb5"
+# Simple terminal UI for git commands
+brew "lazygit"
 # Pager program similar to more
 brew "less"
-# Postgres C API library
-brew "libpq"
 # Version of the SSL/TLS protocol forked from OpenSSL
 brew "libressl"
 # Swiss Army Knife for macOS
@@ -127,6 +138,8 @@ brew "macosvpn"
 brew "make"
 # Mac App Store command-line interface
 brew "mas"
+# Java-based project management
+brew "maven"
 # Sign files & verify signatures. Works with signify in OpenBSD
 brew "minisign"
 # Collection of tools that nobody wrote when UNIX was young
@@ -145,22 +158,34 @@ brew "neovim"
 brew "nmap"
 # Platform built on V8 to build network applications
 brew "node"
+# Development kit for the Java programming language
+brew "openjdk@11"
 # OpenBSD freely-licensed SSH connectivity tools
 brew "openssh"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl"
 # Highly capable, feature-rich programming language
 brew "perl"
 # General-purpose scripting language
 brew "php"
+# Pinentry for GPG on Mac
+brew "pinentry-mac"
 # Utility that provides fast incremental file transfer
 brew "rsync"
 # Powerful, clean, object-oriented scripting language
 brew "ruby"
+# Build tool for Scala projects
+brew "sbt"
 # Terminal multiplexer with VT100/ANSI terminal emulation
 brew "screen"
 # Generate ASCII art with terminal, shell, and OS info
 brew "screenfetch"
 # Cross-shell prompt for astronauts
 brew "starship"
+# Strong open-source chess engine
+brew "stockfish"
+# Organize software neatly under a single directory tree (e.g. /usr/local)
+brew "stow"
 # Version control system designed to be a better CVS
 brew "subversion"
 # Open source continuous file synchronization application
@@ -193,6 +218,12 @@ brew "0xmachos/mosl/mosl"
 brew "bramstein/webfonttools/sfnt2woff"
 # WOFF utilities with Zopfli compression
 brew "bramstein/webfonttools/sfnt2woff-zopfli"
+# GitHub Changelog Generator
+brew "ldez/tap/gcg"
+# High-performance, schema-free, document-oriented database
+brew "mongodb/brew/mongodb-community"
+# Stripe CLI utility
+brew "stripe/stripe-cli/stripe"
 # Inspect application bundles
 cask "apparency"
 # Screen saver based on animations presented during Apple Special Event Brooklyn
@@ -201,6 +232,7 @@ cask "brooklyn"
 cask "font-awesome-terminal-fonts"
 cask "font-fira-code"
 cask "font-fira-mono"
+# Icon set and toolkit
 cask "font-fontawesome"
 cask "font-roboto-mono"
 cask "font-source-code-pro"
