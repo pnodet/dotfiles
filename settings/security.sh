@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 # Enable FileVault
-sudo fdesetup enable -user $USER > $HOME/FileVault_recovery_key.txt
+status="$(fdesetup status)"
+
+if [status = "FileVault is Off."]; then
+  sudo fdesetup enable -user $USER > $HOME/FileVault_recovery_key.txt
+fi
 
 # Enable System Integrity Protection (SIP)
 sudo csrutil clear
