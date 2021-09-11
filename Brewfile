@@ -164,6 +164,8 @@ brew "openjdk@11"
 brew "openssh"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl"
+# Programming language prerequisites and package managers
+brew "libyaml" # should come after openssl
 # Highly capable, feature-rich programming language
 brew "perl"
 # General-purpose scripting language
@@ -190,6 +192,8 @@ brew "stockfish"
 brew "stow"
 # Version control system designed to be a better CVS
 brew "subversion"
+# Required for roboto font
+brew "svn"
 # Open source continuous file synchronization application
 brew "syncthing"
 # Code-search similar to ack
@@ -212,8 +216,12 @@ brew "wget"
 brew "wifi-password"
 # Utilities to create and convert Web Open Font File (WOFF) files
 brew "woff2"
+# yarn
+brew "yarn"
 # Download YouTube videos from the command-line
 brew "youtube-dl"
+# Zsh shell
+brew "zsh"
 # Bash script to audit and fix macOS Catalina (10.15.x) security settings
 brew "0xmachos/mosl/mosl"
 # Convert existing TrueType/OpenType fonts to WOFF format
@@ -232,6 +240,7 @@ cask "apparency"
 cask "brooklyn"
 # Fonts
 cask "font-awesome-terminal-fonts"
+cask "font-hack"
 cask "font-fira-code"
 cask "font-fira-mono"
 # Icon set and toolkit

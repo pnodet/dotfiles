@@ -18,4 +18,10 @@ zsh ${HOME}/.zsh-config/bootstrap.sh
 
 echo "Shell restart needed"
 
-mkdir -p ~/.config && ln -s ~/.dotfiles/tilde/starship.toml ~/.config/
+if [ ! -d "${HOME}/.config" ]; then
+  mkdir -p ~/.config
+fi
+
+if [ ! -f "${HOME}/.config/starship.toml" ]; then
+	ln -s ~/.dotfiles/tilde/starship.toml ~/.config/
+fi

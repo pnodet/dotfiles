@@ -1,0 +1,9 @@
+Host *
+  IgnoreUnknown AddKeysToAgent,UseKeychain
+  AddKeysToAgent yes
+  UseKeychain yes
+
+Host vizapp
+  HostName 51.210.180.245
+  User ubuntu
+  ForwardAgent yes

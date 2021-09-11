@@ -195,6 +195,20 @@ echo_ok "Done!"
 
 # *******************************************************************
 
+if [ ! -f "${HOME}/.ssh/config" ]; then
+  ln -s ${HOME}/tilde/ssh-config ${HOME}/.ssh/config
+fi
+
+if [ ! -f "${HOME}/.gnupg/gpg.conf" ]; then
+  ln -s ${HOME}/tilde/gpg/gpg.conf ${HOME}/.gnupg/gpg.conf
+fi
+
+if [ ! -f "${HOME}/.gnupg/gpg-agent.conf" ]; then
+  ln -s ${HOME}/tilde/gpg/gpg-agent.conf ${HOME}/.gnupg/gpg-agent.conf
+fi
+
+# *******************************************************************
+
 if groups "${USER}" | grep -q -w admin; then
   echo_warn "${USER} is admin"
   read -r -p "Do you want to create an hidden admin user and demote this user? [y|N] " response

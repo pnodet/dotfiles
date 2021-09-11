@@ -23,7 +23,6 @@ npm_formulas=(
     "spoof"
     "gh-home"
     "subdownloader"
-    "kill-tabs"
     "fast-cli"
 )
 
