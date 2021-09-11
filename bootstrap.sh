@@ -49,7 +49,7 @@ fi
 # Homebrew
 if test ! "$(command -v brew)"; then
   echo_warn 'Installing Homebrew'
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   sudo chown -R $(whoami) .config
   sudo chown -R $(whoami) .gitconfig
   sudo chown -R $(whoami) $(brew --prefix)/*
@@ -61,6 +61,7 @@ brew -v
 brew analytics off
 mkdir -p ~/Library/Caches/Homebrew/Formula
 brew doctor
+brew cleanup
 
 linuxify_check_dirs() {
   result=0
