@@ -80,7 +80,10 @@ linuxify_check_dirs
 # *******************************************************************
 
 # install utils via brew bundle
-cd ~ && brew bundle install -v --no-lock --file=~/.dotfiles/Brewfile
+brewCheck="$(brew bundle check --file=~/.dotfiles/tilde/Brewfile)"
+if [ ! brewCheck="The Brewfile's dependencies are satisfied." ]; then
+  brew bundle install -v --no-lock --file=~/.dotfiles/tilde/Brewfile
+fi
 
 # install link completions
 brew completions link
@@ -92,7 +95,7 @@ sudo chmod 4755 "$mtrlocation"/sbin/mtr
 sudo chown root "$mtrlocation"/sbin/mtr
 
 # Otherwise might cuz trouble see : https://github.com/git-lfs/git-lfs/issues/2837
-LANG=en_EN git lfs install 
+LANG=en_EN git lfs install
 
 #Setting up QLColorCode
 defaults write org.n8gray.QLColorCode textEncoding UTF-16
@@ -111,14 +114,17 @@ qlmanage -r
 cd ${HOME}/.dotfiles && git submodule update --init --recursive && cd ~
 
 # Pip
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python3 get-pip.py
+if test ! "$(command -V pip)"; then
+  echo_warn 'Installing pip'
+  curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+  python3 get-pip.py
+fi
 
 # *******************************************************************
 
 echo_warn 'This script will configure some global npm packages'
 prompt_user "utils/npm.sh"
-echo_ok "Done!" 
+echo_ok "Done!"
 
 # *******************************************************************
 
@@ -151,10 +157,12 @@ prompt_user "utils/git-config.sh"
 echo_ok "Done!"
 
 # *******************************************************************
-
+# FIXME:
 echo_warn 'Configuring VS Code settings'
-rm -rf ~/Library/Application\ Support/Code/User
-ln -s ~/.dotfiles/vscode-config/User ~/Library/Application\ Support/Code/User
+if [ -d "~/Library/Application\ Support/Code/User" ]; then
+  sudo rm -r ~/Library/Application\ Support/Code/User
+fi
+ln -s ~/.dotfiles/vscode-config/User ~/Library/Application\ Support/Code/
 echo_ok "Done!"
 
 # *******************************************************************
@@ -162,7 +170,11 @@ echo_ok "Done!"
 # TODO improve by making the signing process auto ?
 read -r -p "Install apps? WARNING : If yes please login the App Store before ! [y|N] " response
 if [[ $response =~ (y|yes|Y) ]]; then
-  brew bundle install -v --no-lock --file=~/.dotfiles/apps/Brewfile
+  # install apps via brew bundle
+  brewCheckApps="$(brew bundle check --file=~/.dotfiles/Brewfile/Brewfile)"
+  if [ ! brewCheckApps="The Brewfile's dependencies are satisfied." ]; then
+    brew bundle install -v --no-lock --file=~/.dotfiles/Brewfile/Brewfile
+  fi
   echo_ok "Done!"
 else
   echo_ok "skipped"
