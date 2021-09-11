@@ -21,6 +21,8 @@ echo 'Copy this public key to Github.com'
 cat ${HOME}/.ssh/id_rsa.pub
 open 'https://github.com/account/ssh'
 
+read -p "Press enter to continue"
+
 echo 'Test connection'
 ssh -T git@github.com
 
