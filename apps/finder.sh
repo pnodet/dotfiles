@@ -17,7 +17,7 @@ mkdir -p "$HOME/bin"
 chflags -h hidden "${HOME}/bin"
 
 # Quitting via ⌘ + Q; doing so will also hide desktop icons
-#defaults write com.apple.finder QuitMenuItem -bool true
+defaults write com.apple.finder QuitMenuItem -bool true
 
 # Window animations and Get Info animations
 defaults write com.apple.finder DisableAllAnimations -bool true
