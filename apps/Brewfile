@@ -8,6 +8,8 @@ cask "discord"
 cask "firefox-developer-edition"
 # Desktop client for GitHub repositories
 cask "github"
+# Desktop client GPG Keys
+cask "gpg-suite"
 # Free and open-source media player
 cask "iina"
 # Terminal emulator as alternative to Apple's Terminal app
