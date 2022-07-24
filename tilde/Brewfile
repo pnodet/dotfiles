@@ -1,3 +1,6 @@
+tap "0xmachos/mosl"
+tap "bramstein/webfonttools"
+tap "heroku/brew"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-drivers"
@@ -7,17 +10,26 @@ tap "homebrew/command-not-found"
 tap "homebrew/core"
 tap "homebrew/services"
 tap "ldez/tap"
-tap "bramstein/webfonttools"
+tap "microsoft/git"
 tap "mongodb/brew"
+tap "planetscale/tap"
 tap "stripe/stripe-cli"
+# Companion library to apr, the Apache Portable Runtime library
+brew "apr-util"
+# Macro processing language
+brew "m4"
+# Tool for generating GNU Standards-compliant Makefiles
+brew "automake"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.10"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
-# Command-line benchmark tool
-brew "bench"
+# High performance key/value database
+brew "berkeley-db", link: true
 # GNU binary tools for native development
 brew "binutils"
 # Parser generator
@@ -26,16 +38,28 @@ brew "bison"
 brew "brew-cask-completion"
 # Core application library for C
 brew "glib"
+# Manage compile and link flags for libraries
+brew "pkg-config"
+# Cross-platform make
+brew "cmake"
 # Color-highlighted diff(1) output
 brew "colordiff"
-# Dependency Manager for PHP
-brew "composer"
-# GNU File, Shell, and Text utilities
-brew "coreutils"
 # C library implementing the SSH2 protocol
 brew "libssh2"
 # Open source suite of directory software
 brew "openldap"
+# Generic library support script
+brew "libtool"
+# Libraries to talk to Microsoft SQL Server and Sybase databases
+brew "freetds"
+# Network authentication protocol
+brew "krb5"
+# General-purpose scripting language
+brew "php"
+# Dependency Manager for PHP
+brew "composer"
+# GNU File, Shell, and Text utilities
+brew "coreutils"
 # Secure runtime for JavaScript and TypeScript
 brew "deno"
 # File comparison utilities
@@ -43,23 +67,35 @@ brew "diffutils"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # Pack, ship and run any application as a lightweight container
-brew "docker"
+brew "docker", link: false
 # Isolated development environments using Docker
 brew "docker-compose"
 # Create Docker hosts locally and on cloud providers
 brew "docker-machine"
 # Convert text between DOS, UNIX, and Mac formats
 brew "dos2unix"
+# Pluggable and configurable code formatting platform written in Rust
+brew "dprint"
 # Classic UNIX line editor
 brew "ed"
 # GNU Ubiquitous Intelligent Language for Extensions
 brew "guile"
 # Library to load and enumerate PKCS#11 modules
 brew "p11-kit"
+# GNU Transport Layer Security (TLS) Library
+brew "gnutls"
 # GNU Emacs text editor
 brew "emacs"
+# Run arbitrary commands when files change
+brew "entr"
+# Platform built on V8 to build network applications
+brew "node"
+# Extremely fast JavaScript bundler and minifier
+brew "esbuild"
 # Modern replacement for 'ls'
 brew "exa"
+# Generate introspection data for GObject libraries
+brew "gobject-introspection"
 # OpenType text shaping engine
 brew "harfbuzz"
 # Subtitle renderer for the ASS/SSA subtitle format
@@ -74,14 +110,10 @@ brew "findutils"
 brew "flex"
 # Fast and simple Node.js version manager
 brew "fnm"
-# Libraries to talk to Microsoft SQL Server and Sybase databases
-brew "freetds"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # GNU awk utility
 brew "gawk"
-# GNU debugger
-brew "gdb"
 # GitHub command-line tool
 brew "gh"
 # Interpreter for PostScript and PDF
@@ -108,6 +140,8 @@ brew "gnupg"
 brew "go"
 # Apply a diff file to an original
 brew "gpatch"
+# Graph visualization software from AT&T and Bell Labs
+brew "graphviz"
 # Colorize logfiles and command output
 brew "grc"
 # GNU grep, egrep and fgrep
@@ -118,6 +152,8 @@ brew "gzip"
 brew "htop"
 # Configurable static site generator
 brew "hugo"
+# ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
+brew "libheif"
 # Tools and libraries to manipulate images in many formats
 brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
@@ -126,12 +162,16 @@ brew "jq"
 brew "lazygit"
 # Pager program similar to more
 brew "less"
+# Conversion library
+brew "libiconv"
 # Version of the SSL/TLS protocol forked from OpenSSL
 brew "libressl"
+# YAML Parser
+brew "libyaml"
+# Next-gen compiler infrastructure
+brew "llvm@13"
 # Swiss Army Knife for macOS
 brew "m-cli"
-# Macro processing language
-brew "m4"
 # Create Mac OS VPNs programmatically
 brew "macosvpn"
 # Utility for directing compilation
@@ -140,12 +180,16 @@ brew "make"
 brew "mas"
 # Java-based project management
 brew "maven"
-# Sign files & verify signatures. Works with signify in OpenBSD
-brew "minisign"
+# MongoDB Shell to connect, configure, query, and work with your MongoDB database
+brew "mongosh"
 # Collection of tools that nobody wrote when UNIX was young
 brew "moreutils"
 # 'traceroute' and 'ping' in a single tool
 brew "mtr"
+# Open source relational database management system
+brew "mysql"
+# Open source relational database management system
+brew "mysql-client"
 # Free (GNU) replacement for the Pico text editor
 brew "nano"
 # Interactive cheatsheet tool for the command-line
@@ -154,32 +198,44 @@ brew "navi"
 brew "neofetch"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# Small build system for use with gyp or CMake
+brew "ninja"
 # Port scanning utility for large networks
 brew "nmap"
 # Platform built on V8 to build network applications
-brew "node"
+brew "node@14"
+# Optimized BLAS library
+brew "openblas"
+# Package for scientific computing with Python
+brew "numpy"
 # Development kit for the Java programming language
 brew "openjdk@11"
 # OpenBSD freely-licensed SSH connectivity tools
 brew "openssh"
 # Cryptography and SSL/TLS Toolkit
-brew "openssl"
-# Programming language prerequisites and package managers
-brew "libyaml" # should come after openssl
+brew "openssl@3"
 # Highly capable, feature-rich programming language
 brew "perl"
-# General-purpose scripting language
-brew "php"
 # Pinentry for GPG on Mac
 brew "pinentry-mac"
+# 📦🚀 Fast, disk space efficient package manager
+brew "pnpm", link: false
+# Object-relational database system
+brew "postgresql"
+# Persistent key-value database, with built-in net interface
+brew "redis"
+# CLI for managing and maintaining data graphs with Apollo Studio
+brew "rover"
 # Utility that provides fast incremental file transfer
 brew "rsync"
 # Powerful, clean, object-oriented scripting language
 brew "ruby"
-# Safe, concurrent, practical language
-brew "rustup"
+# Rust toolchain installer
+brew "rustup-init"
 # Build tool for Scala projects
 brew "sbt"
+# Software for mathematics, science, and engineering
+brew "scipy"
 # Terminal multiplexer with VT100/ANSI terminal emulation
 brew "screen"
 # Generate ASCII art with terminal, shell, and OS info
@@ -192,10 +248,12 @@ brew "stockfish"
 brew "stow"
 # Version control system designed to be a better CVS
 brew "subversion"
-# Required for roboto font
-brew "svn"
 # Open source continuous file synchronization application
 brew "syncthing"
+# Tools for market analysis
+brew "ta-lib"
+# User interface to the TELNET protocol
+brew "telnet"
 # Code-search similar to ack
 brew "the_silver_searcher"
 # Simplified and community-driven man pages
@@ -216,11 +274,11 @@ brew "wget"
 brew "wifi-password"
 # Utilities to create and convert Web Open Font File (WOFF) files
 brew "woff2"
-# yarn
+# JavaScript package manager
 brew "yarn"
 # Download YouTube videos from the command-line
 brew "youtube-dl"
-# Zsh shell
+# UNIX shell (command interpreter)
 brew "zsh"
 # Bash script to audit and fix macOS Catalina (10.15.x) security settings
 brew "0xmachos/mosl/mosl"
@@ -228,27 +286,73 @@ brew "0xmachos/mosl/mosl"
 brew "bramstein/webfonttools/sfnt2woff"
 # WOFF utilities with Zopfli compression
 brew "bramstein/webfonttools/sfnt2woff-zopfli"
+# Everything you need to get started with Heroku
+brew "heroku/brew/heroku"
 # GitHub Changelog Generator
 brew "ldez/tap/gcg"
 # High-performance, schema-free, document-oriented database
 brew "mongodb/brew/mongodb-community"
+# The PlanetScale CLI
+brew "planetscale/tap/pscale"
 # Stripe CLI utility
 brew "stripe/stripe-cli/stripe"
+# Collection of apps and services for photography, design, video, web, and UX
+cask "adobe-creative-cloud"
+# Distribution of the Python and R programming languages for scientific computing
+cask "anaconda"
 # Inspect application bundles
 cask "apparency"
 # Screen saver based on animations presented during Apple Special Event Brooklyn
 cask "brooklyn"
-# Fonts
+# E-books management software
+cask "calibre"
+# Databases & SQL IDE
+cask "datagrip"
+# Voice and text chat software
+cask "discord"
+# App to build and share containerized applications and microservices
+cask "docker"
+# Web browser
+cask "firefox-developer-edition"
 cask "font-awesome-terminal-fonts"
-cask "font-hack"
 cask "font-fira-code"
 cask "font-fira-mono"
 # Icon set and toolkit
 cask "font-fontawesome"
+cask "font-hack"
 cask "font-roboto-mono"
 cask "font-source-code-pro"
-# Penetration testing framework
-cask "metasploit"
+cask "git-credential-manager-core"
+# Desktop client for GitHub repositories
+cask "github"
+# Web browser
+cask "google-chrome"
+# Tools to protect your emails and files
+cask "gpg-suite"
+# Free and open-source media player
+cask "iina"
+# Java IDE by JetBrains
+cask "intellij-idea"
+# Syncs files between computers and MEGA Cloud drives
+cask "megasync"
+# Native desktop app for Messenger (formerly Facebook Messenger)
+cask "messenger"
+# Provides updates to various Microsoft products
+cask "microsoft-auto-update"
+# Spreadsheet software
+cask "microsoft-excel"
+# Presentation software
+cask "microsoft-powerpoint"
+# Meet, chat, call, and collaborate in just one place
+cask "microsoft-teams"
+# Word processor
+cask "microsoft-word"
+# Explore and manipulate your MongoDB data
+cask "mongodb-compass"
+# Knowledge base that works on top of a local folder of plain text Markdown files
+cask "obsidian"
+# VPN client
+cask "purevpn"
 # QuickLook plug-in that renders source code with syntax highlighting
 cask "qlcolorcode"
 # Display image info and preview unsupported formats in QuickLook
@@ -258,6 +362,28 @@ cask "qlmarkdown"
 cask "qlstephen"
 cask "qlvideo"
 cask "quicklook-json"
+# QuickLook generator for Adobe Swatch Exchange files
 cask "quicklookase"
-# Application for inspecting installer packages
-cask "suspicious-package"
+# Move and resize windows using keyboard shortcuts or snap areas
+cask "rectangle"
+# Instant messaging application focusing on security
+cask "signal"
+# Music streaming service
+cask "spotify"
+# Text editor for code, markup and prose
+cask "sublime-text"
+# Desktop client for Telegram messenger
+cask "telegram-desktop"
+# Web browser focusing on security
+cask "tor-browser"
+# Open-source BitTorrent client
+cask "transmission"
+cask "visual-studio-code"
+# Desktop client for WhatsApp
+cask "whatsapp"
+cask "wkhtmltopdf"
+# Video communication and virtual meeting platform
+cask "zoom"
+mas "AdGuard for Safari", id: 1440147259
+mas "Color Picker", id: 1545870783
+mas "Gifski", id: 1351639930
