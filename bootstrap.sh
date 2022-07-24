@@ -89,16 +89,16 @@ fi
 echo_ok "Done!"
 
 if [ ! -f "${HOME}/.ssh/config" ]; then
-  ln -s ${HOME}/tilde/ssh-config ${HOME}/.ssh/config
+  ln -s ${HOME}/.dotfiles/tilde/ssh-config ${HOME}/.ssh/config
 fi
 if [ ! -f "${HOME}/.gnupg/gpg.conf" ]; then
-  ln -s ${HOME}/tilde/gpg/gpg.conf ${HOME}/.gnupg/gpg.conf
+  ln -s ${HOME}/.dotfiles/tilde/gpg/gpg.conf ${HOME}/.gnupg/gpg.conf
 fi
 if [ ! -f "${HOME}/.gnupg/gpg-agent.conf" ]; then
-  ln -s ${HOME}/tilde/gpg/gpg-agent.conf ${HOME}/.gnupg/gpg-agent.conf
+  ln -s ${HOME}/.dotfiles/tilde/gpg/gpg-agent.conf ${HOME}/.gnupg/gpg-agent.conf
 fi
 if [ ! -f "${HOME}/.hushlogin" ]; then
-  ln -s ${HOME}/tilde/.hushlogin ${HOME}/.hushlogin
+  ln -s ${HOME}/.dotfiles/tilde/.hushlogin ${HOME}/.hushlogin
 fi
 
 prompt_user "utils/npm.sh"
