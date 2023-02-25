@@ -8,7 +8,7 @@ fi
 
 # helpers
 function echo_ok { echo '\033[1;32m'"$1"'\033[0m'; }
-function echo_warn { printf '\033[1;33m'"$1"'\033[0m'; }
+function echo_warn { echo '\033[1;33m'"$1"'\033[0m'; }
 function echo_error { echo '\033[1;31mERROR: '"$1"'\033[0m'; }
 function run_script { cd ~ && source $HOME/.dotfiles/"$1"; }
 function symlink { if [ ! -e "$2" ]; then ln -s $1 $2; fi; }
@@ -88,6 +88,7 @@ if [ ! -f "${HOME}/.config/nvim/init.vim" ]; then
 fi
 echo_ok "Done!"
 
+
 if [ ! -f "${HOME}/.ssh/config" ]; then
   ln -s ${HOME}/.dotfiles/tilde/ssh-config ${HOME}/.ssh/config
 fi
@@ -99,6 +100,10 @@ if [ ! -f "${HOME}/.gnupg/gpg-agent.conf" ]; then
 fi
 if [ ! -f "${HOME}/.hushlogin" ]; then
   ln -s ${HOME}/.dotfiles/tilde/.hushlogin ${HOME}/.hushlogin
+fi
+if [ ! -f "${HOME}/.config/lazygit/config.yml" ]; then
+  mkdir -p ~/.config/lazygit
+  ln -s ${HOME}/.dotfiles/tilde/lazygit.yml ${HOME}/.config/lazygit/config.yml
 fi
 
 prompt_user "utils/npm.sh"
