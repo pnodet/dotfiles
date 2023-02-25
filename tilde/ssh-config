@@ -7,3 +7,30 @@ Host vizapp
   HostName 51.210.180.245
   User ubuntu
   ForwardAgent yes
+
+Host netgear.remote
+	Port 2872
+	User root
+	HostName gnodet.duckdns.org
+
+Host macmini
+  HostName macmini.local
+  User admin
+  ProxyJump netgear.remote
+  ForwardAgent yes
+  RequestTTY yes
+
+Host macmini.remote
+  HostName macmini.remote
+  User admin
+  ProxyJump netgear.remote
+  ForwardAgent yes
+  RequestTTY yes
+
+Host gitlab.once.app
+  AddressFamily inet
+
+Host cleanco.dev
+  HostName 51.15.255.81
+  User root
+  ForwardAgent yes
