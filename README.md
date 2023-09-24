@@ -3,12 +3,11 @@
 Install
 
 ```sh
-git clone https://github.com/pnodet/dotfiles.git ~/.dotfiles
+git clone -b latest --single-branch https://github.com/pnodet/dotfiles.git ~/.dotfiles
 ```
 
 Run the script
 
 ```sh
-cd ~/.dotfiles
-sh bootstrap.sh
+sh ./.dotfiles-setup/bootstrap.sh
 ```
