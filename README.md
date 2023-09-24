@@ -3,7 +3,7 @@
 Install
 
 ```sh
-git clone --recurse-submodules https://github.com/pnxdxt/dotfiles.git ~/.dotfiles
+git clone https://github.com/pnodet/dotfiles.git ~/.dotfiles
 ```
 
 Run the script
