@@ -1,0 +1,406 @@
+[user]
+name = Paul Nodet
+email = paul.nodet@gmail.com
+username = pnodet
+signingkey = /Users/pnodet/.ssh/id_rsa
+
+[github]
+user = pnodet
+
+[core]
+editor = nvim
+pager = delta
+excludesfile = ~/.gitignore
+attributesfile = ~/.gitattributes
+trustctime = false           # http://www.git-tower.com/blog/make-git-rebase-safe-on-osx
+untrackedCache = true        # https://git-scm.com/docs/git-update-index#_untracked_cache
+precomposeunicode = false    # http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
+whitespace = -trailing-space # Don't consider trailing space change as a cause for merge conflicts
+
+[pack]
+#deltaCacheSize = 3097m
+#packSizeLimit = 3096m
+#windowMemory = 256m
+
+[help]
+autocorrect = 1
+
+[web]
+browser = google-chrome
+
+[branch]
+	sort = -committerdate
+
+[push]
+default = simple # https://git-scm.com/docs/git-config#git-config-pushdefault
+followTags = true
+autoSetupRemote = true
+
+[pull]
+rebase = false
+
+[rebase]
+autoStash = true
+
+[init]
+defaultBranch = main
+
+[merge]
+log = true # Include summaries of merged commits in newly created merge commit messages
+conflictstyle = diff3
+summary = true
+verbosity = 1
+
+[mergetool]
+keepBackup = false
+keepTemporaries = false
+writeToTemp = true # Put the temp files in a dedicated dir anyway
+prompt = false     # Auto-accept file prompts when launching merge tools
+
+[apply]
+whitespace = fix # Detect whitespace errors when applying a patch
+
+[rerere]
+enabled = true
+autoUpdate = true
+
+[grep]
+break = true
+heading = true
+lineNumber = true
+extendedRegexp = true # Consider most regexes to be ERE
+
+[log]
+abbrevCommit = true # Use abbrev SHAs whenever possible
+follow = true       # Automatically --follow when given a single path
+decorate = false    # Disable decorate for reflog
+
+[fetch]
+writeCommitGraph = true
+recurseSubmodules = on-demand # Auto-fetch submodule changes
+
+[interactive]
+diffFilter = delta --color-only
+
+[diff]
+renames = copies      # Detect copies as well as renames
+mnemonicPrefix = true # Use better, descriptive initials (c, i, w) instead of a/b.
+wordRegex = .         # When using --word-diff, assume --word-diff-regex=.
+submodule = log       # Display submodule-related information (commit listings)
+tool = vscode         # Use VSCode as default diff tool when running `git diff-tool`
+
+[delta]
+features = side-by-side line-numbers decorations
+whitespace-error-style = 22 reverse
+
+[delta "decorations"]
+commit-decoration-style = bold yellow box ul
+file-style = bold yellow ul
+file-decoration-style = none
+
+[diff "bin"]
+textconv = hexdump -v -C # Use `hexdump` to diff binary files
+
+[difftool "vscode"]
+cmd = code --wait --diff $LOCAL $REMOTE
+
+[gitflow "prefix"]
+versiontag = v
+
+[filter "lfs"]
+clean = git-lfs clean -- %f
+smudge = git-lfs smudge -- %f
+process = git-lfs filter-process
+required = true
+
+[commit]
+gpgsign = true
+
+[gpg]
+format = ssh
+
+[gpg "ssh"]
+allowedSignersFile = ~/.ssh/allowed_signers
+
+[credential "https://dev.azure.com"]
+useHttpPath = true
+
+[maintenance]
+repo = ~/git/pimpup/pimpup-frontend
+
+[tag]
+# Sort tags as version numbers whenever applicable, so 1.10.2 is AFTER 1.2.0.
+sort = version:refname
+gpgsign = true
+
+[versionsort]
+prereleaseSuffix = -pre
+prereleaseSuffix = .pre
+prereleaseSuffix = -beta
+prereleaseSuffix = .beta
+prereleaseSuffix = -rc
+prereleaseSuffix = .rc
+
+[url "ssh://git@github.com/"]
+insteadOf = https://github.com/
+
+[diff "lockb"]
+textconv = bun
+binary = true
+
+[color]
+ui = auto
+
+[color "branch"]
+current = yellow bold
+local = green bold
+remote = cyan bold
+
+[color "diff"]
+meta = yellow bold
+frag = magenta bold # line info
+old = red bold      # deletions
+new = green bold    # additions
+whitespace = red reverse
+
+[color "status"]
+added = green bold
+changed = yellow bold
+untracked = cyan bold
+
+[alias]
+############# Get the name of the main branch (master || main)
+main = "!f() { git remote show origin | awk '/HEAD branch/ {print $NF}'; }; f"
+############# Add file contents to the index
+a = add --all
+ai = add --interactive # Add modified contents in the working tree interactively to the index
+############# Apply a patch to files and/or to the index
+ap = apply
+as = apply --stat  # Instead of applying the patch, output diffstat for the input.
+ac = apply --check # Instead of applying the patch, see if the patch is applicable and detects errors.
+############# Apply a series of patches from a mailbox
+ama = am --abort
+amr = am --resolved
+ams = am --skip
+############# List, create, or delete branches
+b = branch
+ba = branch --all     # List both remote-tracking branches and local branches.
+br = branch --remotes # List the remote-tracking branches.
+bd = branch --delete
+bdd = branch --delete --force
+bc = rev-parse --abbrev-ref HEAD
+bu = !git rev-parse --abbrev-ref --symbolic-full-name "@{u}"
+bs = !git-branch-status
+bl = branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))' # List recent branches
+############# Record changes to the repository
+c = commit
+ca = commit --all
+cm = commit --message
+cam = commit --all --message
+cem = commit --allow-empty --message
+cd = commit --amend
+cad = commit --all --amend
+ced = commit --allow-empty --amend
+amend = commit --amend --reuse-message=HEAD # Amend the currently staged files to the latest commit
+
+cl = clone --recursive
+cld = clone --depth 1
+clg = !sh -c 'git clone git@github.com:$1 $(basename $1)' -
+clgh = !sh -c 'git clone git://github.com/$1 $(basename $1)' -
+clgu = !sh -c 'git clone git@github.com:$(git config --get user.username)/$1 $1' -
+cp = cherry-pick
+cpa = cherry-pick --abort
+cpc = cherry-pick --continue
+
+dp = diff --patience
+dc = diff --cached
+dk = diff --check
+dck = diff --cached --check
+dt = difftool
+dct = difftool --cached
+d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+# `git di $number` shows the diff between the state `$number` revisions ago and the current state
+di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+# Remove branches that have already been merged with master
+dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+f = fetch
+fo = fetch origin
+fu = fetch upstream
+
+# Find commits by source code
+fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+# Find commits by commit message
+fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+# Find branches containing commit
+fb = "!f() { git branch -a --contains $1; }; f"
+# Find tags containing commit
+ft = "!f() { git describe --always --contains $1; }; f"
+
+# Prepare patches for e-mail submission
+fp = format-patch
+# Verifies the connectivity and validity of the objects in the database
+fk = fsck
+# Print lines matching a pattern
+g = grep --show-function
+# Switch to a branch, creating it if necessary
+go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+
+# View abbreviated SHA, description, and history graph of the latest 20 commits
+l = log --pretty=oneline -n 20 --graph --abbrev-commit
+lg = log --oneline --graph --decorate
+
+ls = ls-files
+lsf = !git ls-files | grep -i
+
+m = merge
+ma = merge --abort
+mc = merge --continue
+ms = merge --skip
+
+o = switch
+ob = checkout -b
+om = switch main
+opr = !sh -c 'git fo pull/$1/head:pr-$1 && git o pr-$1'
+
+pr = prune --verbose
+
+ps = push
+psf = push --force-with-lease
+psff = push --force
+psu = push -u
+pst = push --tags
+
+# Update remote refs along with associated objects
+pso = push origin
+psao = push --all origin
+psfo = push --force-with-lease origin
+psffo = push --force origin
+psuo = push --set-upstream origin
+
+psom = !git push origin $(git main)
+psaom = !git push --all origin $(git main)
+psfom = !git push -f origin $(git main)
+psuom = !git push -u origin $(git main)
+
+psoc = !git push origin $(git bc)
+psaoc = !git push --all origin $(git bc)
+psfoc = !git push -f origin $(git bc)
+psuoc = !git push -u origin $(git bc)
+psdc = !git push origin :$(git bc)
+
+pl = pull --recurse-submodules
+pld = pull --recurse-submodules --depth 1
+plrb = pull --rebase
+
+plo = pull origin
+plom = !git pull origin $(git main)
+ploc = !git pull origin $(git bc)
+
+pbo = pull --rebase origin
+pbom = !git pull --rebase origin $(git main)
+pboc = !git pull --rebase origin $(git bc)
+
+plu = pull upstream
+plum = !git pull upstream $(git main)
+pluc = !git pull upstream $(git bc)
+
+pbum = !git pull --rebase upstream $(git main)
+pbuc = !git pull --rebase upstream $(git bc)
+
+rb = rebase
+rba = rebase --abort
+rbc = rebase --continue
+rbi = rebase --interactive
+rbs = rebase --skip
+reb = "!r() { git rebase -i HEAD~$1; }; r" # Interactive rebase with the given number of latest commits
+
+re = reset
+rh = reset HEAD
+reh = reset --hard
+rem = reset --mixed
+res = reset --soft
+rehh = reset --hard HEAD
+remh = reset --mixed HEAD
+resh = reset --soft HEAD
+rehom = !git reset --hard origin/$(git main)
+
+r = remote
+ra = remote add
+rr = remote rm
+rv = remote -v
+rn = remote rename
+rp = remote prune
+rs = remote show
+rsh = remote set-head origin --auto
+rao = remote add origin
+rau = remote add upstream
+rro = remote remove origin
+rru = remote remove upstream
+rso = remote show origin
+rsu = remote show upstream
+rpo = remote prune origin
+rpu = remote prune upstream
+
+rmf = rm -f
+rmrf = rm -r -f
+
+s = status -s
+sb = status -s -b
+
+ss = stash save
+sa = stash apply
+sd = stash drop
+sc = stash clear
+sl = stash list
+sp = stash pop
+ssk = stash save -k
+sw = stash show
+st = !git stash list | wc -l 2>/dev/null | grep -oEi '[0-9][0-9]*'
+
+t = tag
+td = tag -d
+retag = "!r() { git tag -d $1 && git push origin :refs/tags/$1 && git tag $1; }; r" # Remove the old tag with this name and tag the latest commit with it.
+#############
+w = show
+wp = show -p
+wr = show -p --no-color
+#############
+svnr = svn rebase
+svnd = svn dcommit
+svnl = svn log --oneline --show-commit
+#############
+subadd = !sh -c 'git submodule add git://github.com/$1 $2/$(basename $1)' -
+subrm = !sh -c 'git submodule deinit -f -- $1 && rm -rf .git/modules/$1 && git rm -f $1' -
+subup = submodule update --init --recursive
+subpull = !git submodule foreach git pull --tags origin $(git main)
+#############
+assume = update-index --assume-unchanged
+unassume = update-index --no-assume-unchanged
+assumed = !git ls -v | grep ^h | cut -c 3-
+unassumeall = !git assumed | xargs git unassume
+assumeall = !git status -s | awk {'print $2'} | xargs git assume
+#############
+bump = !sh -c 'git commit -am \"Version bump v$1\" && git psuoc && git release $1' -
+release = !sh -c 'git tag v$1 && git pst' -
+unrelease = !sh -c 'git tag -d v$1 && git pso :v$1' -
+merged = !sh -c 'git om && git plom && git bd $1 && git rpo' -
+#aliases = !git config -l | grep alias | cut -c 7-
+aliases = config --get-regexp alias
+snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
+bare = !sh -c 'git symbolic-ref HEAD refs/heads/$1 && git rm --cached -r . && git clean -xfd' -
+whois = !sh -c 'git log -i -1 --author=\"$1\" --pretty=\"format:%an <%ae>\"' -
+whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+serve = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
+#############
+behind = !git rev-list --left-only --count $(git bu)...HEAD
+ahead = !git rev-list --right-only --count $(git bu)...HEAD
+#############
+ours = "!f() { git checkout --ours $@ && git add $@; }; f"
+theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
+subrepo = !sh -c 'git filter-branch --prune-empty --subdirectory-filter $1 $(git main)' -
+human = name-rev --name-only --refs=refs/heads/*
+contributors = shortlog --summary --numbered                            # List contributors with number of commits
+credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f" # Credit an author on the latest commit
+#############
+ch = !git checkout $(git reflog show --pretty=format:'%gs ~ %gd' --date=relative | grep 'checkout:' | grep -oE '[^ ]+ ~ .*' | awk -F~ '!seen[$    1]++' | head -n 20 | cut -d '~' -f 1 | fzf)
