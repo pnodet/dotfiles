@@ -2,23 +2,17 @@
   description = "macOS system flake";
 
   inputs = {
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-darwin = {
-      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-homebrew = {
       url = "github:zhaofengli/nix-homebrew";
-    };
-    homebrew-bundle = {
-      url = "github:homebrew/homebrew-bundle";
-      flake = false;
     };
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -28,6 +22,10 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+    homebrew-aerospace = {
+      url = "github:nikitabobko/homebrew-tap";
+      flake = false;
+    };
   };
 
   outputs =
@@ -35,441 +33,80 @@
       self,
       nix-darwin,
       nixpkgs,
-      nix-homebrew,
       home-manager,
+      nix-homebrew,
+      homebrew-aerospace,
+      homebrew-core,
+      homebrew-cask,
     }:
     let
-      user = "pnodet";
-
-      homeConfiguration =
-        { pkgs, ... }:
-        {
-          home.username = user;
-          home.homeDirectory = "/Users/${user}";
-          home.stateVersion = "25.05";
-
-          # Shell configuration - minimal since z4h handles most zsh setup
-          programs.zsh = {
-            enable = true;
-            enableCompletion = false; # Handled by z4h
-            enableAutosuggestions = false; # Handled by z4h
-            syntaxHighlighting.enable = false; # Handled by z4h
-
-            initExtra = ''
-              # Source our custom functions
-              [[ -f ~/.zsh_functions ]] && source ~/.zsh_functions
-
-              # Add completions for custom functions
-              compdef _directories mcd
-              compdef _default open
-              compdef g='git'
-            '';
-          };
-
-          # Environment variables moved from .zshrc
-          home.sessionVariables = {
-            # Core editor/pager settings
-            EDITOR = "nvim";
-            PAGER = "delta";
-            MANPAGER = "nvim +Man!";
-            MANOPT = "--no-hyphenation";
-            MANWIDTH = "100";
-
-            # Locale settings
-            LANG = "en_US.UTF-8";
-            LANGUAGE = "en_US.UTF-8";
-            LC_COLLATE = "en_US.UTF-8";
-            LC_CTYPE = "en_US.UTF-8";
-            LC_MESSAGES = "en_US.UTF-8";
-            LC_MONETARY = "en_US.UTF-8";
-            LC_NUMERIC = "en_US.UTF-8";
-            LC_TIME = "en_US.UTF-8";
-            LC_ALL = "en_US.UTF-8";
-
-            # Security and privacy
-            GPG_TTY = "$TTY";
-            DO_NOT_TRACK = "1";
-
-            # Tool settings
-            HOMEBREW_NO_ENV_HINTS = "1";
-            PRISMA_HIDE_UPDATE_MESSAGE = "1";
-            LESSCHARSET = "utf-8";
-
-            # NPM defaults
-            NPM_CONFIG_INIT_LICENSE = "GPL-3.0";
-            NPM_CONFIG_INIT_VERSION = "0.0.0";
-            NPM_CONFIG_SIGN_GIT_TAG = "true";
-
-            # FZF styling
-            FZF_DEFAULT_COLORS = "--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4";
-            FZF_DEFAULT_OPTS = "$FZF_DEFAULT_COLORS --no-multi --layout=reverse --info=inline --no-bold --bind=ctrl-f:half-page-down --bind=ctrl-b:half-page-up";
-          };
-
-          programs.git = {
-            enable = true;
-            userName = "Paul Nodet";
-            userEmail = "paul.nodet@gmail.com";
-
-            signing = {
-              key = "/Users/pnodet/.ssh/id_rsa";
-              signByDefault = true;
-            };
-
-            extraConfig = {
-              init.defaultBranch = "main";
-              core = {
-                editor = "nvim";
-                pager = "delta";
-                excludesfile = "~/.gitignore";
-                attributesfile = "~/.gitattributes";
-                trustctime = false;
-                untrackedCache = true;
-                precomposeunicode = false;
-                whitespace = "-trailing-space";
-              };
-              
-              lfs.enable = true;
-              
-              ignores = [
-                
-              ]
-
-              # Push/Pull settings
-              push = {
-                default = "simple";
-                followTags = true;
-                autoSetupRemote = true;
-              };
-
-              pull = {
-                rebase = false;
-              };
-
-              # Branch settings
-              branch.sort = "-committerdate";
-
-              # Merge settings
-              merge = {
-                log = true;
-                conflictstyle = "diff3";
-                summary = true;
-                verbosity = 1;
-              };
-
-              # Rebase settings
-              rebase.autoStash = true;
-
-              # Diff settings
-              diff = {
-                renames = "copies";
-                mnemonicPrefix = true;
-                wordRegex = ".";
-                submodule = "log";
-                tool = "nvim";
-              };
-
-              # Delta settings
-              interactive.diffFilter = "delta --color-only";
-
-              # GPG signing
-              commit.gpgsign = true;
-              tag.gpgsign = true;
-              gpg.format = "ssh";
-              "gpg \"ssh\"".allowedSignersFile = "~/.ssh/allowed_signers";
-
-              # Other settings
-              help.autocorrect = 1;
-              rerere = {
-                enabled = true;
-                autoUpdate = true;
-              };
-              fetch = {
-                writeCommitGraph = true;
-                recurseSubmodules = "on-demand";
-              };
-
-              # URL rewriting
-              "url \"ssh://git@github.com/\"".insteadOf = "https://github.com/";
-
-              # Color settings
-              color.ui = "auto";
-            };
-
-            delta = {
-              enable = true;
-              options = {
-                features = "side-by-side line-numbers decorations";
-                whitespace-error-style = "22 reverse";
-                decorations = {
-                  commit-decoration-style = "bold yellow box ul";
-                  file-style = "bold yellow ul";
-                  file-decoration-style = "none";
-                };
-              };
-            };
-
-            aliases = {
-              # Main branch detection
-              main = "!f() { git remote show origin | awk '/HEAD branch/ {print $NF}'; }; f";
-
-              # Add shortcuts
-              a = "add --all";
-              ai = "add --interactive";
-
-              # Branch shortcuts
-              b = "branch";
-              ba = "branch --all";
-              bd = "branch --delete";
-              bc = "rev-parse --abbrev-ref HEAD";
-              bl = "branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'";
-
-              # Commit shortcuts
-              c = "commit";
-              ca = "commit --all";
-              cm = "commit --message";
-              cam = "commit --all --message";
-              amend = "commit --amend --reuse-message=HEAD";
-
-              # Checkout/switch shortcuts
-              o = "switch";
-              ob = "checkout -b";
-              om = "switch main";
-              go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f";
-
-              # Status shortcuts
-              s = "status -s";
-              sb = "status -s -b";
-
-              # Log shortcuts
-              l = "log --pretty=oneline -n 20 --graph --abbrev-commit";
-              lg = "log --oneline --graph --decorate";
-
-              # Push shortcuts
-              ps = "push";
-              psf = "push --force-with-lease";
-              psu = "push -u";
-
-              # Pull shortcuts
-              pl = "pull --recurse-submodules";
-              plrb = "pull --rebase";
-
-              # Diff shortcuts
-              d = "!\"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat\"";
-              dc = "diff --cached";
-
-              # Stash shortcuts
-              ss = "stash save";
-              sa = "stash apply";
-              sp = "stash pop";
-              sl = "stash list";
-            };
-          };
-
-          # SSH configuration
-          programs.ssh = {
-            enable = true;
-            extraConfig = ''
-              Host *
-                AddKeysToAgent yes
-                UseKeychain yes
-                IdentityFile ~/.ssh/id_ed25519
-            '';
-          };
-
-          # Direnv - can work alongside z4h
-          programs.direnv = {
-            enable = true;
-            nix-direnv.enable = true;
-          };
-
-          # Shell aliases moved from .zshrc
-          home.shellAliases = {
-            # Editor shortcuts
-            ":e" = "nvim .";
-            vi = "nvim";
-            vim = "nvim";
-
-            # App shortcuts
-            ":z" = "open . -a \"Zed\"";
-            ":c" = "open . -a \"Cursor\"";
-            co = "open . -a \"Visual Studio Code\"";
-            cu = "open . -a \"Cursor\"";
-
-            # Navigation
-            ".." = "cd ..";
-            "..." = "cd ../..";
-            "...." = "cd ../../..";
-            "....." = "cd ../../../..";
-
-            # Utilities
-            c = "clear";
-            path = "echo -e \${PATH//:/\\\\n}";
-            reload = "exec zsh";
-            gpgfix = "export GPG_TTY=$(tty)";
-            oo = "open .";
-            speedtest = "bunx fast-cli -u --single-line";
-            myip = "ifconfig | grep \"inet \" | grep -v 127.0.0.1 | cut -d\\  -f2";
-
-            # Enhanced commands
-            mv = "mv -iv";
-            ln = "ln -iv";
-            g = "git";
-            tree = "tree -a -I .git";
-
-            # Sudo shortcuts
-            sudo = "sudo ";
-            apt = "sudo apt";
-            aptitude = "sudo aptitude";
-            pacman = "sudo pacman";
-            systemctl = "sudo systemctl";
-          };
-
-          # Shell functions moved from .zshrc
-          home.file.".zsh_functions".text = ''
-            # Create directory and cd into it
-            function mcd() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
-
-            # Generate UUID and copy to clipboard
-            function uuid() {
-              uuidgen | tr -d - | tr -d '\n' | tr '[:upper:]' '[:lower:]' | pbcopy && pbpaste && echo
-            }
-
-            # Generate password and copy to clipboard
-            function gen_password() {
-              openssl rand -base64 18 | tr -d '/+=\n' | cut -c 1-24 | tee /dev/tty | pbcopy && pbpaste && echo
-            }
-
-            # Docker logs shortcut
-            function dlogs() {
-              docker logs $1 $2
-            }
-
-            # GitHub view current branch
-            function ghv() {
-              gh repo view --web --branch $(git rev-parse --abbrev-ref HEAD)
-            }
-          '';
-
-          # Additional CLI tools that complement your z4h setup
-          home.packages = with pkgs; [
-            # CLI utilities not in system packages
-            ripgrep # rg - better grep
-            fd # better find
-            bat # better cat
-            tldr # simplified man pages
-            mcfly # shell history search
-          ];
-        };
+      user = {
+        name = "pnodet";
+        fullName = "Paul Nodet";
+      };
 
       configuration =
-        { pkgs, config, ... }:
+        { pkgs, ... }:
         {
-          # List packages installed in system profile. To search by name, run:
-          # $ nix-env -qaP | grep wget
-          environment.systemPackages = with pkgs; [
-            # Editor
-            vim
-            neovim
+          environment = {
+            variables = {
+              EDITOR = "nvim";
+              VISUAL = "nvim";
+            };
 
-            # Shell & CLI utilities
-            eza
-            fzf
-            htop
-            jq
-            tree
-            wget
-            zoxide
-            zsh-completions
-            hyperfine
-            dos2unix
-            unzip
-            p7zip
+            shells = with pkgs; [ zsh ];
 
-            # Git tools
-            git-cliff
-            git-delta
-            git-lfs
-            lazygit
-            gh
-
-            # Development tools
-            cmake
-            ninja
-            ccache
-            automake
-            autoconf-archive
-            nasm
-
-            # Cloud & Infrastructure
-            awscli
-            terraform
-            terraform-ls
-            tflint
-            kubernetes
-            helm
-            k9s
-            kind
-
-            # Languages & Runtimes
-            deno
-            bun
-            rustc
-            cargo
-            python310
-            python311
-            openjdk17
-            openjdk21
-            php81
-            nodejs
-            typescript
-
-            # Package managers
-            pipx
-            uv
-            fnm
-            cocoapods
-            composer
-
-            # Databases
-            postgresql_15
-            postgresql_16
-            postgresql_17
-            redis
-
-            # Network & Security
-            gnupg
-            pinentry_mac
-            tailscale
-            ngrep
-            inetutils
-
-            # Media & Graphics
-            ffmpeg
-            exiftool
-            yt-dlp
-
-            # Development utilities
-            just
-            biome
-            gofumpt
-            swift-format
-            swiftformat
-            solargraph
-
-            # System utilities
-            neofetch
-            sshx
-
-            # Specialized tools
-            fastlane
-            rover
-          ];
+            systemPackages = with pkgs; [
+              vim
+              nil
+              nixd
+              neovim
+              eza
+              htop
+              jq
+              tree
+              wget
+              zoxide
+              lazygit
+              cmake
+              ninja
+              deno
+              bun
+              delta
+              pipx
+              uv
+              fnm
+              just
+              neofetch
+              redis
+              gh
+              go
+              kubectl
+              rustup
+              terraform
+              k9s
+              ffmpeg
+              coreutils
+              gnugrep
+              gnused
+              gawk
+              rsync
+              jq
+              unrar
+              fd
+            ];
+          };
 
           homebrew = {
             enable = true;
+            brews = [
+              "mas"
+              "curl" # do not install curl via nixpkgs, it's not working well on MacOS!
+            ];
+
             casks = [
-              "chatgpt"
-              "claude"
+              "nikitabobko/tap/aerospace"
+
               "cursor"
               "discord"
               "figma"
@@ -484,55 +121,608 @@
               "slack"
               "stats"
               "steam"
+              "tunnelblick"
               "the-unarchiver"
               "transmission"
+              "tailscale-app"
               "vlc"
               "whatsapp@beta"
               "zed"
               "zoom"
             ];
-
-            # onActivation.cleanup = "zap";
-            # onActivation.autoUpdate = true;
-            # onActivation.upgrade = true;
+            onActivation = {
+              autoUpdate = false;
+              cleanup = "zap";
+            };
           };
 
-          # Used for backwards compatibility, please read the changelog before changing.
-          # $ darwin-rebuild changelog
-          system.stateVersion = 6;
+          nix.settings = {
+            experimental-features = "nix-command flakes";
+            trusted-users = [
+              "root"
+              user.name
+              "@admin"
+            ];
+          };
 
-          nixpkgs.hostPlatform = "aarch64-darwin";
-          nix.settings.experimental-features = "nix-command flakes";
-          system.configurationRevision = self.rev or self.dirtyRev or null;
+          nixpkgs = {
+            hostPlatform = "aarch64-darwin";
+            config.allowUnfree = true;
+          };
+
+          networking = {
+            knownNetworkServices = [
+              "Ethernet"
+              "Wi-Fi"
+            ];
+            dns = [
+              "1.1.1.1"
+              "1.0.0.1"
+              "2606:4700:4700::1111"
+              "2606:4700:4700::1001"
+            ];
+          };
+
+          programs = {
+            # needed to Create /etc/zshrc that loads the nix-darwin environment.
+            zsh.enable = true;
+            # home-manager.enable = true;
+          };
+
+          security.pam.services.sudo_local.touchIdAuth = true;
+
+          system = {
+            # Used for backwards compatibility, please read the changelog before changing.
+            # $ darwin-rebuild changelog
+            stateVersion = 6;
+            primaryUser = user.name;
+            configurationRevision = self.rev or self.dirtyRev or null;
+
+            startup.chime = false;
+
+            defaults = {
+              WindowManager.GloballyEnabled = false;
+              controlcenter.NowPlaying = false;
+
+              dock = {
+                autohide = true;
+                autohide-delay = 0.0;
+                autohide-time-modifier = 0.0;
+                expose-animation-duration = 0.01;
+
+                mru-spaces = false;
+                appswitcher-all-displays = true;
+                orientation = "left";
+                wvous-tl-corner = 1; # disabled
+                wvous-bl-corner = 1; # disabled
+                wvous-tr-corner = 11; # Launchpad
+                wvous-br-corner = 2; # Mission control
+
+                largesize = 64;
+                magnification = true;
+                show-recents = false;
+
+                # persistent-apps = [
+                #   "/Applications/Safari.app"
+                #   "/Applications/Messages.app"
+                #   "/Applications/FaceTime.app"
+                #   "/Applications/Calendar.app"
+                #   "/Applications/Music.app"
+                #   "/Applications/System Settings.app"
+                #   "/Applications/Transmission.app"
+                #   "/Applications/Slack.app"
+                #   "/Applications/Discord.app"
+                #   "/Applications/Ghostty.app"
+                #   "/Applications/Zed.app"
+                #   "/Applications/WhatsApp.app"
+                #   "/Applications/Messenger.app"
+                #   "/Applications/Signal.app"
+                #   "/Applications/Figma.app"
+                # ];
+                # persistent-others = [ "~/Downloads" ];
+              };
+
+              trackpad = {
+                Clicking = true;
+              };
+
+              menuExtraClock = {
+                FlashDateSeparators = true;
+                Show24Hour = true;
+              };
+
+              loginwindow = {
+                SHOWFULLNAME = true;
+                GuestEnabled = false;
+                autoLoginUser = user.name;
+              };
+
+              finder = {
+                AppleShowAllFiles = true;
+                AppleShowAllExtensions = true;
+                ShowStatusBar = true;
+                ShowPathbar = true;
+                FXEnableExtensionChangeWarning = false;
+                FXDefaultSearchScope = "SCcf";
+                FXPreferredViewStyle = "clmv";
+                FXRemoveOldTrashItems = true;
+                NewWindowTarget = "Home";
+                ShowRemovableMediaOnDesktop = false;
+                ShowExternalHardDrivesOnDesktop = false;
+                QuitMenuItem = true;
+              };
+
+              LaunchServices.LSQuarantine = false;
+
+              NSGlobalDomain = {
+                NSAutomaticCapitalizationEnabled = false;
+                NSAutomaticPeriodSubstitutionEnabled = false;
+                NSAutomaticDashSubstitutionEnabled = false;
+                NSAutomaticQuoteSubstitutionEnabled = false;
+                NSAutomaticSpellingCorrectionEnabled = false;
+                NSDocumentSaveNewDocumentsToCloud = false;
+                InitialKeyRepeat = 10;
+                KeyRepeat = 2;
+
+                "com.apple.trackpad.scaling" = 3.0;
+                "com.apple.mouse.tapBehavior" = 1;
+              };
+
+              ".GlobalPreferences" = {
+                "com.apple.mouse.scaling" = 4.0;
+              };
+
+              CustomUserPreferences = {
+                "com.apple.desktopservices" = {
+                  # Avoid creating .DS_Store files on network or USB volumes
+                  DSDontWriteNetworkStores = true;
+                  DSDontWriteUSBStores = true;
+                };
+                "com.apple.symbolichotkeys" = {
+                  AppleSymbolicHotKeys = {
+                    "60" = {
+                      enabled = false;
+                    };
+                    "61" = {
+                      enabled = false;
+                    };
+                    "64" = {
+                      enabled = false;
+                    };
+                    # Disable 'Cmd + Alt + Space' for Finder search window
+                    "65" = {
+                      enabled = false;
+                    };
+                    "27" = {
+                      enabled = true;
+                      value = {
+                        parameters = [
+                          32
+                          49
+                          262144
+                        ];
+                        type = "standard";
+                      };
+                    };
+                  };
+                };
+              };
+            };
+          };
         };
+
     in
     {
       # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#macbook
-      darwinConfigurations.macbook = nix-darwin.lib.darwinSystem {
+      # $ darwin-rebuild build --flake .#pnodet
+      darwinConfigurations.${user.name} = nix-darwin.lib.darwinSystem {
+        # From https://github.com/zhaofengli/nix-homebrew/issues/5#issuecomment-2412587886
         modules = [
+          (
+            { config, ... }:
+            {
+              homebrew.taps = builtins.attrNames config.nix-homebrew.taps;
+            }
+          )
           configuration
-          home-manager.darwinModules.home-manager
           nix-homebrew.darwinModules.nix-homebrew
           {
-            # Home Manager configuration
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.${user} = homeConfiguration;
+            nix.enable = false;
+
+            system = {
+              primaryUser = user.name;
+            };
+
+            users.users.${user.name} = {
+              home = "/Users/${user.name}";
+              name = user.name;
             };
 
             nix-homebrew = {
-              inherit user;
+              user = user.name;
               enable = true;
               enableRosetta = true;
               mutableTaps = false;
-              autoMigrate = true;
               taps = {
                 "homebrew/homebrew-core" = homebrew-core;
                 "homebrew/homebrew-cask" = homebrew-cask;
-                "homebrew/homebrew-bundle" = homebrew-bundle;
+                "nikitabobko/homebrew-tap" = homebrew-aerospace;
               };
+            };
+          }
+          home-manager.darwinModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              backupFileExtension = "bak";
+
+              users.${user.name} =
+                { pkgs, ... }:
+                {
+                  home = {
+                    username = user.name;
+                    homeDirectory = "/Users/${user.name}";
+                    stateVersion = "25.05";
+
+                    file = {
+                      ".hushlogin".source = pkgs.emptyFile;
+                    };
+                  };
+
+                  programs = {
+                    home-manager = {
+                      enable = true;
+                    };
+
+                    ssh = {
+                      enable = true;
+                      addKeysToAgent = "yes";
+                      controlMaster = "auto";
+                      controlPersist = "72000";
+                      serverAliveInterval = 60;
+
+                      matchBlocks = {
+                        "github.com" = {
+                          hostname = "ssh.github.com";
+                          port = 443;
+                        };
+
+                        "nivalis.macmini" = {
+                          hostname = "macmini-nivalis.end-centauri.ts.net";
+                          user = "nivalis";
+                          forwardAgent = true;
+                          setEnv = {
+                            TERM = "xterm-256color";
+                          };
+                        };
+
+                        "pimpup.nginx" = {
+                          hostname = "51.15.210.84";
+                          user = "root";
+                          forwardAgent = true;
+                          setEnv = {
+                            TERM = "xterm-256color";
+                          };
+                        };
+
+                        "cleanco.nginx" = {
+                          hostname = "163.172.174.239";
+                          user = "root";
+                          forwardAgent = true;
+                          setEnv = {
+                            TERM = "xterm-256color";
+                          };
+                        };
+
+                        "geomex" = {
+                          hostname = "62.210.89.221";
+                          user = "ubuntu";
+                          forwardAgent = true;
+                        };
+                      };
+                    };
+
+                    ghostty = {
+                      enable = true;
+                      package = null;
+                      settings = {
+                        theme = "catppuccin-mocha";
+                        scrollback-limit = 10 * 10000000;
+                      };
+                    };
+
+                    zed-editor = {
+                      enable = true;
+                      # package = null;
+                      extensions = [
+                        "catppuccin"
+                        "nix"
+                        "dockerfile"
+                        "sql"
+                        "terraform"
+                        "catppuccin-icons"
+                        "prisma"
+                        "html"
+                        "yaml"
+                        "zig"
+                      ];
+                      userKeymaps = [ ];
+                      userSettings = {
+                        theme = {
+                          "mode" = "system";
+                          "light" = "Catppuccin Mocha";
+                          "dark" = "Catppuccin Macchiato";
+                        };
+                        telemetry = {
+                          diagnostics = false;
+                          metrics = false;
+                        };
+                        indent_guides = {
+                          enabled = true;
+                          coloring = "indent_aware";
+                        };
+                        relative_line_numbers = true;
+                        format_on_save = "on";
+                        max_tabs = 5;
+                        calls = {
+                          "mute_on_join" = true;
+                          "share_on_join" = true;
+                        };
+                        project_panel = {
+                          dock = "left";
+                        };
+                      };
+                    };
+
+                    neovim = {
+                      enable = true;
+                      defaultEditor = true;
+                      vimAlias = true;
+                    };
+
+                    git = {
+                      enable = true;
+                      userName = user.fullName;
+                      userEmail = "5941125+${user.name}@users.noreply.github.com";
+
+                      signing ={
+                        format = "ssh";
+                        key = "/Users/pnodet/.ssh/id_rsa";
+                        signByDefault = true;
+                      };
+
+                      extraConfig = {
+                        core = {
+                          editor = "nvim";
+                          pager = "delta";
+                          trustctime = false; # http://www.git-tower.com/blog/make-git-rebase-safe-on-osx
+                          untrackedCache = true; # https://git-scm.com/docs/git-update-index#_untracked_cache
+                          precomposeunicode = false; # http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
+                          whitespace = "-trailing-space"; # Don't consider trailing space change as a cause for merge conflicts
+                        };
+
+                        pack = {
+                          windowMemory = "2g";
+                          packSizeLimit = "1g";
+                        };
+
+                        help = {
+                          autocorrect = 1;
+                        };
+
+                        branch = {
+                          sort = "-committerdate";
+                        };
+
+                        push = {
+                          default = "simple"; # https://git-scm.com/docs/git-config#git-config-pushdefault
+                          followTags = true;
+                          autoSetupRemote = true;
+                        };
+
+                        pull = {
+                          rebase = true;
+                        };
+
+                        rebase = {
+                          autostash = true;
+                        };
+
+                        init = {
+                          defaultBranch = "main";
+                        };
+
+                        merge = {
+                          log = true; # Include summaries of merged commits in newly created merge commit messages
+                          summary = true;
+                          verbosity = 1;
+                          conflictstyle = "diff3";
+                        };
+
+                        mergeTool = { };
+
+                        apply = {
+                          whitespace = "fix"; # Detect whitespace errors when applying a patch
+                        };
+
+                        rerere = {
+                          enabled = true;
+                          autoUpdate = true;
+                        };
+
+                        grep = {
+                          break = true;
+                          heading = true;
+                          lineNumber = true;
+                          extendedRegexp = true; # Consider most regexes to be ERE
+                        };
+
+                        log = {
+                          abbrevCommit = true; # Use abbrev SHAs whenever possible
+                          follow = true; # Automatically --follow when given a single path
+                          decorate = false; # Disable decorate for reflog
+                        };
+
+                        fetch = {
+                          writeCommitGraph = true;
+                          recurseSubmodules = "on-demand"; # Auto-fetch submodule changes
+                        };
+
+                        interactive = {
+                          diffFilter = "delta --color-only";
+                        };
+
+                        diff = {
+                          renames = "copies"; # Detect copies as well as renames
+                          mnemonicPrefix = true; # Use better, descriptive initials (c, i, w) instead of a/b.
+                          wordRegex = "."; # When using --word-diff, assume --word-diff-regex=.
+                          submodule = "log"; # Display submodule-related information (commit listings)
+                        };
+
+                        delta = {
+                          features = "side-by-side line-numbers decorations";
+                          whitespace-error-style = "22 reverse";
+                        };
+
+                        tag = {
+                          sort = "version:refname"; # Sort tags as version numbers whenever applicable, so 1.10.2 is AFTER 1.2.0.
+                        };
+
+                        color = {
+                          ui = "auto";
+                        };
+                      };
+
+                      ignores = [
+                        "node_modules/"
+                        "jspm_packages/"
+                        "web_modules/"
+                        ".npm/"
+                        "*.tsbuildinfo"
+                        "*.eslintcache"
+                        ".node_repl_history"
+                        ".yarn-integrity"
+                        ".env"
+                        ".env.test"
+                        ".env.production"
+                        "logs"
+                        "*.log"
+                        "npm-debug.log*"
+                        "yarn-debug.log*"
+                        "yarn-error.log*"
+                        "lerna-debug.log*"
+                        ".pnpm-debug.log*"
+                        "report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json"
+                        "._*"
+                        ".cache"
+                        ".Spotlight-V100"
+                        ".Trashes"
+                        ".TemporaryItems"
+                        ".AppleDouble"
+                        ".AppleDB"
+                        ".AppleDesktop"
+                        "Network Trash Folder"
+                        "Temporary Items"
+                        ".apdisk"
+                        ".LSOverride"
+                        ".DS_Store"
+                        "desktop.ini"
+                        "ehthumbs.db"
+                        "Thumbs.db"
+                        ".DocumentRevisions-V100"
+                        ".fseventsd"
+                        ".VolumeIcon.icns"
+                        ".com.apple.timemachine.donotpresent"
+                        ".svn/*"
+                        "*.swp"
+                        "svn-commit.*"
+                        "pids"
+                        "*.pid"
+                        "*.seed"
+                        "*.pid.lock"
+                        "coverage"
+                        "*.lcov"
+                        "lib-cov"
+                        ".nyc_output"
+                        ".cache"
+                        ".parcel-cache"
+                        ".next"
+                        ".nuxt"
+                        "dist"
+                        "out"
+                        ".cache/"
+                        ".serverless/"
+                        ".vuepress/dist"
+                        ".yarn/cache"
+                        ".yarn/unplugged"
+                        ".yarn/build-state.yml"
+                        ".yarn/install-state.gz"
+                        ".pnp.*"
+                      ];
+
+                      attributes = [
+                        "* text=auto"
+                        "*.lockb binary diff=lockb"
+                      ];
+
+                      aliases = {
+                        a = "add --all";
+                        ai = "add --interactive";
+
+                        ba = "branch --all";
+                        br = "branch --remotes";
+                        bl = "branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'";
+
+                        c = "commit";
+                        cam = "commit --all --message";
+
+                        cl = "clone --recursive";
+                        cld = "clone --depth 1";
+
+                        f = "fetch";
+                        fo = "fetch origin";
+                        fu = "fetch upstream";
+
+                        m = "merge";
+                        ma = "merge --abort";
+                        mc = "merge --continue";
+                        ms = "merge --skip";
+
+                        rb = "rebase";
+                        rba = "rebase --abort";
+                        rbc = "rebase --continue";
+                        rbi = "rebase --interactive";
+                        rbs = "rebase --skip";
+
+                        o = "switch";
+                        ob = "checkout -b";
+                        om = "switch main";
+
+                        ps = "push";
+                        psf = "push --force-with-lease";
+                        psff = "push --force";
+                        pl = "pull --recurse-submodules";
+                        pld = "pull --recurse-submodules --depth 1";
+
+                        re = "reset";
+                        rh = "reset HEAD";
+                        reh = "reset --hard";
+                        res = "reset --soft";
+
+                        s = "status -s";
+                        sb = "status -s -b";
+
+                        ss = "stash save";
+                        sa = "stash apply";
+                        sd = "stash drop";
+                        sc = "stash clear";
+                        sl = "stash list";
+                        sp = "stash pop";
+                      };
+                    };
+                  };
+                };
             };
           }
         ];
