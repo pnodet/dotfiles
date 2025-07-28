@@ -163,12 +163,6 @@
             ];
           };
 
-          programs = {
-            # needed to Create /etc/zshrc that loads the nix-darwin environment.
-            zsh.enable = true;
-            # home-manager.enable = true;
-          };
-
           security.pam.services.sudo_local.touchIdAuth = true;
 
           system = {
@@ -201,25 +195,6 @@
                 largesize = 64;
                 magnification = true;
                 show-recents = false;
-
-                # persistent-apps = [
-                #   "/Applications/Safari.app"
-                #   "/Applications/Messages.app"
-                #   "/Applications/FaceTime.app"
-                #   "/Applications/Calendar.app"
-                #   "/Applications/Music.app"
-                #   "/Applications/System Settings.app"
-                #   "/Applications/Transmission.app"
-                #   "/Applications/Slack.app"
-                #   "/Applications/Discord.app"
-                #   "/Applications/Ghostty.app"
-                #   "/Applications/Zed.app"
-                #   "/Applications/WhatsApp.app"
-                #   "/Applications/Messenger.app"
-                #   "/Applications/Signal.app"
-                #   "/Applications/Figma.app"
-                # ];
-                # persistent-others = [ "~/Downloads" ];
               };
 
               trackpad = {
@@ -429,6 +404,19 @@
                       settings = {
                         theme = "catppuccin-mocha";
                         scrollback-limit = 10 * 10000000;
+
+                        mouse-hide-while-typing = true;
+                        focus-follows-mouse = true;
+
+                        window-height = 221;
+                        window-width = 221;
+                        window-colorspace = "display-p3";
+
+                        keybind = [
+                          "cmd+up=jump_to_prompt:-1"
+                          "cmd+down=jump_to_prompt:1"
+                          "shift+enter=text:\n"
+                        ];
                       };
                     };
 
@@ -654,16 +642,23 @@
 
                     git = {
                       enable = true;
+
                       userName = user.fullName;
                       userEmail = "5941125+${user.name}@users.noreply.github.com";
 
                       signing = {
                         format = "ssh";
-                        key = "/Users/pnodet/.ssh/id_rsa";
+                        key = "/Users/${user.name}/.ssh/id_rsa";
                         signByDefault = true;
                       };
 
                       extraConfig = {
+                        user = {
+                          username = user.name;
+                        };
+                        github = {
+                          user = user.name;
+                        };
                         core = {
                           editor = "nvim";
                           pager = "delta";
