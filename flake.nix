@@ -434,7 +434,6 @@
 
                     zed-editor = {
                       enable = true;
-                      # package = null;
                       extensions = [
                         "catppuccin"
                         "nix"
@@ -447,30 +446,202 @@
                         "yaml"
                         "zig"
                       ];
-                      userKeymaps = [ ];
+                      userKeymaps = [
+                        {
+                          context = "Workspace";
+                          use_key_equivalents = true;
+                          bindings = {
+                            "cmd-shift-d" = "editor::SelectAllMatches";
+                          };
+                        }
+                        {
+                          context = "Editor";
+                          use_key_equivalents = true;
+                          bindings = {
+                            "cmd-l" = "editor::Rename";
+                            "cmd-y" = "editor::GoToDiagnostic";
+                            "cmd-shift-y" = "editor::GoToPreviousDiagnostic";
+                            "cmd-o" = "editor::RevealInFileManager";
+                            "cmd-g" = "go_to_line::Toggle";
+                          };
+                        }
+                        {
+                          context = "Pane";
+                          bindings = {
+                            "cmd-1" = [
+                              "pane::ActivateItem"
+                              0
+                            ];
+                            "cmd-2" = [
+                              "pane::ActivateItem"
+                              1
+                            ];
+                            "cmd-3" = [
+                              "pane::ActivateItem"
+                              2
+                            ];
+                            "cmd-4" = [
+                              "pane::ActivateItem"
+                              3
+                            ];
+                            "cmd-5" = [
+                              "pane::ActivateItem"
+                              4
+                            ];
+                            "cmd-6" = [
+                              "pane::ActivateItem"
+                              5
+                            ];
+                            "cmd-7" = [
+                              "pane::ActivateItem"
+                              6
+                            ];
+                            "cmd-8" = [
+                              "pane::ActivateItem"
+                              7
+                            ];
+                            "cmd-9" = [
+                              "pane::ActivateItem"
+                              8
+                            ];
+                            "cmd-0" = [
+                              "pane::ActivateItem"
+                              9
+                            ];
+                          };
+                        }
+                        {
+                          context = "ProjectPanel";
+                          bindings = {
+                            "cmd-1" = [
+                              "pane::ActivateItem"
+                              0
+                            ];
+                            "cmd-2" = [
+                              "pane::ActivateItem"
+                              1
+                            ];
+                            "cmd-3" = [
+                              "pane::ActivateItem"
+                              2
+                            ];
+                            "cmd-4" = [
+                              "pane::ActivateItem"
+                              3
+                            ];
+                            "cmd-5" = [
+                              "pane::ActivateItem"
+                              4
+                            ];
+                            "cmd-6" = [
+                              "pane::ActivateItem"
+                              5
+                            ];
+                            "cmd-7" = [
+                              "pane::ActivateItem"
+                              6
+                            ];
+                            "cmd-8" = [
+                              "pane::ActivateItem"
+                              7
+                            ];
+                            "cmd-9" = [
+                              "pane::ActivateItem"
+                              8
+                            ];
+                            "cmd-0" = [
+                              "pane::ActivateItem"
+                              9
+                            ];
+                          };
+                        }
+                      ];
                       userSettings = {
+                        agent = {
+                          play_sound_when_agent_done = true;
+                        };
                         theme = {
-                          "mode" = "system";
-                          "light" = "Catppuccin Mocha";
-                          "dark" = "Catppuccin Macchiato";
+                          mode = "system";
+                          light = "Catppuccin Mocha";
+                          dark = "Catppuccin Mocha";
+                        };
+                        icon_theme = "Catppuccin Mocha";
+                        base_keymap = "VSCode";
+                        restore_on_startup = "none";
+                        show_whitespaces = "none";
+                        max_tabs = 5;
+                        ensure_final_newline_on_save = true;
+                        format_on_save = "on";
+                        relative_line_numbers = true;
+                        hard_tabs = false;
+                        tab_size = 2;
+                        wrap_guides = [
+                          80
+                          120
+                        ];
+                        soft_wrap = "preferred_line_length";
+                        preferred_line_length = 120;
+                        extend_comment_on_newline = false;
+                        close_on_file_delete = true;
+                        on_last_window_closed = "quit_app";
+                        when_closing_with_no_tabs = "close_window";
+                        autosave = {
+                          after_delay = {
+                            milliseconds = 3000;
+                          };
+                        };
+                        tab_bar = {
+                          show = true;
+                        };
+                        file_finder = {
+                          modal_max_width = "medium";
+                        };
+                        indent_guides = {
+                          active_line_width = 2;
+                          enabled = true;
+                          coloring = "fixed";
+                        };
+                        tabs = {
+                          file_icons = true;
+                          git_status = true;
+                          show_diagnostics = "all";
+                        };
+                        project_panel = {
+                          dock = "right";
+                          git_status = true;
+                          show_diagnostics = "all";
+                          default_width = 290;
+                        };
+                        git_panel = {
+                          button = false;
+                          dock = "right";
+                        };
+                        chat_panel = {
+                          button = "never";
+                          dock = "left";
+                        };
+                        outline_panel = {
+                          button = false;
+                          dock = "right";
+                        };
+                        notification_panel = {
+                          button = false;
+                          dock = "right";
+                        };
+                        terminal = {
+                          button = false;
+                          dock = "right";
+                        };
+                        collaboration_panel = {
+                          dock = "left";
                         };
                         telemetry = {
                           diagnostics = false;
                           metrics = false;
                         };
-                        indent_guides = {
-                          enabled = true;
-                          coloring = "indent_aware";
-                        };
-                        relative_line_numbers = true;
-                        format_on_save = "on";
-                        max_tabs = 5;
                         calls = {
-                          "mute_on_join" = true;
-                          "share_on_join" = true;
-                        };
-                        project_panel = {
-                          dock = "left";
+                          mute_on_join = true;
+                          share_on_join = true;
                         };
                       };
                     };
@@ -486,7 +657,7 @@
                       userName = user.fullName;
                       userEmail = "5941125+${user.name}@users.noreply.github.com";
 
-                      signing ={
+                      signing = {
                         format = "ssh";
                         key = "/Users/pnodet/.ssh/id_rsa";
                         signByDefault = true;
