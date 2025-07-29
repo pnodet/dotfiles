@@ -94,6 +94,7 @@
               jq
               unrar
               fd
+              zsh
             ];
           };
 
@@ -123,8 +124,8 @@
               "steam"
               "tunnelblick"
               "the-unarchiver"
-              "transmission"
               "tailscale-app"
+              "transmission"
               "vlc"
               "whatsapp@beta"
               "zed"
@@ -154,6 +155,7 @@
             knownNetworkServices = [
               "Ethernet"
               "Wi-Fi"
+              "Tailscale"
             ];
             dns = [
               "1.1.1.1"
@@ -181,20 +183,41 @@
               dock = {
                 autohide = true;
                 autohide-delay = 0.0;
-                autohide-time-modifier = 0.0;
-                expose-animation-duration = 0.01;
+                autohide-time-modifier = 0.5;
+                expose-animation-duration = 0.5;
+                enable-spring-load-actions-on-all-items = true;
 
                 mru-spaces = false;
                 appswitcher-all-displays = true;
                 orientation = "left";
+
+                # Hot corners
+                # Possible values:
+                #  0: no-op
+                #  1: no-op
+                #  2: Mission Control
+                #  3: Show application windows
+                #  4: Desktop
+                #  5: Start screen saver
+                #  6: Disable screen saver
+                #  7: Dashboard
+                # 10: Put display to sleep
+                # 11: Launchpad
+                # 12: Notification Center
+                # 13: Lock Screen
+
                 wvous-tl-corner = 1; # disabled
                 wvous-bl-corner = 1; # disabled
                 wvous-tr-corner = 11; # Launchpad
                 wvous-br-corner = 2; # Mission control
 
-                largesize = 64;
+                tilesize = 55;
+                largesize = 75;
                 magnification = true;
+
+                show-process-indicators = false;
                 show-recents = false;
+                showhidden = false;
               };
 
               trackpad = {
@@ -230,13 +253,19 @@
               LaunchServices.LSQuarantine = false;
 
               NSGlobalDomain = {
+                AppleShowAllFiles = true;
+                AppleShowAllExtensions = true;
+                AppleTemperatureUnit = "Celsius";
+                AppleSpacesSwitchOnActivate = true;
                 NSAutomaticCapitalizationEnabled = false;
                 NSAutomaticPeriodSubstitutionEnabled = false;
                 NSAutomaticDashSubstitutionEnabled = false;
                 NSAutomaticQuoteSubstitutionEnabled = false;
                 NSAutomaticSpellingCorrectionEnabled = false;
                 NSDocumentSaveNewDocumentsToCloud = false;
-                InitialKeyRepeat = 10;
+
+                ApplePressAndHoldEnabled= false;
+                InitialKeyRepeat = 15;
                 KeyRepeat = 2;
 
                 "com.apple.trackpad.scaling" = 3.0;
@@ -244,10 +273,44 @@
               };
 
               ".GlobalPreferences" = {
-                "com.apple.mouse.scaling" = 4.0;
+                "com.apple.mouse.scaling" = 3.0;
               };
 
               CustomUserPreferences = {
+                # Hide Input menu from menu bar
+                "com.apple.TextInputMenu" = {
+                  visible = false;
+                };
+
+                # Set Transmission as default for torrents and magnet links
+                "com.apple.LaunchServices" = {
+                  LSHandlers = [
+                    {
+                      LSHandlerContentType = "org.bittorrent.torrent";
+                      LSHandlerRoleAll = "org.m0k.transmission";
+                    }
+                    {
+                      LSHandlerURLScheme = "magnet";
+                      LSHandlerRoleAll = "org.m0k.transmission";
+                    }
+                  ];
+                };
+
+                # Setting Safari preferences requires Full Disk Access for the app running this process.
+                # Enable Full Disk Access for that app in System Preferences > Security & Privacy > Privacy > Full Dis Access
+                # Full Disk Access is required because Safari is sandboxed and because of macOS’s System Integrit Protection.
+                # Read more: https://lapcatsoftware.com/articles/containers.html
+                "com.apple.Safari" ={
+                  NewWindowBehavior = true;
+                  NewTabBehavior = true;
+                  ShowFullURLInSmartSearchField = true;
+                  IncludeInternalDebugMenu = true;
+                  IncludeDevelopMenu = true;
+                  SendDoNotTrackHTTPHeader = true;
+                  WebKitDeveloperExtras = true;
+                  WebKitDeveloperExtrasEnabledPreferenceKey = true;
+                  "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" = true;
+                };
                 "com.apple.desktopservices" = {
                   # Avoid creating .DS_Store files on network or USB volumes
                   DSDontWriteNetworkStores = true;
@@ -255,31 +318,181 @@
                 };
                 "com.apple.symbolichotkeys" = {
                   AppleSymbolicHotKeys = {
-                    "60" = {
-                      enabled = false;
-                    };
-                    "61" = {
-                      enabled = false;
-                    };
-                    "64" = {
-                      enabled = false;
-                    };
-                    # Disable 'Cmd + Alt + Space' for Finder search window
-                    "65" = {
-                      enabled = false;
-                    };
+                    # Disabled hotkeys - removing parameters since they're not needed
+                    "7" = { enabled = false; };
+                    "8" = { enabled = false; };
+                    "9" = { enabled = false; };
+                    # Application windows
+                    "10" = { enabled = false; };
+                    # Show Desktop
+                    "11" = { enabled = false; };
+                    # Hide and show all windows
+                    "12" = { enabled = false; };
+                    # Look up in Dictionary
+                    "13" = { enabled = false; };
+                    # Decrease display brightness
+                    "21" = { enabled = false; };
+                    # Increase display brightness
+                    "25" = { enabled = false; };
+                    # Mission Control
+                    "26" = { enabled = false; };
+                    # Move left a space
+                    "28" = { enabled = false; };
+                    # Move right a space
+                    "29" = { enabled = false; };
+                    # Turn VoiceOver on or off
+                    "36" = { enabled = false; };
+                    # Turn Dock Hiding On/Off
+                    "52" = { enabled = false; };
+                    # Show Launchpad
+                    "57" = { enabled = false; };
+                    # Show Notification Center
+                    "59" = { enabled = false; };
+                    # Show Spotlight search
+                    "60" = { enabled = false; };
+                    # Show Finder search window
+                    "61" = { enabled = false; };
+                    # Show Spotlight search (alternate)
+                    "64" = { enabled = false; };
+                    # Show Finder search window (alternate)
+                    "65" = { enabled = false; };
+                    # Move focus to menu bar
+                    "159" = { enabled = false; };
+                    # Move focus to window toolbar
+                    "162" = { enabled = false; };
+                    # Change the way Tab moves focus
+                    "175" = { enabled = false; };
+                    # Turn focus following on/off
+                    "190" = { enabled = false; };
+                    # Restore windows when quitting and re-opening apps
+                    "215" = { enabled = false; };
+                    # Show Dock
+                    "216" = { enabled = false; };
+                    # Auto-hide Dock
+                    "217" = { enabled = false; };
+                    # Show recent applications in Dock
+                    "218" = { enabled = false; };
+                    # Show Launchpad
+                    "219" = { enabled = false; };
+                    # Show Notification Center
+                    "222" = { enabled = false; };
+                    # Turn Do Not Disturb on/off
+                    "223" = { enabled = false; };
+                    # Turn VoiceOver on or off
+                    "224" = { enabled = false; };
+                    # Zoom in
+                    "225" = { enabled = false; };
+                    # Zoom out
+                    "226" = { enabled = false; };
+                    # Turn zoom on or off
+                    "227" = { enabled = false; };
+                    # Turn image smoothing on or off
+                    "228" = { enabled = false; };
+                    # Increase contrast
+                    "229" = { enabled = false; };
+                    # Decrease contrast
+                    "230" = { enabled = false; };
+                    # Turn high contrast on or off
+                    "231" = { enabled = false; };
+                    # Invert colors
+                    "232" = { enabled = false; };
+                    # Turn keyboard access on or off
+                    "233" = { enabled = false; };
+                    # Change keyboard access behavior
+                    "235" = { enabled = false; };
+                    # Turn VoiceOver on or off
+                    "237" = { enabled = false; };
+                    # Turn VoiceOver on or off
+                    "238" = { enabled = false; };
+                    # Turn VoiceOver on or off
+                    "239" = { enabled = false; };
+                    # Move focus to window drawer
+                    "240" = { enabled = false; };
+                    # Move focus to status menus
+                    "241" = { enabled = false; };
+                    # Move focus to Dock
+                    "242" = { enabled = false; };
+                    # Move focus to active or next window
+                    "243" = { enabled = false; };
+                    # Move focus to previous window
+                    "244" = { enabled = false; };
+                    # Move focus to toolbar
+                    "245" = { enabled = false; };
+                    # Move focus to floating window
+                    "246" = { enabled = false; };
+                    # Change the way Tab moves focus
+                    "247" = { enabled = false; };
+                    # Show Help menu
+                    "248" = { enabled = false; };
+                    # Turn Dock hiding on or off
+                    "249" = { enabled = false; };
+                    # Move focus to window toolbar
+                    "250" = { enabled = false; };
+                    # Move focus to floating window
+                    "251" = { enabled = false; };
+                    # Show Character Palette
+                    "256" = { enabled = false; };
+                    # Select next input source
+                    "257" = { enabled = false; };
+                    # Select previous input source
+                    "258" = { enabled = false; };
+
                     "27" = {
                       enabled = true;
                       value = {
                         parameters = [
-                          32
-                          49
-                          262144
+                          65535  # Character
+                          10     # Key code
+                          1048576  # Modifier flags
+                        ];
+                        type = "standard";
+                      };
+                    };
+                    "31" = {
+                      enabled = true;
+                      value = {
+                        parameters = [
+                          52      # Character
+                          21      # Key code
+                          1441792 # Modifier flags
+                        ];
+                        type = "standard";
+                      };
+                    };
+                    "37" = {
+                      enabled = true;
+                      value = {
+                        parameters = [
+                          65535   # Character
+                          103     # Key code
+                          8519680 # Modifier flags
                         ];
                         type = "standard";
                       };
                     };
                   };
+                };
+                "org.m0k.transmission" = {
+                  DownloadLocationConstant = true;
+                  DownloadFolder = "/Users/${user.name}/Documents/transmission";
+                  IncompleteDownloadFolder = "/Users/${user.name}/Documents/transmission/.incomplete";
+                  UseIncompleteDownloadFolder = true;
+                  AutoImport = true;
+                  RandomPort = true;
+                  AutoImportDirectory = "/Users/${user.name}/Downloads";
+                  DeleteOriginalTorrent = true;
+                  CheckUpload = true;
+                  CheckRemoveDownloading = true;
+                  CheckQuitDownloading = true;
+                  AutoSize = true;
+                  DownloadAsk = false;
+                  InfoVisible = false;
+                  MagnetOpenAsk = false;
+                  SpeedLimitDownloadEnabled = false;
+                  SpeedLimitUploadEnabled = true;
+                  SpeedLimitUpload = 1;
+                  UploadLimit = true;
+                  WarningLegal = false;
                 };
               };
             };
