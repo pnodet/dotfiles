@@ -563,6 +563,21 @@
                       enable = true;
                     };
 
+                    lazygit = {
+                      enable = true;
+                      package = null;
+                      settings = {
+                        notARepository = "skip";
+                        promptToReturnFromSubprocess = false;
+                        os.editPreset = "nvim";
+                        git.overrideGpg = true;
+                        gui = {
+                          showRandomTip = false;
+                          nerdFontsVersion = "3";
+                        };
+                      };
+                    };
+
                     ssh = {
                       enable = true;
                       addKeysToAgent = "yes";
