@@ -48,6 +48,21 @@
       configuration =
         { pkgs, ... }:
         {
+          nix.settings = {
+            experimental-features = "nix-command flakes";
+            trusted-users = [
+              user.name
+              "@admin"
+            ];
+          };
+
+          nixpkgs = {
+            hostPlatform = "aarch64-darwin";
+            config.allowUnfree = true;
+          };
+
+          programs.zsh.enable = true;
+
           environment = {
             variables = {
               EDITOR = "nvim";
@@ -94,7 +109,17 @@
               jq
               unrar
               fd
-              zsh
+            ];
+          };
+
+          fonts = {
+            packages = with pkgs; [
+              # nerdfonts
+              # https://github.com/NixOS/nixpkgs/blob/nixos-unstable-small/pkgs/data/fonts/nerd-fonts/manifests/fonts.json
+              nerd-fonts.symbols-only # symbols icon only
+              nerd-fonts.fira-code
+              nerd-fonts.jetbrains-mono
+              nerd-fonts.iosevka
             ];
           };
 
@@ -144,20 +169,6 @@
             };
           };
 
-          nix.settings = {
-            experimental-features = "nix-command flakes";
-            trusted-users = [
-              "root"
-              user.name
-              "@admin"
-            ];
-          };
-
-          nixpkgs = {
-            hostPlatform = "aarch64-darwin";
-            config.allowUnfree = true;
-          };
-
           networking = {
             knownNetworkServices = [
               "Ethernet"
@@ -172,6 +183,7 @@
             ];
           };
 
+          time.timeZone = "Europe/Paris";
           security.pam.services.sudo_local.touchIdAuth = true;
 
           system = {
@@ -186,6 +198,8 @@
             defaults = {
               WindowManager.GloballyEnabled = false;
               controlcenter.NowPlaying = false;
+              LaunchServices.LSQuarantine = false;
+              SoftwareUpdate.AutomaticallyInstallMacOSUpdates = false;
 
               dock = {
                 autohide = true;
@@ -218,8 +232,8 @@
                 wvous-tr-corner = 11; # Launchpad
                 wvous-br-corner = 2; # Mission control
 
-                tilesize = 55;
-                largesize = 75;
+                tilesize = 45;
+                largesize = 70;
                 magnification = true;
 
                 show-process-indicators = false;
@@ -251,13 +265,14 @@
                 FXDefaultSearchScope = "SCcf";
                 FXPreferredViewStyle = "clmv";
                 FXRemoveOldTrashItems = true;
-                NewWindowTarget = "Home";
+                _FXSortFoldersFirst = true;
                 ShowRemovableMediaOnDesktop = false;
                 ShowExternalHardDrivesOnDesktop = false;
                 QuitMenuItem = true;
+                # Set Home as the default location for new Finder windows
+                # For other paths, use `PfLo` and `file:///full/path/here/`
+                NewWindowTarget = "Home";
               };
-
-              LaunchServices.LSQuarantine = false;
 
               NSGlobalDomain = {
                 AppleShowAllFiles = true;
@@ -274,10 +289,13 @@
                 NSAutomaticQuoteSubstitutionEnabled = false;
                 NSAutomaticSpellingCorrectionEnabled = false;
                 NSDocumentSaveNewDocumentsToCloud = false;
+                NSNavPanelExpandedStateForSaveMode = true;
+                NSNavPanelExpandedStateForSaveMode2 = true;
 
+                AppleKeyboardUIMode = 3;
                 ApplePressAndHoldEnabled = false;
                 InitialKeyRepeat = 10;
-                KeyRepeat = 2;
+                KeyRepeat = 1;
 
                 "com.apple.trackpad.scaling" = 3.0;
                 "com.apple.mouse.tapBehavior" = 1;
@@ -311,12 +329,17 @@
                 # Full Disk Access is required because Safari is sandboxed and because of macOS’s System Integrit Protection.
                 # Read more: https://lapcatsoftware.com/articles/containers.html
                 "com.apple.Safari" = {
+                  HomePage = "about:blank";
                   NewWindowBehavior = true;
                   NewTabBehavior = true;
                   ShowFullURLInSmartSearchField = true;
                   IncludeInternalDebugMenu = true;
                   IncludeDevelopMenu = true;
                   SendDoNotTrackHTTPHeader = true;
+                  SuppressSearchSuggestions = true;
+                  InstallExtensionUpdatesAutomatically = true;
+                  AutoOpenSafeDownloads = false;
+                  UniversalSearchEnabled = false;
                   WebKitDeveloperExtras = true;
                   WebKitDeveloperExtrasEnabledPreferenceKey = true;
                   "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" = true;
@@ -325,6 +348,22 @@
                   # Avoid creating .DS_Store files on network or USB volumes
                   DSDontWriteNetworkStores = true;
                   DSDontWriteUSBStores = true;
+                };
+                "com.apple.ImageCapture" = {
+                  # Prevent Photos from opening automatically when devices are plugged in
+                  disableHotPlug = true;
+                };
+                "com.apple.screencapture" = {
+                  location = "~/Downloads/screenshots";
+                  type = "png";
+                };
+                "com.apple.AdLib" = {
+                  allowApplePersonalizedAdvertising = false;
+                };
+                "com.apple.screensaver" = {
+                  # Require password immediately after sleep or screen saver begins
+                  askForPassword = 1;
+                  askForPasswordDelay = 0;
                 };
                 "com.apple.symbolichotkeys" = {
                   AppleSymbolicHotKeys = {
@@ -687,6 +726,13 @@
                       ".hushlogin".source = pkgs.emptyFile;
                     };
                   };
+
+                  # https://github.com/konradmalik/dotfiles/blob/main/hosts/common/modules/aerospace.nix
+                  # services = {
+                  #   aerospace = {
+                  #     enable = false;
+                  #   };
+                  # };
 
                   programs = {
                     home-manager = {
@@ -1058,6 +1104,8 @@
                         };
 
                         delta = {
+                          line-numbers = true;
+                          side-by-side = true;
                           features = "side-by-side line-numbers decorations";
                           whitespace-error-style = "22 reverse";
                         };
@@ -1096,7 +1144,6 @@
                         pack = {
                           windowMemory = "2g";
                           packSizeLimit = "1g";
-                          deltaCacheSize = "3097m";
                         };
 
                         pull = {
