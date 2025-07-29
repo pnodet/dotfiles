@@ -105,6 +105,12 @@
               "curl" # do not install curl via nixpkgs, it's not working well on MacOS!
             ];
 
+            masApps = {
+              "Refined GitHub" = 1519867270;
+              "Klack" = 6446206067;
+              "Xcode" = 497799835;
+            };
+
             casks = [
               "nikitabobko/tap/aerospace"
 
@@ -122,6 +128,7 @@
               "slack"
               "stats"
               "steam"
+              "aldente"
               "tunnelblick"
               "the-unarchiver"
               "tailscale-app"
@@ -255,7 +262,11 @@
               NSGlobalDomain = {
                 AppleShowAllFiles = true;
                 AppleShowAllExtensions = true;
+
+                AppleMeasurementUnits = "Centimeters";
+                AppleMetricUnits = 1;
                 AppleTemperatureUnit = "Celsius";
+
                 AppleSpacesSwitchOnActivate = true;
                 NSAutomaticCapitalizationEnabled = false;
                 NSAutomaticPeriodSubstitutionEnabled = false;
@@ -264,8 +275,8 @@
                 NSAutomaticSpellingCorrectionEnabled = false;
                 NSDocumentSaveNewDocumentsToCloud = false;
 
-                ApplePressAndHoldEnabled= false;
-                InitialKeyRepeat = 15;
+                ApplePressAndHoldEnabled = false;
+                InitialKeyRepeat = 10;
                 KeyRepeat = 2;
 
                 "com.apple.trackpad.scaling" = 3.0;
@@ -277,7 +288,6 @@
               };
 
               CustomUserPreferences = {
-                # Hide Input menu from menu bar
                 "com.apple.TextInputMenu" = {
                   visible = false;
                 };
@@ -300,7 +310,7 @@
                 # Enable Full Disk Access for that app in System Preferences > Security & Privacy > Privacy > Full Dis Access
                 # Full Disk Access is required because Safari is sandboxed and because of macOS’s System Integrit Protection.
                 # Read more: https://lapcatsoftware.com/articles/containers.html
-                "com.apple.Safari" ={
+                "com.apple.Safari" = {
                   NewWindowBehavior = true;
                   NewTabBehavior = true;
                   ShowFullURLInSmartSearchField = true;
@@ -318,132 +328,252 @@
                 };
                 "com.apple.symbolichotkeys" = {
                   AppleSymbolicHotKeys = {
-                    # Disabled hotkeys - removing parameters since they're not needed
-                    "7" = { enabled = false; };
-                    "8" = { enabled = false; };
-                    "9" = { enabled = false; };
+                    # Disabled hotkeys
+                    "7" = {
+                      enabled = false;
+                    };
+                    "8" = {
+                      enabled = false;
+                    };
+                    "9" = {
+                      enabled = false;
+                    };
                     # Application windows
-                    "10" = { enabled = false; };
+                    "10" = {
+                      enabled = false;
+                    };
                     # Show Desktop
-                    "11" = { enabled = false; };
+                    "11" = {
+                      enabled = false;
+                    };
                     # Hide and show all windows
-                    "12" = { enabled = false; };
+                    "12" = {
+                      enabled = false;
+                    };
                     # Look up in Dictionary
-                    "13" = { enabled = false; };
+                    "13" = {
+                      enabled = false;
+                    };
                     # Decrease display brightness
-                    "21" = { enabled = false; };
+                    "21" = {
+                      enabled = false;
+                    };
                     # Increase display brightness
-                    "25" = { enabled = false; };
+                    "25" = {
+                      enabled = false;
+                    };
                     # Mission Control
-                    "26" = { enabled = false; };
+                    "26" = {
+                      enabled = false;
+                    };
                     # Move left a space
-                    "28" = { enabled = false; };
+                    "28" = {
+                      enabled = false;
+                    };
                     # Move right a space
-                    "29" = { enabled = false; };
+                    "29" = {
+                      enabled = false;
+                    };
                     # Turn VoiceOver on or off
-                    "36" = { enabled = false; };
+                    "36" = {
+                      enabled = false;
+                    };
                     # Turn Dock Hiding On/Off
-                    "52" = { enabled = false; };
+                    "52" = {
+                      enabled = false;
+                    };
                     # Show Launchpad
-                    "57" = { enabled = false; };
+                    "57" = {
+                      enabled = false;
+                    };
                     # Show Notification Center
-                    "59" = { enabled = false; };
+                    "59" = {
+                      enabled = false;
+                    };
                     # Show Spotlight search
-                    "60" = { enabled = false; };
+                    "60" = {
+                      enabled = false;
+                    };
                     # Show Finder search window
-                    "61" = { enabled = false; };
+                    "61" = {
+                      enabled = false;
+                    };
                     # Show Spotlight search (alternate)
-                    "64" = { enabled = false; };
+                    "64" = {
+                      enabled = false;
+                    };
                     # Show Finder search window (alternate)
-                    "65" = { enabled = false; };
+                    "65" = {
+                      enabled = false;
+                    };
                     # Move focus to menu bar
-                    "159" = { enabled = false; };
+                    "159" = {
+                      enabled = false;
+                    };
                     # Move focus to window toolbar
-                    "162" = { enabled = false; };
+                    "162" = {
+                      enabled = false;
+                    };
                     # Change the way Tab moves focus
-                    "175" = { enabled = false; };
+                    "175" = {
+                      enabled = false;
+                    };
                     # Turn focus following on/off
-                    "190" = { enabled = false; };
+                    "190" = {
+                      enabled = false;
+                    };
                     # Restore windows when quitting and re-opening apps
-                    "215" = { enabled = false; };
+                    "215" = {
+                      enabled = false;
+                    };
                     # Show Dock
-                    "216" = { enabled = false; };
+                    "216" = {
+                      enabled = false;
+                    };
                     # Auto-hide Dock
-                    "217" = { enabled = false; };
+                    "217" = {
+                      enabled = false;
+                    };
                     # Show recent applications in Dock
-                    "218" = { enabled = false; };
+                    "218" = {
+                      enabled = false;
+                    };
                     # Show Launchpad
-                    "219" = { enabled = false; };
+                    "219" = {
+                      enabled = false;
+                    };
                     # Show Notification Center
-                    "222" = { enabled = false; };
+                    "222" = {
+                      enabled = false;
+                    };
                     # Turn Do Not Disturb on/off
-                    "223" = { enabled = false; };
+                    "223" = {
+                      enabled = false;
+                    };
                     # Turn VoiceOver on or off
-                    "224" = { enabled = false; };
+                    "224" = {
+                      enabled = false;
+                    };
                     # Zoom in
-                    "225" = { enabled = false; };
+                    "225" = {
+                      enabled = false;
+                    };
                     # Zoom out
-                    "226" = { enabled = false; };
+                    "226" = {
+                      enabled = false;
+                    };
                     # Turn zoom on or off
-                    "227" = { enabled = false; };
+                    "227" = {
+                      enabled = false;
+                    };
                     # Turn image smoothing on or off
-                    "228" = { enabled = false; };
+                    "228" = {
+                      enabled = false;
+                    };
                     # Increase contrast
-                    "229" = { enabled = false; };
+                    "229" = {
+                      enabled = false;
+                    };
                     # Decrease contrast
-                    "230" = { enabled = false; };
+                    "230" = {
+                      enabled = false;
+                    };
                     # Turn high contrast on or off
-                    "231" = { enabled = false; };
+                    "231" = {
+                      enabled = false;
+                    };
                     # Invert colors
-                    "232" = { enabled = false; };
+                    "232" = {
+                      enabled = false;
+                    };
                     # Turn keyboard access on or off
-                    "233" = { enabled = false; };
+                    "233" = {
+                      enabled = false;
+                    };
                     # Change keyboard access behavior
-                    "235" = { enabled = false; };
+                    "235" = {
+                      enabled = false;
+                    };
                     # Turn VoiceOver on or off
-                    "237" = { enabled = false; };
+                    "237" = {
+                      enabled = false;
+                    };
                     # Turn VoiceOver on or off
-                    "238" = { enabled = false; };
+                    "238" = {
+                      enabled = false;
+                    };
                     # Turn VoiceOver on or off
-                    "239" = { enabled = false; };
+                    "239" = {
+                      enabled = false;
+                    };
                     # Move focus to window drawer
-                    "240" = { enabled = false; };
+                    "240" = {
+                      enabled = false;
+                    };
                     # Move focus to status menus
-                    "241" = { enabled = false; };
+                    "241" = {
+                      enabled = false;
+                    };
                     # Move focus to Dock
-                    "242" = { enabled = false; };
+                    "242" = {
+                      enabled = false;
+                    };
                     # Move focus to active or next window
-                    "243" = { enabled = false; };
+                    "243" = {
+                      enabled = false;
+                    };
                     # Move focus to previous window
-                    "244" = { enabled = false; };
+                    "244" = {
+                      enabled = false;
+                    };
                     # Move focus to toolbar
-                    "245" = { enabled = false; };
+                    "245" = {
+                      enabled = false;
+                    };
                     # Move focus to floating window
-                    "246" = { enabled = false; };
+                    "246" = {
+                      enabled = false;
+                    };
                     # Change the way Tab moves focus
-                    "247" = { enabled = false; };
+                    "247" = {
+                      enabled = false;
+                    };
                     # Show Help menu
-                    "248" = { enabled = false; };
+                    "248" = {
+                      enabled = false;
+                    };
                     # Turn Dock hiding on or off
-                    "249" = { enabled = false; };
+                    "249" = {
+                      enabled = false;
+                    };
                     # Move focus to window toolbar
-                    "250" = { enabled = false; };
+                    "250" = {
+                      enabled = false;
+                    };
                     # Move focus to floating window
-                    "251" = { enabled = false; };
+                    "251" = {
+                      enabled = false;
+                    };
                     # Show Character Palette
-                    "256" = { enabled = false; };
+                    "256" = {
+                      enabled = false;
+                    };
                     # Select next input source
-                    "257" = { enabled = false; };
+                    "257" = {
+                      enabled = false;
+                    };
                     # Select previous input source
-                    "258" = { enabled = false; };
+                    "258" = {
+                      enabled = false;
+                    };
 
                     "27" = {
                       enabled = true;
                       value = {
                         parameters = [
-                          65535  # Character
-                          10     # Key code
-                          1048576  # Modifier flags
+                          65535 # Character
+                          10 # Key code
+                          1048576 # Modifier flags
                         ];
                         type = "standard";
                       };
@@ -452,8 +582,8 @@
                       enabled = true;
                       value = {
                         parameters = [
-                          52      # Character
-                          21      # Key code
+                          52 # Character
+                          21 # Key code
                           1441792 # Modifier flags
                         ];
                         type = "standard";
@@ -463,8 +593,8 @@
                       enabled = true;
                       value = {
                         parameters = [
-                          65535   # Character
-                          103     # Key code
+                          65535 # Character
+                          103 # Key code
                           8519680 # Modifier flags
                         ];
                         type = "standard";
@@ -884,65 +1014,57 @@
                         user = {
                           username = user.name;
                         };
+
                         github = {
                           user = user.name;
                         };
+
                         core = {
                           editor = "nvim";
                           pager = "delta";
+                          autocrlf = "input";
                           trustctime = false; # http://www.git-tower.com/blog/make-git-rebase-safe-on-osx
                           untrackedCache = true; # https://git-scm.com/docs/git-update-index#_untracked_cache
                           precomposeunicode = false; # http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
                           whitespace = "-trailing-space"; # Don't consider trailing space change as a cause for merge conflicts
                         };
 
-                        pack = {
-                          windowMemory = "2g";
-                          packSizeLimit = "1g";
-                        };
-
-                        help = {
-                          autocorrect = 1;
+                        apply = {
+                          whitespace = "fix"; # Detect whitespace errors when applying a patch
                         };
 
                         branch = {
                           sort = "-committerdate";
                         };
 
-                        push = {
-                          default = "simple"; # https://git-scm.com/docs/git-config#git-config-pushdefault
-                          followTags = true;
-                          autoSetupRemote = true;
+                        color = {
+                          ui = "auto";
                         };
 
-                        pull = {
-                          rebase = true;
+                        column = {
+                          ui = "auto";
                         };
 
-                        rebase = {
-                          autostash = true;
+                        commit = {
+                          verbose = true;
                         };
 
-                        init = {
-                          defaultBranch = "main";
+                        diff = {
+                          renames = "copies"; # Detect copies as well as renames
+                          mnemonicPrefix = true; # Use better, descriptive initials (c, i, w) instead of a/b.
+                          wordRegex = "."; # When using --word-diff, assume --word-diff-regex=.
+                          submodule = "log"; # Display submodule-related information (commit listings)
+                          algorithm = "histogram"; # much better algo
                         };
 
-                        merge = {
-                          log = true; # Include summaries of merged commits in newly created merge commit messages
-                          summary = true;
-                          verbosity = 1;
-                          conflictstyle = "diff3";
+                        delta = {
+                          features = "side-by-side line-numbers decorations";
+                          whitespace-error-style = "22 reverse";
                         };
 
-                        mergeTool = { };
-
-                        apply = {
-                          whitespace = "fix"; # Detect whitespace errors when applying a patch
-                        };
-
-                        rerere = {
-                          enabled = true;
-                          autoUpdate = true;
+                        fetch = {
+                          writeCommitGraph = true;
+                          recurseSubmodules = "on-demand"; # Auto-fetch submodule changes
                         };
 
                         grep = {
@@ -952,40 +1074,74 @@
                           extendedRegexp = true; # Consider most regexes to be ERE
                         };
 
+                        help = {
+                          autocorrect = "prompt";
+                        };
+
+                        interactive = {
+                          diffFilter = "delta --color-only";
+                          singleKey = true;
+                        };
+
+                        init = {
+                          defaultBranch = "main";
+                        };
+
                         log = {
                           abbrevCommit = true; # Use abbrev SHAs whenever possible
                           follow = true; # Automatically --follow when given a single path
                           decorate = false; # Disable decorate for reflog
                         };
 
-                        fetch = {
-                          writeCommitGraph = true;
-                          recurseSubmodules = "on-demand"; # Auto-fetch submodule changes
+                        pack = {
+                          windowMemory = "2g";
+                          packSizeLimit = "1g";
+                          deltaCacheSize = "3097m";
                         };
 
-                        interactive = {
-                          diffFilter = "delta --color-only";
+                        pull = {
+                          rebase = true;
                         };
 
-                        diff = {
-                          renames = "copies"; # Detect copies as well as renames
-                          mnemonicPrefix = true; # Use better, descriptive initials (c, i, w) instead of a/b.
-                          wordRegex = "."; # When using --word-diff, assume --word-diff-regex=.
-                          submodule = "log"; # Display submodule-related information (commit listings)
+                        push = {
+                          default = "simple"; # https://git-scm.com/docs/git-config#git-config-pushdefault
+                          followTags = true;
+                          autoSetupRemote = true;
                         };
 
-                        delta = {
-                          features = "side-by-side line-numbers decorations";
-                          whitespace-error-style = "22 reverse";
+                        merge = {
+                          log = true; # Include summaries of merged commits in newly created merge commit messages
+                          summary = true;
+                          verbosity = 1;
+                          conflictstyle = "zdiff3";
+                        };
+
+                        mergeTool = { };
+
+                        rebase = {
+                          autoSquash = true; # auto squash fixup commits
+                          autoStash = true;
+                          updateRefs = true; # takes stacked refs in a branch and makes sure they're also moved when a branch is rebased
+                        };
+
+                        rerere = {
+                          enabled = true;
+                          autoUpdate = true;
+                        };
+
+                        status = {
+                          submoduleSummary = true;
+                        };
+
+                        submodule = {
+                          recurse = true;
                         };
 
                         tag = {
+                          gpgSign = true;
                           sort = "version:refname"; # Sort tags as version numbers whenever applicable, so 1.10.2 is AFTER 1.2.0.
                         };
 
-                        color = {
-                          ui = "auto";
-                        };
                       };
 
                       ignores = [
