@@ -76,17 +76,18 @@
             shells = with pkgs; [ zsh ];
 
             systemPackages = with pkgs; [
+              vim # Fallback editor
+              findutils # Collection of GNU find, xargs, and locate
+              gnugrep # GNU grep, print lines matching a pattern
+              gnused # GNU sed, stream editor for filtering and transforming text
+              gawk # GNU awk, pattern scanning and processing language
+              rsync # Fast, versatile, remote (and local) file-copying tool
+              which # Shows the full path of shell commands
+              file # Determine file type
+              less # Terminal pager program
               coreutils # GNU core utilities
-              gnugrep
-              gnused
-              gawk
-              rsync
-              which
-              file
-              less
-              vim # fallback editor
-              pciutils
-              dnsutils
+              pciutils # Utilities for inspecting and manipulating PCI devices
+              dnsutils # DNS lookup utilities (dig, nslookup, etc.)
             ];
           };
 
@@ -104,42 +105,52 @@
           homebrew = {
             enable = true;
             brews = [
-              "mas"
-              "curl" # do not install curl via nixpkgs, it's not working well on MacOS!
+              "mas" # Mac App Store command line interface
+              "curl" # URL transfer tool (macOS-optimized version)
+              "cocoapods" # Dependency manager for Swift and Objective-C projects
+              "scw" # Scaleway CLI
+              "turso" # Turso database CLI
             ];
 
             masApps = {
-              "Refined GitHub" = 1519867270;
-              "Klack" = 6446206067;
-              "Xcode" = 497799835;
+              "Refined GitHub"        = 1519867270;
+              "Klack"                 = 6446206067;
+              "Xcode"                 = 497799835;
+              # "Microsoft Excel"       = 462058435;
+              # "Microsoft PowerPoint"  = 462062816;
+              # "Microsoft Word"        = 462054704;
             };
 
             casks = [
-              "nikitabobko/tap/aerospace"
+              "nikitabobko/tap/aerospace" # Tiling window manager for macOS
 
-              "cursor"
-              "discord"
-              "figma"
-              "ghostty"
-              "little-snitch"
-              "messenger"
-              "notion"
-              "obsidian"
-              "orbstack"
-              "raycast"
-              "signal"
-              "slack"
-              "stats"
-              "steam"
-              "aldente"
-              "tunnelblick"
-              "the-unarchiver"
-              "tailscale-app"
-              "transmission"
-              "vlc"
-              "whatsapp@beta"
-              "zed"
-              "zoom"
+              "cursor" # AI-powered code editor
+              "discord" # Voice and text chat for gamers
+              "figma" # Collaborative interface design tool
+              "ghostty" # Fast, feature-rich, and cross-platform terminal emulator
+              "little-snitch" # Network monitor and firewall
+              "linear-linear" # Issue tracking and project management
+              "macfuse" # File system integration
+              "messenger" # Facebook Messenger desktop app
+              "notion" # All-in-one workspace
+              "obsidian" # Knowledge management and note-taking
+              "orbstack" # Fast, light, simple Docker & Linux on macOS
+              "purevpn" # VPN service
+              "raycast" # Launcher and productivity tool
+              "signal" # Private messenger
+              "slack" # Team communication and collaboration
+              "stats" # System monitor for the menu bar
+              "steam" # Digital distribution platform for games
+              "aldente" # Battery charge limiter for MacBooks
+              "tableplus" # Database management tool
+              "tunnelblick" # OpenVPN client
+              "the-unarchiver" # Archive extraction utility
+              "tailscale-app" # Zero config VPN
+              "transmission" # BitTorrent client
+              "vlc" # Media player
+              "whatsapp@beta" # WhatsApp messaging (beta version)
+              "zed" # High-performance multiplayer code editor
+              "zoom" # Video conferencing
             ];
             onActivation = {
               autoUpdate = false;
@@ -229,71 +240,76 @@
                     stateVersion = "25.05";
 
                     packages = with pkgs; [
-                      # Development tools
-                      nil
-                      nixd
-                      lazygit
-                      gh
-                      delta
+                      nil # Nix language server
+                      nixd # Nix language server (alternative)
+                      lazygit # Simple terminal UI for git commands
+                      gh # GitHub CLI
+                      delta # Syntax-highlighting pager for git and diff
                       cloudflared # Cloudflare tunnel
-                      git-lfs
+                      git-lfs # Git Large File Storage
 
-                      # Programming languages and runtimes
-                      go
-                      rustup
-                      deno
-                      bun
-                      fnm
-                      uv
-                      pipx
+                      go # Go programming language
+                      rustup # Rust toolchain installer
+                      deno # Secure runtime for JavaScript and TypeScript
+                      bun # Fast all-in-one JavaScript runtime
+                      fnm # Fast Node.js version manager
+                      uv # Ultra-fast Python package installer
+                      pipx # Install and run Python applications in isolated environments
+                      ruby # Ruby programming language
+                      php # PHP programming language
+                      zig # General-purpose programming language
 
-                      # Build tools
-                      cmake
-                      ninja
-                      just
+                      cmake # Cross-platform build system
+                      ninja # Small build system with a focus on speed
+                      just # Command runner and build tool
+                      meson # Open source build system
+                      autoconf # Generate configuration scripts
+                      automake # Tool for automatically generating Makefile.in files
+                      ccache # Compiler cache for faster rebuilds
+                      nasm # Netwide Assembler
+                      act # Run GitHub Actions locally
+                      gofumpt # Stricter gofmt
+                      swiftformat # Code formatter for Swift
 
-                      # Modern CLI tools
-                      eza
-                      bat
-                      bottom
-                      broot
-                      dust
-                      duf
-                      fd
-                      procs
-                      ripgrep
-                      sd
-                      xh
-                      tree
-                      zoxide
-                      hyperfine
-                      tealdeer
+                      eza # Modern replacement for ls
+                      bat # Better cat with syntax highlighting
+                      bottom # Cross-platform graphical process/system monitor
+                      broot # Interactive tree view, fuzzy search, and directory navigation
+                      dust # More intuitive version of du
+                      duf # Disk Usage/Free Utility
+                      fd # Simple, fast alternative to find
+                      procs # Modern replacement for ps
+                      ripgrep # Line-oriented search tool
+                      sd # Intuitive find & replace CLI
+                      xh # Friendly and fast tool for sending HTTP requests
+                      tree # Display directories as trees
+                      zoxide # Smarter cd command
+                      hyperfine # Command-line benchmarking tool
+                      tealdeer # Fast tldr client
 
-                      # System utilities
-                      htop
-                      lsof
-                      wget
-                      jq
+                      htop # Interactive process viewer
+                      lsof # List open files
+                      wget # Network downloader
+                      jq # Command-line JSON processor
+                      yq # Command-line YAML processor
 
-                      # Archive tools
-                      rar
-                      unzip
-                      zip
-                      xz
+                      rar # Archive manager for RAR files
+                      unzip # Extract compressed files in ZIP archives
+                      zip # Create compressed ZIP archives
+                      xz # General-purpose data compression
 
-                      # Media and misc
-                      yt-dlp
-                      ffmpeg
-                      neofetch
-                      redis
+                      yt-dlp # Download videos from YouTube and other sites
+                      ffmpeg # Complete solution to record, convert and stream audio and video
+                      neofetch # System information tool
+                      redis # In-memory data structure store
 
-                      # DevOps tools
-                      kubectl
-                      awscli2
-                      google-cloud-sdk
-                      terraform
-                      infisical
-                      k9s
+                      kubectl # Kubernetes command-line tool
+                      awscli2 # AWS Command Line Interface v2
+                      google-cloud-sdk # Google Cloud SDK
+                      terraform # Infrastructure as code tool
+                      infisical # Open-source secret management platform
+                      k9s # Terminal UI to interact with Kubernetes clusters
+                      kind # Run local Kubernetes clusters using Docker
                     ];
 
                     file = {
@@ -349,7 +365,7 @@
                       largesize = 70;
                       magnification = true;
 
-                      show-process-indicators = false;
+                      show-process-indicators = true;
                       show-recents = false;
                       showhidden = false;
                     };
