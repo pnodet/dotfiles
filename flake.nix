@@ -50,6 +50,10 @@
         {
           nix.settings = {
             experimental-features = "nix-command flakes";
+            substituters = [
+              "https://cache.nixos.org"
+              "https://nix-community.cachix.org"
+            ];
             trusted-users = [
               user.name
               "@admin"
@@ -72,43 +76,17 @@
             shells = with pkgs; [ zsh ];
 
             systemPackages = with pkgs; [
-              vim
-              nil
-              nixd
-              neovim
-              eza
-              htop
-              jq
-              tree
-              wget
-              zoxide
-              lazygit
-              cmake
-              ninja
-              deno
-              bun
-              delta
-              pipx
-              uv
-              fnm
-              just
-              neofetch
-              redis
-              gh
-              go
-              kubectl
-              rustup
-              terraform
-              k9s
-              ffmpeg
-              coreutils
+              coreutils # GNU core utilities
               gnugrep
               gnused
               gawk
               rsync
-              jq
-              unrar
-              fd
+              which
+              file
+              less
+              vim # fallback editor
+              pciutils
+              dnsutils
             ];
           };
 
@@ -183,7 +161,6 @@
             ];
           };
 
-          time.timeZone = "Europe/Paris";
           security.pam.services.sudo_local.touchIdAuth = true;
 
           system = {
@@ -194,477 +171,6 @@
             configurationRevision = self.rev or self.dirtyRev or null;
 
             startup.chime = false;
-
-            defaults = {
-              WindowManager.GloballyEnabled = false;
-              controlcenter.NowPlaying = false;
-              LaunchServices.LSQuarantine = false;
-              SoftwareUpdate.AutomaticallyInstallMacOSUpdates = false;
-
-              dock = {
-                autohide = true;
-                autohide-delay = 0.0;
-                autohide-time-modifier = 0.5;
-                expose-animation-duration = 0.5;
-                enable-spring-load-actions-on-all-items = true;
-
-                mru-spaces = false;
-                appswitcher-all-displays = true;
-                orientation = "left";
-
-                # Hot corners
-                # Possible values:
-                #  0: no-op
-                #  1: no-op
-                #  2: Mission Control
-                #  3: Show application windows
-                #  4: Desktop
-                #  5: Start screen saver
-                #  6: Disable screen saver
-                #  7: Dashboard
-                # 10: Put display to sleep
-                # 11: Launchpad
-                # 12: Notification Center
-                # 13: Lock Screen
-
-                wvous-tl-corner = 1; # disabled
-                wvous-bl-corner = 1; # disabled
-                wvous-tr-corner = 11; # Launchpad
-                wvous-br-corner = 2; # Mission control
-
-                tilesize = 45;
-                largesize = 70;
-                magnification = true;
-
-                show-process-indicators = false;
-                show-recents = false;
-                showhidden = false;
-              };
-
-              trackpad = {
-                Clicking = true;
-              };
-
-              menuExtraClock = {
-                FlashDateSeparators = true;
-                Show24Hour = true;
-              };
-
-              loginwindow = {
-                SHOWFULLNAME = true;
-                GuestEnabled = false;
-                autoLoginUser = user.name;
-              };
-
-              finder = {
-                AppleShowAllFiles = true;
-                AppleShowAllExtensions = true;
-                ShowStatusBar = true;
-                ShowPathbar = true;
-                FXEnableExtensionChangeWarning = false;
-                FXDefaultSearchScope = "SCcf";
-                FXPreferredViewStyle = "clmv";
-                FXRemoveOldTrashItems = true;
-                _FXSortFoldersFirst = true;
-                ShowRemovableMediaOnDesktop = false;
-                ShowExternalHardDrivesOnDesktop = false;
-                QuitMenuItem = true;
-                # Set Home as the default location for new Finder windows
-                # For other paths, use `PfLo` and `file:///full/path/here/`
-                NewWindowTarget = "Home";
-              };
-
-              NSGlobalDomain = {
-                AppleShowAllFiles = true;
-                AppleShowAllExtensions = true;
-
-                AppleMeasurementUnits = "Centimeters";
-                AppleMetricUnits = 1;
-                AppleTemperatureUnit = "Celsius";
-
-                AppleSpacesSwitchOnActivate = true;
-                NSAutomaticCapitalizationEnabled = false;
-                NSAutomaticPeriodSubstitutionEnabled = false;
-                NSAutomaticDashSubstitutionEnabled = false;
-                NSAutomaticQuoteSubstitutionEnabled = false;
-                NSAutomaticSpellingCorrectionEnabled = false;
-                NSDocumentSaveNewDocumentsToCloud = false;
-                NSNavPanelExpandedStateForSaveMode = true;
-                NSNavPanelExpandedStateForSaveMode2 = true;
-
-                AppleKeyboardUIMode = 3;
-                ApplePressAndHoldEnabled = false;
-                InitialKeyRepeat = 10;
-                KeyRepeat = 1;
-
-                "com.apple.trackpad.scaling" = 3.0;
-                "com.apple.mouse.tapBehavior" = 1;
-              };
-
-              ".GlobalPreferences" = {
-                "com.apple.mouse.scaling" = 3.0;
-              };
-
-              CustomUserPreferences = {
-                "com.apple.TextInputMenu" = {
-                  visible = false;
-                };
-
-                # Set Transmission as default for torrents and magnet links
-                "com.apple.LaunchServices" = {
-                  LSHandlers = [
-                    {
-                      LSHandlerContentType = "org.bittorrent.torrent";
-                      LSHandlerRoleAll = "org.m0k.transmission";
-                    }
-                    {
-                      LSHandlerURLScheme = "magnet";
-                      LSHandlerRoleAll = "org.m0k.transmission";
-                    }
-                  ];
-                };
-
-                # Setting Safari preferences requires Full Disk Access for the app running this process.
-                # Enable Full Disk Access for that app in System Preferences > Security & Privacy > Privacy > Full Dis Access
-                # Full Disk Access is required because Safari is sandboxed and because of macOS’s System Integrit Protection.
-                # Read more: https://lapcatsoftware.com/articles/containers.html
-                "com.apple.Safari" = {
-                  HomePage = "about:blank";
-                  NewWindowBehavior = true;
-                  NewTabBehavior = true;
-                  ShowFullURLInSmartSearchField = true;
-                  IncludeInternalDebugMenu = true;
-                  IncludeDevelopMenu = true;
-                  SendDoNotTrackHTTPHeader = true;
-                  SuppressSearchSuggestions = true;
-                  InstallExtensionUpdatesAutomatically = true;
-                  AutoOpenSafeDownloads = false;
-                  UniversalSearchEnabled = false;
-                  WebKitDeveloperExtras = true;
-                  WebKitDeveloperExtrasEnabledPreferenceKey = true;
-                  "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" = true;
-                };
-                "com.apple.desktopservices" = {
-                  # Avoid creating .DS_Store files on network or USB volumes
-                  DSDontWriteNetworkStores = true;
-                  DSDontWriteUSBStores = true;
-                };
-                "com.apple.ImageCapture" = {
-                  # Prevent Photos from opening automatically when devices are plugged in
-                  disableHotPlug = true;
-                };
-                "com.apple.screencapture" = {
-                  location = "~/Downloads/screenshots";
-                  type = "png";
-                };
-                "com.apple.AdLib" = {
-                  allowApplePersonalizedAdvertising = false;
-                };
-                "com.apple.screensaver" = {
-                  # Require password immediately after sleep or screen saver begins
-                  askForPassword = 1;
-                  askForPasswordDelay = 0;
-                };
-                "com.apple.symbolichotkeys" = {
-                  AppleSymbolicHotKeys = {
-                    # Disabled hotkeys
-                    "7" = {
-                      enabled = false;
-                    };
-                    "8" = {
-                      enabled = false;
-                    };
-                    "9" = {
-                      enabled = false;
-                    };
-                    # Application windows
-                    "10" = {
-                      enabled = false;
-                    };
-                    # Show Desktop
-                    "11" = {
-                      enabled = false;
-                    };
-                    # Hide and show all windows
-                    "12" = {
-                      enabled = false;
-                    };
-                    # Look up in Dictionary
-                    "13" = {
-                      enabled = false;
-                    };
-                    # Decrease display brightness
-                    "21" = {
-                      enabled = false;
-                    };
-                    # Increase display brightness
-                    "25" = {
-                      enabled = false;
-                    };
-                    # Mission Control
-                    "26" = {
-                      enabled = false;
-                    };
-                    # Move left a space
-                    "28" = {
-                      enabled = false;
-                    };
-                    # Move right a space
-                    "29" = {
-                      enabled = false;
-                    };
-                    # Turn VoiceOver on or off
-                    "36" = {
-                      enabled = false;
-                    };
-                    # Turn Dock Hiding On/Off
-                    "52" = {
-                      enabled = false;
-                    };
-                    # Show Launchpad
-                    "57" = {
-                      enabled = false;
-                    };
-                    # Show Notification Center
-                    "59" = {
-                      enabled = false;
-                    };
-                    # Show Spotlight search
-                    "60" = {
-                      enabled = false;
-                    };
-                    # Show Finder search window
-                    "61" = {
-                      enabled = false;
-                    };
-                    # Show Spotlight search (alternate)
-                    "64" = {
-                      enabled = false;
-                    };
-                    # Show Finder search window (alternate)
-                    "65" = {
-                      enabled = false;
-                    };
-                    # Move focus to menu bar
-                    "159" = {
-                      enabled = false;
-                    };
-                    # Move focus to window toolbar
-                    "162" = {
-                      enabled = false;
-                    };
-                    # Change the way Tab moves focus
-                    "175" = {
-                      enabled = false;
-                    };
-                    # Turn focus following on/off
-                    "190" = {
-                      enabled = false;
-                    };
-                    # Restore windows when quitting and re-opening apps
-                    "215" = {
-                      enabled = false;
-                    };
-                    # Show Dock
-                    "216" = {
-                      enabled = false;
-                    };
-                    # Auto-hide Dock
-                    "217" = {
-                      enabled = false;
-                    };
-                    # Show recent applications in Dock
-                    "218" = {
-                      enabled = false;
-                    };
-                    # Show Launchpad
-                    "219" = {
-                      enabled = false;
-                    };
-                    # Show Notification Center
-                    "222" = {
-                      enabled = false;
-                    };
-                    # Turn Do Not Disturb on/off
-                    "223" = {
-                      enabled = false;
-                    };
-                    # Turn VoiceOver on or off
-                    "224" = {
-                      enabled = false;
-                    };
-                    # Zoom in
-                    "225" = {
-                      enabled = false;
-                    };
-                    # Zoom out
-                    "226" = {
-                      enabled = false;
-                    };
-                    # Turn zoom on or off
-                    "227" = {
-                      enabled = false;
-                    };
-                    # Turn image smoothing on or off
-                    "228" = {
-                      enabled = false;
-                    };
-                    # Increase contrast
-                    "229" = {
-                      enabled = false;
-                    };
-                    # Decrease contrast
-                    "230" = {
-                      enabled = false;
-                    };
-                    # Turn high contrast on or off
-                    "231" = {
-                      enabled = false;
-                    };
-                    # Invert colors
-                    "232" = {
-                      enabled = false;
-                    };
-                    # Turn keyboard access on or off
-                    "233" = {
-                      enabled = false;
-                    };
-                    # Change keyboard access behavior
-                    "235" = {
-                      enabled = false;
-                    };
-                    # Turn VoiceOver on or off
-                    "237" = {
-                      enabled = false;
-                    };
-                    # Turn VoiceOver on or off
-                    "238" = {
-                      enabled = false;
-                    };
-                    # Turn VoiceOver on or off
-                    "239" = {
-                      enabled = false;
-                    };
-                    # Move focus to window drawer
-                    "240" = {
-                      enabled = false;
-                    };
-                    # Move focus to status menus
-                    "241" = {
-                      enabled = false;
-                    };
-                    # Move focus to Dock
-                    "242" = {
-                      enabled = false;
-                    };
-                    # Move focus to active or next window
-                    "243" = {
-                      enabled = false;
-                    };
-                    # Move focus to previous window
-                    "244" = {
-                      enabled = false;
-                    };
-                    # Move focus to toolbar
-                    "245" = {
-                      enabled = false;
-                    };
-                    # Move focus to floating window
-                    "246" = {
-                      enabled = false;
-                    };
-                    # Change the way Tab moves focus
-                    "247" = {
-                      enabled = false;
-                    };
-                    # Show Help menu
-                    "248" = {
-                      enabled = false;
-                    };
-                    # Turn Dock hiding on or off
-                    "249" = {
-                      enabled = false;
-                    };
-                    # Move focus to window toolbar
-                    "250" = {
-                      enabled = false;
-                    };
-                    # Move focus to floating window
-                    "251" = {
-                      enabled = false;
-                    };
-                    # Show Character Palette
-                    "256" = {
-                      enabled = false;
-                    };
-                    # Select next input source
-                    "257" = {
-                      enabled = false;
-                    };
-                    # Select previous input source
-                    "258" = {
-                      enabled = false;
-                    };
-
-                    "27" = {
-                      enabled = true;
-                      value = {
-                        parameters = [
-                          65535 # Character
-                          10 # Key code
-                          1048576 # Modifier flags
-                        ];
-                        type = "standard";
-                      };
-                    };
-                    "31" = {
-                      enabled = true;
-                      value = {
-                        parameters = [
-                          52 # Character
-                          21 # Key code
-                          1441792 # Modifier flags
-                        ];
-                        type = "standard";
-                      };
-                    };
-                    "37" = {
-                      enabled = true;
-                      value = {
-                        parameters = [
-                          65535 # Character
-                          103 # Key code
-                          8519680 # Modifier flags
-                        ];
-                        type = "standard";
-                      };
-                    };
-                  };
-                };
-                "org.m0k.transmission" = {
-                  DownloadLocationConstant = true;
-                  DownloadFolder = "/Users/${user.name}/Documents/transmission";
-                  IncompleteDownloadFolder = "/Users/${user.name}/Documents/transmission/.incomplete";
-                  UseIncompleteDownloadFolder = true;
-                  AutoImport = true;
-                  RandomPort = true;
-                  AutoImportDirectory = "/Users/${user.name}/Downloads";
-                  DeleteOriginalTorrent = true;
-                  CheckUpload = true;
-                  CheckRemoveDownloading = true;
-                  CheckQuitDownloading = true;
-                  AutoSize = true;
-                  DownloadAsk = false;
-                  InfoVisible = false;
-                  MagnetOpenAsk = false;
-                  SpeedLimitDownloadEnabled = false;
-                  SpeedLimitUploadEnabled = true;
-                  SpeedLimitUpload = 1;
-                  UploadLimit = true;
-                  WarningLegal = false;
-                };
-              };
-            };
           };
         };
 
@@ -713,7 +219,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "bak";
-
+              verbose = true;
               users.${user.name} =
                 { pkgs, ... }:
                 {
@@ -721,6 +227,74 @@
                     username = user.name;
                     homeDirectory = "/Users/${user.name}";
                     stateVersion = "25.05";
+
+                    packages = with pkgs; [
+                      # Development tools
+                      nil
+                      nixd
+                      lazygit
+                      gh
+                      delta
+                      cloudflared # Cloudflare tunnel
+                      git-lfs
+
+                      # Programming languages and runtimes
+                      go
+                      rustup
+                      deno
+                      bun
+                      fnm
+                      uv
+                      pipx
+
+                      # Build tools
+                      cmake
+                      ninja
+                      just
+
+                      # Modern CLI tools
+                      eza
+                      bat
+                      bottom
+                      broot
+                      dust
+                      duf
+                      fd
+                      procs
+                      ripgrep
+                      sd
+                      xh
+                      tree
+                      zoxide
+                      hyperfine
+                      tealdeer
+
+                      # System utilities
+                      htop
+                      lsof
+                      wget
+                      jq
+
+                      # Archive tools
+                      rar
+                      unzip
+                      zip
+                      xz
+
+                      # Media and misc
+                      yt-dlp
+                      ffmpeg
+                      neofetch
+                      redis
+
+                      # DevOps tools
+                      kubectl
+                      awscli2
+                      google-cloud-sdk
+                      terraform
+                      infisical
+                      k9s
+                    ];
 
                     file = {
                       ".hushlogin".source = pkgs.emptyFile;
@@ -734,9 +308,487 @@
                   #   };
                   # };
 
+                  targets.darwin.defaults = {
+                    WindowManager.GloballyEnabled = false;
+                    controlcenter.NowPlaying = false;
+                    LaunchServices.LSQuarantine = false;
+                    SoftwareUpdate.AutomaticallyInstallMacOSUpdates = false;
+
+                    dock = {
+                      autohide = true;
+                      autohide-delay = 0.0;
+                      autohide-time-modifier = 0.5;
+                      expose-animation-duration = 0.5;
+                      enable-spring-load-actions-on-all-items = true;
+
+                      mru-spaces = false;
+                      appswitcher-all-displays = true;
+                      orientation = "left";
+
+                      # Hot corners
+                      # Possible values:
+                      #  0: no-op
+                      #  1: no-op
+                      #  2: Mission Control
+                      #  3: Show application windows
+                      #  4: Desktop
+                      #  5: Start screen saver
+                      #  6: Disable screen saver
+                      #  7: Dashboard
+                      # 10: Put display to sleep
+                      # 11: Launchpad
+                      # 12: Notification Center
+                      # 13: Lock Screen
+
+                      wvous-tl-corner = 1; # disabled
+                      wvous-bl-corner = 1; # disabled
+                      wvous-tr-corner = 11; # Launchpad
+                      wvous-br-corner = 2; # Mission control
+
+                      tilesize = 45;
+                      largesize = 70;
+                      magnification = true;
+
+                      show-process-indicators = false;
+                      show-recents = false;
+                      showhidden = false;
+                    };
+
+                    trackpad = {
+                      Clicking = true;
+                    };
+
+                    menuExtraClock = {
+                      FlashDateSeparators = true;
+                      Show24Hour = true;
+                    };
+
+                    loginwindow = {
+                      SHOWFULLNAME = true;
+                      GuestEnabled = false;
+                      autoLoginUser = user.name;
+                    };
+
+                    finder = {
+                      AppleShowAllFiles = true;
+                      AppleShowAllExtensions = true;
+                      ShowStatusBar = true;
+                      ShowPathbar = true;
+                      FXEnableExtensionChangeWarning = false;
+                      FXDefaultSearchScope = "SCcf";
+                      FXPreferredViewStyle = "clmv";
+                      FXRemoveOldTrashItems = true;
+                      _FXSortFoldersFirst = true;
+                      ShowRemovableMediaOnDesktop = false;
+                      ShowExternalHardDrivesOnDesktop = false;
+                      QuitMenuItem = true;
+                      # Set Home as the default location for new Finder windows
+                      # For other paths, use `PfLo` and `file:///full/path/here/`
+                      NewWindowTarget = "Home";
+                    };
+
+                    NSGlobalDomain = {
+                      AppleShowAllFiles = true;
+                      AppleShowAllExtensions = true;
+                      AppleSpacesSwitchOnActivate = true;
+
+                      AppleMeasurementUnits = "Centimeters";
+                      AppleMetricUnits = true;
+                      AppleTemperatureUnit = "Celsius";
+
+                      NSDocumentSaveNewDocumentsToCloud = false;
+                      NSNavPanelExpandedStateForSaveMode = true;
+                      NSNavPanelExpandedStateForSaveMode2 = true;
+
+                      NSAutomaticCapitalizationEnabled = false;
+                      NSAutomaticDashSubstitutionEnabled = false;
+                      NSAutomaticPeriodSubstitutionEnabled = false;
+                      NSAutomaticQuoteSubstitutionEnabled = false;
+                      NSAutomaticSpellingCorrectionEnabled = false;
+
+                      AppleKeyboardUIMode = 3;
+                      ApplePressAndHoldEnabled = false;
+                      InitialKeyRepeat = 10;
+                      KeyRepeat = 1;
+
+                      "com.apple.trackpad.scaling" = 3.0;
+                      "com.apple.mouse.tapBehavior" = 1;
+                    };
+
+                    ".GlobalPreferences" = {
+                      "com.apple.mouse.scaling" = 3.0;
+                    };
+
+                    CustomUserPreferences = {
+                      "com.apple.TextInputMenu" = {
+                        visible = false;
+                      };
+
+                      # Set Transmission as default for torrents and magnet links
+                      "com.apple.LaunchServices" = {
+                        LSHandlers = [
+                          {
+                            LSHandlerContentType = "org.bittorrent.torrent";
+                            LSHandlerRoleAll = "org.m0k.transmission";
+                          }
+                          {
+                            LSHandlerURLScheme = "magnet";
+                            LSHandlerRoleAll = "org.m0k.transmission";
+                          }
+                        ];
+                      };
+
+                      # Setting Safari preferences requires Full Disk Access for the app running this process.
+                      # Enable Full Disk Access for that app in System Preferences > Security & Privacy > Privacy > Full Dis Access
+                      # Full Disk Access is required because Safari is sandboxed and because of macOS's System Integrit Protection.
+                      # Read more: https://lapcatsoftware.com/articles/containers.html
+                      "com.apple.Safari" = {
+                        HomePage = "about:blank";
+                        NewWindowBehavior = true;
+                        NewTabBehavior = true;
+                        ShowFullURLInSmartSearchField = true;
+                        IncludeInternalDebugMenu = true;
+                        IncludeDevelopMenu = true;
+                        SendDoNotTrackHTTPHeader = true;
+                        SuppressSearchSuggestions = true;
+                        InstallExtensionUpdatesAutomatically = true;
+                        AutoOpenSafeDownloads = false;
+                        UniversalSearchEnabled = false;
+                        WebKitDeveloperExtras = true;
+                        WebKitDeveloperExtrasEnabledPreferenceKey = true;
+                        "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" = true;
+                      };
+                      "com.apple.desktopservices" = {
+                        # Avoid creating .DS_Store files on network or USB volumes
+                        DSDontWriteNetworkStores = true;
+                        DSDontWriteUSBStores = true;
+                      };
+                      "com.apple.ImageCapture" = {
+                        # Prevent Photos from opening automatically when devices are plugged in
+                        disableHotPlug = true;
+                      };
+                      "com.apple.screencapture" = {
+                        location = "~/Downloads/screenshots";
+                        type = "png";
+                      };
+                      "com.apple.AdLib" = {
+                        allowApplePersonalizedAdvertising = false;
+                      };
+                      "com.apple.screensaver" = {
+                        # Require password immediately after sleep or screen saver begins
+                        askForPassword = 1;
+                        askForPasswordDelay = 0;
+                      };
+                      "com.apple.symbolichotkeys" = {
+                        AppleSymbolicHotKeys = {
+                          # Disabled hotkeys
+                          "7" = {
+                            enabled = false;
+                          };
+                          "8" = {
+                            enabled = false;
+                          };
+                          "9" = {
+                            enabled = false;
+                          };
+                          # Application windows
+                          "10" = {
+                            enabled = false;
+                          };
+                          # Show Desktop
+                          "11" = {
+                            enabled = false;
+                          };
+                          # Hide and show all windows
+                          "12" = {
+                            enabled = false;
+                          };
+                          # Look up in Dictionary
+                          "13" = {
+                            enabled = false;
+                          };
+                          # Decrease display brightness
+                          "21" = {
+                            enabled = false;
+                          };
+                          # Increase display brightness
+                          "25" = {
+                            enabled = false;
+                          };
+                          # Mission Control
+                          "26" = {
+                            enabled = false;
+                          };
+                          # Move left a space
+                          "28" = {
+                            enabled = false;
+                          };
+                          # Move right a space
+                          "29" = {
+                            enabled = false;
+                          };
+                          # Turn VoiceOver on or off
+                          "36" = {
+                            enabled = false;
+                          };
+                          # Turn Dock Hiding On/Off
+                          "52" = {
+                            enabled = false;
+                          };
+                          # Show Launchpad
+                          "57" = {
+                            enabled = false;
+                          };
+                          # Show Notification Center
+                          "59" = {
+                            enabled = false;
+                          };
+                          # Show Spotlight search
+                          "60" = {
+                            enabled = false;
+                          };
+                          # Show Finder search window
+                          "61" = {
+                            enabled = false;
+                          };
+                          # Show Spotlight search (alternate)
+                          "64" = {
+                            enabled = false;
+                          };
+                          # Show Finder search window (alternate)
+                          "65" = {
+                            enabled = false;
+                          };
+                          # Move focus to menu bar
+                          "159" = {
+                            enabled = false;
+                          };
+                          # Move focus to window toolbar
+                          "162" = {
+                            enabled = false;
+                          };
+                          # Change the way Tab moves focus
+                          "175" = {
+                            enabled = false;
+                          };
+                          # Turn focus following on/off
+                          "190" = {
+                            enabled = false;
+                          };
+                          # Restore windows when quitting and re-opening apps
+                          "215" = {
+                            enabled = false;
+                          };
+                          # Show Dock
+                          "216" = {
+                            enabled = false;
+                          };
+                          # Auto-hide Dock
+                          "217" = {
+                            enabled = false;
+                          };
+                          # Show recent applications in Dock
+                          "218" = {
+                            enabled = false;
+                          };
+                          # Show Launchpad
+                          "219" = {
+                            enabled = false;
+                          };
+                          # Show Notification Center
+                          "222" = {
+                            enabled = false;
+                          };
+                          # Turn Do Not Disturb on/off
+                          "223" = {
+                            enabled = false;
+                          };
+                          # Turn VoiceOver on or off
+                          "224" = {
+                            enabled = false;
+                          };
+                          # Zoom in
+                          "225" = {
+                            enabled = false;
+                          };
+                          # Zoom out
+                          "226" = {
+                            enabled = false;
+                          };
+                          # Turn zoom on or off
+                          "227" = {
+                            enabled = false;
+                          };
+                          # Turn image smoothing on or off
+                          "228" = {
+                            enabled = false;
+                          };
+                          # Increase contrast
+                          "229" = {
+                            enabled = false;
+                          };
+                          # Decrease contrast
+                          "230" = {
+                            enabled = false;
+                          };
+                          # Turn high contrast on or off
+                          "231" = {
+                            enabled = false;
+                          };
+                          # Invert colors
+                          "232" = {
+                            enabled = false;
+                          };
+                          # Turn keyboard access on or off
+                          "233" = {
+                            enabled = false;
+                          };
+                          # Change keyboard access behavior
+                          "235" = {
+                            enabled = false;
+                          };
+                          # Turn VoiceOver on or off
+                          "237" = {
+                            enabled = false;
+                          };
+                          # Turn VoiceOver on or off
+                          "238" = {
+                            enabled = false;
+                          };
+                          # Turn VoiceOver on or off
+                          "239" = {
+                            enabled = false;
+                          };
+                          # Move focus to window drawer
+                          "240" = {
+                            enabled = false;
+                          };
+                          # Move focus to status menus
+                          "241" = {
+                            enabled = false;
+                          };
+                          # Move focus to Dock
+                          "242" = {
+                            enabled = false;
+                          };
+                          # Move focus to active or next window
+                          "243" = {
+                            enabled = false;
+                          };
+                          # Move focus to previous window
+                          "244" = {
+                            enabled = false;
+                          };
+                          # Move focus to toolbar
+                          "245" = {
+                            enabled = false;
+                          };
+                          # Move focus to floating window
+                          "246" = {
+                            enabled = false;
+                          };
+                          # Change the way Tab moves focus
+                          "247" = {
+                            enabled = false;
+                          };
+                          # Show Help menu
+                          "248" = {
+                            enabled = false;
+                          };
+                          # Turn Dock hiding on or off
+                          "249" = {
+                            enabled = false;
+                          };
+                          # Move focus to window toolbar
+                          "250" = {
+                            enabled = false;
+                          };
+                          # Move focus to floating window
+                          "251" = {
+                            enabled = false;
+                          };
+                          # Show Character Palette
+                          "256" = {
+                            enabled = false;
+                          };
+                          # Select next input source
+                          "257" = {
+                            enabled = false;
+                          };
+                          # Select previous input source
+                          "258" = {
+                            enabled = false;
+                          };
+
+                          "27" = {
+                            enabled = true;
+                            value = {
+                              parameters = [
+                                65535 # Character
+                                10 # Key code
+                                1048576 # Modifier flags
+                              ];
+                              type = "standard";
+                            };
+                          };
+                          "31" = {
+                            enabled = true;
+                            value = {
+                              parameters = [
+                                52 # Character
+                                21 # Key code
+                                1441792 # Modifier flags
+                              ];
+                              type = "standard";
+                            };
+                          };
+                          "37" = {
+                            enabled = true;
+                            value = {
+                              parameters = [
+                                65535 # Character
+                                103 # Key code
+                                8519680 # Modifier flags
+                              ];
+                              type = "standard";
+                            };
+                          };
+                        };
+                      };
+                      "org.m0k.transmission" = {
+                        DownloadLocationConstant = true;
+                        DownloadFolder = "/Users/${user.name}/Documents/transmission";
+                        IncompleteDownloadFolder = "/Users/${user.name}/Documents/transmission/.incomplete";
+                        UseIncompleteDownloadFolder = true;
+                        AutoImport = true;
+                        RandomPort = true;
+                        AutoImportDirectory = "/Users/${user.name}/Downloads";
+                        DeleteOriginalTorrent = true;
+                        CheckUpload = true;
+                        CheckRemoveDownloading = true;
+                        CheckQuitDownloading = true;
+                        AutoSize = true;
+                        DownloadAsk = false;
+                        InfoVisible = false;
+                        MagnetOpenAsk = false;
+                        SpeedLimitDownloadEnabled = false;
+                        SpeedLimitUploadEnabled = true;
+                        SpeedLimitUpload = 1;
+                        UploadLimit = true;
+                        WarningLegal = false;
+                      };
+                    };
+                  };
+
                   programs = {
                     home-manager = {
                       enable = true;
+                    };
+
+                    neovim = {
+                      enable = true;
+                      defaultEditor = true;
+                      vimAlias = true;
                     };
 
                     lazygit = {
@@ -751,6 +803,28 @@
                           showRandomTip = false;
                           nerdFontsVersion = "3";
                         };
+                      };
+                    };
+
+                    ghostty = {
+                      enable = true;
+                      package = null;
+                      settings = {
+                        theme = "catppuccin-mocha";
+                        scrollback-limit = 10 * 10000000;
+
+                        mouse-hide-while-typing = true;
+                        focus-follows-mouse = true;
+
+                        window-height = 221;
+                        window-width = 221;
+                        window-colorspace = "display-p3";
+
+                        keybind = [
+                          "cmd+up=jump_to_prompt:-1"
+                          "cmd+down=jump_to_prompt:1"
+                          "shift+enter=text:\n"
+                        ];
                       };
                     };
 
@@ -802,24 +876,30 @@
                       };
                     };
 
-                    ghostty = {
+                    broot = {
                       enable = true;
-                      package = null;
                       settings = {
-                        theme = "catppuccin-mocha";
-                        scrollback-limit = 10 * 10000000;
+                        default_flags = "g";
+                        quit_on_last_cancel = true;
+                        enable_kitty_keyboard = false;
+                        lines_before_match_in_preview = 1;
+                        lines_after_match_in_preview = 1;
+                        imports = [
+                          "verbs.hjson"
+                          {
+                            luma = [
+                              "dark"
+                              "unknown"
+                            ];
+                            file = "skins/catppuccin-macchiato.hjson";
+                          }
 
-                        mouse-hide-while-typing = true;
-                        focus-follows-mouse = true;
-
-                        window-height = 221;
-                        window-width = 221;
-                        window-colorspace = "display-p3";
-
-                        keybind = [
-                          "cmd+up=jump_to_prompt:-1"
-                          "cmd+down=jump_to_prompt:1"
-                          "shift+enter=text:\n"
+                          {
+                            luma = [
+                              "light"
+                            ];
+                            file = "skins/white.hjson";
+                          }
                         ];
                       };
                     };
@@ -1038,12 +1118,6 @@
                       };
                     };
 
-                    neovim = {
-                      enable = true;
-                      defaultEditor = true;
-                      vimAlias = true;
-                    };
-
                     git = {
                       enable = true;
 
@@ -1054,6 +1128,10 @@
                         format = "ssh";
                         key = "/Users/${user.name}/.ssh/id_rsa";
                         signByDefault = true;
+                      };
+
+                      lfs = {
+                        enable = true;
                       };
 
                       extraConfig = {
