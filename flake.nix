@@ -104,6 +104,8 @@
               nerd-fonts.fira-code
               nerd-fonts.jetbrains-mono
               nerd-fonts.iosevka
+              nerd-fonts.monaspace
+              nerd-fonts.commit-mono
             ];
           };
 
@@ -130,10 +132,10 @@
               "nikitabobko/tap/aerospace" # Tiling window manager for macOS
               "macfuse" # File system integration
               "messenger" # Facebook Messenger desktop app
-              "purevpn" # VPN service
               "steam" # Digital distribution platform for games
               "tailscale-app" # Zero config VPN
               "zoom" # Video conferencing
+              "cap" # Screen recording software
             ];
 
             onActivation = {
@@ -271,6 +273,7 @@
                         zoxide # Smarter cd command
                         hyperfine # Command-line benchmarking tool
                         tealdeer # Fast tldr client
+                        duti # Select default apps for documents and URL schemes on macOS
 
                         htop # Interactive process viewer
                         lsof # List open files
@@ -317,6 +320,8 @@
                         transmission # BitTorrent client
                         vlc # Media player
                         whatsapp_beta # WhatsApp messaging (beta version)
+                        protonvpn # VPN service
+
                         # zed # High-performance multiplayer code editor
                       ]);
 
@@ -460,6 +465,10 @@
                           {
                             LSHandlerURLScheme = "magnet";
                             LSHandlerRoleAll = "org.m0k.transmission";
+                          }
+                          {
+                            LSHandlerContentType = "public.json";
+                            LSHandlerRoleAll = "dev.zed.Zed";
                           }
                         ];
                       };
@@ -1353,6 +1362,8 @@
                         ".cache"
                         ".parcel-cache"
                         ".next"
+                        ".claude"
+                        ".serena"
                         ".nuxt"
                         "dist"
                         "out"
