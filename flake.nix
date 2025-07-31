@@ -26,6 +26,10 @@
       url = "github:nikitabobko/homebrew-tap";
       flake = false;
     };
+    nix-casks = {
+      url = "github:atahanyorganci/nix-casks/archive";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -33,6 +37,7 @@
       self,
       nix-darwin,
       nixpkgs,
+      nix-casks,
       home-manager,
       nix-homebrew,
       homebrew-aerospace,
@@ -113,9 +118,9 @@
             ];
 
             masApps = {
-              "Refined GitHub"        = 1519867270;
-              "Klack"                 = 6446206067;
-              "Xcode"                 = 497799835;
+              "Refined GitHub" = 1519867270;
+              "Klack" = 6446206067;
+              "Xcode" = 497799835;
               # "Microsoft Excel"       = 462058435;
               # "Microsoft PowerPoint"  = 462062816;
               # "Microsoft Word"        = 462054704;
@@ -123,35 +128,14 @@
 
             casks = [
               "nikitabobko/tap/aerospace" # Tiling window manager for macOS
-
-              "cursor" # AI-powered code editor
-              "discord" # Voice and text chat for gamers
-              "figma" # Collaborative interface design tool
-              "ghostty" # Fast, feature-rich, and cross-platform terminal emulator
-              "little-snitch" # Network monitor and firewall
-              "linear-linear" # Issue tracking and project management
               "macfuse" # File system integration
               "messenger" # Facebook Messenger desktop app
-              "notion" # All-in-one workspace
-              "obsidian" # Knowledge management and note-taking
-              "orbstack" # Fast, light, simple Docker & Linux on macOS
               "purevpn" # VPN service
-              "raycast" # Launcher and productivity tool
-              "signal" # Private messenger
-              "slack" # Team communication and collaboration
-              "stats" # System monitor for the menu bar
               "steam" # Digital distribution platform for games
-              "aldente" # Battery charge limiter for MacBooks
-              "tableplus" # Database management tool
-              "tunnelblick" # OpenVPN client
-              "the-unarchiver" # Archive extraction utility
               "tailscale-app" # Zero config VPN
-              "transmission" # BitTorrent client
-              "vlc" # Media player
-              "whatsapp@beta" # WhatsApp messaging (beta version)
-              "zed" # High-performance multiplayer code editor
               "zoom" # Video conferencing
             ];
+
             onActivation = {
               autoUpdate = false;
               cleanup = "zap";
@@ -239,78 +223,102 @@
                     homeDirectory = "/Users/${user.name}";
                     stateVersion = "25.05";
 
-                    packages = with pkgs; [
-                      nil # Nix language server
-                      nixd # Nix language server (alternative)
-                      lazygit # Simple terminal UI for git commands
-                      gh # GitHub CLI
-                      delta # Syntax-highlighting pager for git and diff
-                      cloudflared # Cloudflare tunnel
-                      git-lfs # Git Large File Storage
+                    packages =
+                      (with pkgs; [
+                        nil # Nix language server
+                        nixd # Nix language server (alternative)
+                        lazygit # Simple terminal UI for git commands
+                        gh # GitHub CLI
+                        delta # Syntax-highlighting pager for git and diff
+                        cloudflared # Cloudflare tunnel
+                        git-lfs # Git Large File Storage
 
-                      go # Go programming language
-                      rustup # Rust toolchain installer
-                      deno # Secure runtime for JavaScript and TypeScript
-                      bun # Fast all-in-one JavaScript runtime
-                      fnm # Fast Node.js version manager
-                      uv # Ultra-fast Python package installer
-                      pipx # Install and run Python applications in isolated environments
-                      ruby # Ruby programming language
-                      php # PHP programming language
-                      zig # General-purpose programming language
+                        go # Go programming language
+                        rustup # Rust toolchain installer
+                        deno # Secure runtime for JavaScript and TypeScript
+                        bun # Fast all-in-one JavaScript runtime
+                        fnm # Fast Node.js version manager
+                        uv # Ultra-fast Python package installer
+                        pipx # Install and run Python applications in isolated environments
+                        ruby # Ruby programming language
+                        php # PHP programming language
+                        zig # General-purpose programming language
 
-                      cmake # Cross-platform build system
-                      ninja # Small build system with a focus on speed
-                      just # Command runner and build tool
-                      meson # Open source build system
-                      autoconf # Generate configuration scripts
-                      automake # Tool for automatically generating Makefile.in files
-                      ccache # Compiler cache for faster rebuilds
-                      nasm # Netwide Assembler
-                      act # Run GitHub Actions locally
-                      gofumpt # Stricter gofmt
-                      swiftformat # Code formatter for Swift
+                        cmake # Cross-platform build system
+                        ninja # Small build system with a focus on speed
+                        just # Command runner and build tool
+                        meson # Open source build system
+                        autoconf # Generate configuration scripts
+                        automake # Tool for automatically generating Makefile.in files
+                        ccache # Compiler cache for faster rebuilds
+                        nasm # Netwide Assembler
+                        act # Run GitHub Actions locally
+                        gofumpt # Stricter gofmt
+                        swiftformat # Code formatter for Swift
 
-                      eza # Modern replacement for ls
-                      bat # Better cat with syntax highlighting
-                      bottom # Cross-platform graphical process/system monitor
-                      broot # Interactive tree view, fuzzy search, and directory navigation
-                      dust # More intuitive version of du
-                      duf # Disk Usage/Free Utility
-                      fd # Simple, fast alternative to find
-                      procs # Modern replacement for ps
-                      ripgrep # Line-oriented search tool
-                      sd # Intuitive find & replace CLI
-                      xh # Friendly and fast tool for sending HTTP requests
-                      tree # Display directories as trees
-                      zoxide # Smarter cd command
-                      hyperfine # Command-line benchmarking tool
-                      tealdeer # Fast tldr client
+                        eza # Modern replacement for ls
+                        bat # Better cat with syntax highlighting
+                        bottom # Cross-platform graphical process/system monitor
+                        broot # Interactive tree view, fuzzy search, and directory navigation
+                        dust # More intuitive version of du
+                        duf # Disk Usage/Free Utility
+                        fd # Simple, fast alternative to find
+                        procs # Modern replacement for ps
+                        ripgrep # Line-oriented search tool
+                        sd # Intuitive find & replace CLI
+                        xh # Friendly and fast tool for sending HTTP requests
+                        tree # Display directories as trees
+                        zoxide # Smarter cd command
+                        hyperfine # Command-line benchmarking tool
+                        tealdeer # Fast tldr client
 
-                      htop # Interactive process viewer
-                      lsof # List open files
-                      wget # Network downloader
-                      jq # Command-line JSON processor
-                      yq # Command-line YAML processor
+                        htop # Interactive process viewer
+                        lsof # List open files
+                        wget # Network downloader
+                        jq # Command-line JSON processor
+                        yq # Command-line YAML processor
 
-                      rar # Archive manager for RAR files
-                      unzip # Extract compressed files in ZIP archives
-                      zip # Create compressed ZIP archives
-                      xz # General-purpose data compression
+                        rar # Archive manager for RAR files
+                        unzip # Extract compressed files in ZIP archives
+                        zip # Create compressed ZIP archives
+                        xz # General-purpose data compression
 
-                      yt-dlp # Download videos from YouTube and other sites
-                      ffmpeg # Complete solution to record, convert and stream audio and video
-                      neofetch # System information tool
-                      redis # In-memory data structure store
+                        yt-dlp # Download videos from YouTube and other sites
+                        ffmpeg # Complete solution to record, convert and stream audio and video
+                        neofetch # System information tool
+                        redis # In-memory data structure store
 
-                      kubectl # Kubernetes command-line tool
-                      awscli2 # AWS Command Line Interface v2
-                      google-cloud-sdk # Google Cloud SDK
-                      terraform # Infrastructure as code tool
-                      infisical # Open-source secret management platform
-                      k9s # Terminal UI to interact with Kubernetes clusters
-                      kind # Run local Kubernetes clusters using Docker
-                    ];
+                        kubectl # Kubernetes command-line tool
+                        awscli2 # AWS Command Line Interface v2
+                        google-cloud-sdk # Google Cloud SDK
+                        terraform # Infrastructure as code tool
+                        infisical # Open-source secret management platform
+                        k9s # Terminal UI to interact with Kubernetes clusters
+                        kind # Run local Kubernetes clusters using Docker
+                      ])
+                      ++ (with inputs.nix-casks.packages.${pkgs.system}; [
+                        cursor # AI-powered code editor
+                        discord # Voice and text chat for gamers
+                        figma # Collaborative interface design tool
+                        ghostty # Fast, feature-rich, and cross-platform terminal emulator
+                        little-snitch # Network monitor and firewall
+                        linear-linear # Issue tracking and project management
+                        notion # All-in-one workspace
+                        obsidian # Knowledge management and note-taking
+                        orbstack # Fast, light, simple Docker & Linux on macOS
+                        raycast # Launcher and productivity tool
+                        signal # Private messenger
+                        slack # Team communication and collaboration
+                        stats # System monitor for the menu bar
+                        aldente # Battery charge limiter for MacBooks
+                        tableplus # Database management tool
+                        tunnelblick # OpenVPN client
+                        the-unarchiver # Archive extraction utility
+                        transmission # BitTorrent client
+                        vlc # Media player
+                        whatsapp_beta # WhatsApp messaging (beta version)
+                        # zed # High-performance multiplayer code editor
+                      ]);
 
                     file = {
                       ".hushlogin".source = pkgs.emptyFile;
@@ -429,6 +437,8 @@
 
                       "com.apple.trackpad.scaling" = 3.0;
                       "com.apple.mouse.tapBehavior" = 1;
+                      "com.apple.sound.beep.volume" = 0.0;
+                      "com.apple.sound.beep.feedback" = 0;
                     };
 
                     ".GlobalPreferences" = {
@@ -489,6 +499,10 @@
                       };
                       "com.apple.AdLib" = {
                         allowApplePersonalizedAdvertising = false;
+                      };
+                      "com.apple.print.PrintingPrefs" = {
+                        # Automatically quit printer app once the print jobs complete
+                        "Quit When Finished" = true;
                       };
                       "com.apple.screensaver" = {
                         # Require password immediately after sleep or screen saver begins
