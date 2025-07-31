@@ -55,16 +55,6 @@ export FZF_DEFAULT_OPTS="\
   --bind='ctrl-f:half-page-down' \
   --bind='ctrl-b:half-page-up'"
 
-# Source additional local files if they exist.
-if [[ -f ~/.zsh_docker ]]; then
-	z4h source ~/.zsh_docker
-fi
-
-if [[ -f ~/.zsh_private ]]; then
-	z4h source ~/.zsh_private
-fi
-
-# Define key bindings.
 z4h bindkey undo Ctrl+/   Shift+Tab  # undo the last command line change
 z4h bindkey redo Option+/            # redo the last undone command line change
 z4h bindkey z4h-cd-back    Shift+Left   # cd into the previous directory
@@ -92,24 +82,13 @@ function vim-foreground-background () {
     zle clear-screen -w
   fi
 }
+
 zle -N vim-foreground-background
 z4h bindkey vim-foreground-background Ctrl+Z
 
 function mcd() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
 compdef _directories mcd
 compdef _default     open
-
-function uuid() {
-	uuidgen | tr -d - | tr -d '\n' | tr '[:upper:]' '[:lower:]' | pbcopy && pbpaste && echo
-}
-
-function gen_password() {
-	openssl rand -base64 18 | tr -d '/+=\n' | cut -c 1-24 | tee /dev/tty | pbcopy && pbpaste && echo
-}
-
-function dlogs() {
-	docker logs $1 $2
-}
 
 function ghv() {
   gh repo view --web --branch $(git rev-parse --abbrev-ref HEAD)
@@ -229,6 +208,7 @@ fi
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
 
+export PATH="/Users/pnodet/.bun/bin:$PATH"
 
 # fnm
 export PATH="~/Library/Application Support/fnm:$PATH"
