@@ -117,6 +117,8 @@
               "cocoapods" # Dependency manager for Swift and Objective-C projects
               "scw" # Scaleway CLI
               "turso" # Turso database CLI
+              "huggingface-cli" # Client library for huggingface.co hub
+              "ollama" # Run large language models (LLMs)
             ];
 
             masApps = {
@@ -136,6 +138,7 @@
               "tailscale-app" # Zero config VPN
               "zoom" # Video conferencing
               "cap" # Screen recording software
+              "google-chrome@dev" # Web browser
             ];
 
             onActivation = {
@@ -321,8 +324,6 @@
                         vlc # Media player
                         whatsapp_beta # WhatsApp messaging (beta version)
                         protonvpn # VPN service
-
-                        # zed # High-performance multiplayer code editor
                       ]);
 
                     file = {
@@ -873,6 +874,7 @@
                       controlMaster = "auto";
                       controlPersist = "72000";
                       serverAliveInterval = 60;
+                      extraConfig = "UseKeychain yes";
 
                       matchBlocks = {
                         "github.com" = {
@@ -1069,12 +1071,16 @@
                       ];
                       userSettings = {
                         agent = {
+                          version = "2";
                           play_sound_when_agent_done = true;
                         };
                         theme = {
                           mode = "system";
                           light = "Catppuccin Mocha";
                           dark = "Catppuccin Mocha";
+                        };
+                        ui_font_features = {
+                          calt = true;
                         };
                         icon_theme = "Catppuccin Mocha";
                         base_keymap = "VSCode";
