@@ -51,8 +51,8 @@
       };
 
       machines = {
-        "pnodet-mbp-m4" = {};
-        "pnodet-mbp-m1" = {};
+        "${user.name}-mbp-m4" = {};
+        "${user.name}-mbp-m1" = {};
       };
 
       configuration =

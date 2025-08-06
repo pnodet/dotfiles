@@ -6,6 +6,7 @@
 
 ```sh
 xcode-select --install
+sudo xcodebuild -license accept
 ```
 
 ### Install Rosetta 2 (Apple Silicon Macs only)
@@ -40,23 +41,23 @@ git clone https://github.com/pnodet/dotfiles.git ~/.dotfiles
 For M4 MacBook Pro:
 
 ```sh
-sudo nix run nix-darwin -- switch --flake ~/.dotfiles#pnodet-mbp-m4
+sudo nix run nix-darwin -- switch --flake ".dotfiles#pnodet-mbp-m4"
 ```
 
 For M1 MacBook Pro (home server):
 
 ```sh
-sudo nix run nix-darwin -- switch --flake ~/.dotfiles#pnodet-mbp-m1
+sudo nix run nix-darwin -- switch --flake ".dotfiles#pnodet-mbp-m1"
 ```
 
 ### Subsequent updates (after bootstrap)
 
 ```sh
 # For M4 MacBook Pro
-darwin-rebuild switch --flake ~/.dotfiles#pnodet-mbp-m4
+sudo darwin-rebuild switch --flake ".dotfiles#pnodet-mbp-m4"
 
 # For M1 MacBook Pro
-darwin-rebuild switch --flake ~/.dotfiles#pnodet-mbp-m1
+sudo darwin-rebuild switch --flake ".dotfiles#pnodet-mbp-m1"
 ```
 
 ## Post-Setup
