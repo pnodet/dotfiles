@@ -50,6 +50,11 @@
         fullName = "Paul Nodet";
       };
 
+      machines = {
+        "pnodet-mbp-m4" = {};
+        "pnodet-mbp-m1" = {};
+      };
+
       configuration =
         { pkgs, ... }:
         {
@@ -177,8 +182,9 @@
     in
     {
       # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#pnodet
-      darwinConfigurations.${user.name} = nix-darwin.lib.darwinSystem {
+      # $ darwin-rebuild build --flake .#pnodet-mbp-m4
+      # $ darwin-rebuild build --flake .#pnodet-mbp-m1
+      darwinConfigurations = builtins.mapAttrs (hostname: machineConfig: nix-darwin.lib.darwinSystem {
         # From https://github.com/zhaofengli/nix-homebrew/issues/5#issuecomment-2412587886
         modules = [
           (
@@ -1448,6 +1454,6 @@
             };
           }
         ];
-      };
+      }) machines;
     };
 }
