@@ -17,7 +17,10 @@ The entire system configuration is declaratively managed through a single `flake
 ### Initial Setup
 ```bash
 # Install Nix (if not already installed)
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
+
+# Source the Nix environment to make nix commands available
+. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
 # Clone and setup (from README)
 git clone -b latest --single-branch https://github.com/pnodet/dotfiles.git ~/.dotfiles
