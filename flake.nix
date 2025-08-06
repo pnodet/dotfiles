@@ -56,8 +56,14 @@
       };
 
       configuration =
+        hostname:
         { pkgs, ... }:
         {
+          networking = {
+            computerName = hostname;
+            hostName = hostname;
+            localHostName = hostname;
+          };
           nix.settings = {
             experimental-features = "nix-command flakes";
             substituters = [
@@ -137,6 +143,7 @@
               "nikitabobko/tap/aerospace" # Tiling window manager for macOS
 
               "cap" # Screen recording software
+              "claude" # Anthropic's official Claude AI desktop app
               "macfuse" # File system integration
               "messenger" # Facebook Messenger desktop app
               "steam" # Digital distribution platform for games
@@ -193,7 +200,7 @@
               homebrew.taps = builtins.attrNames config.nix-homebrew.taps;
             }
           )
-          configuration
+          (configuration hostname)
           nix-homebrew.darwinModules.nix-homebrew
           {
             nix.enable = false;
@@ -243,6 +250,7 @@
                         delta # Syntax-highlighting pager for git and diff
                         cloudflared # Cloudflare tunnel
                         git-lfs # Git Large File Storage
+                        claude-code # Claude AI code editor
 
                         go # Go programming language
                         rustup # Rust toolchain installer
