@@ -31,12 +31,13 @@ git clone https://github.com/pnodet/dotfiles.git ~/.dotfiles
 # Install Nix (if not already installed)
 sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
 
-# Source the Nix environment to make nix commands available
-. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+# Enable flakes and nix-command system-wide
+sudo mkdir -p /etc/nix
+echo "experimental-features = nix-command flakes" | sudo tee -a /etc/nix/nix.conf
 
-# Apply configuration (choose appropriate machine)
-sudo darwin-rebuild switch ~/.dotfiles#pnodet-mbp-m4    # M4 MacBook Pro
-sudo darwin-rebuild switch ~/.dotfiles#pnodet-mbp-m1    # M1 MacBook Pro
+# Bootstrap Nix Darwin (first time only - choose appropriate machine)
+sudo nix run nix-darwin -- switch --flake ~/.dotfiles#pnodet-mbp-m4    # M4 MacBook Pro
+sudo nix run nix-darwin -- switch --flake ~/.dotfiles#pnodet-mbp-m1    # M1 MacBook Pro
 ```
 
 ### Post-Setup

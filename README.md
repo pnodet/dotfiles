@@ -14,10 +14,11 @@ xcode-select --install
 sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
 ```
 
-### Source the Nix environment to make nix commands available
+### Enable Nix flakes and nix-command
 
 ```sh
-. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+sudo mkdir -p /etc/nix
+echo "experimental-features = nix-command flakes" | sudo tee -a /etc/nix/nix.conf
 ```
 
 ## Setup
@@ -28,18 +29,28 @@ sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
 git clone https://github.com/pnodet/dotfiles.git ~/.dotfiles
 ```
 
-### Apply configuration
+### Bootstrap Nix Darwin (first time only)
 
 For M4 MacBook Pro:
 
 ```sh
-sudo darwin-rebuild switch ~/.dotfiles#pnodet-mbp-m4
+sudo nix run nix-darwin -- switch --flake ~/.dotfiles#pnodet-mbp-m4
 ```
 
 For M1 MacBook Pro (home server):
 
 ```sh
-sudo darwin-rebuild switch ~/.dotfiles#pnodet-mbp-m1
+sudo nix run nix-darwin -- switch --flake ~/.dotfiles#pnodet-mbp-m1
+```
+
+### Subsequent updates (after bootstrap)
+
+```sh
+# For M4 MacBook Pro
+darwin-rebuild switch --flake ~/.dotfiles#pnodet-mbp-m4
+
+# For M1 MacBook Pro
+darwin-rebuild switch --flake ~/.dotfiles#pnodet-mbp-m1
 ```
 
 ## Post-Setup
