@@ -8,6 +8,12 @@
 xcode-select --install
 ```
 
+### Install Rosetta 2 (Apple Silicon Macs only)
+
+```sh
+softwareupdate --install-rosetta --agree-to-license
+```
+
 ### Install Nix
 
 ```sh

@@ -20,6 +20,9 @@ The entire system configuration is declaratively managed through a single `flake
 ```bash
 # Install Xcode Command Line Tools (required)
 xcode-select --install
+
+# Install Rosetta 2 (required for Apple Silicon Macs)
+softwareupdate --install-rosetta --agree-to-license
 ```
 
 ### Initial Setup
