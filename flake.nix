@@ -117,8 +117,6 @@
               "cocoapods" # Dependency manager for Swift and Objective-C projects
               "scw" # Scaleway CLI
               "turso" # Turso database CLI
-              "huggingface-cli" # Client library for huggingface.co hub
-              "ollama" # Run large language models (LLMs)
             ];
 
             masApps = {
@@ -132,13 +130,15 @@
 
             casks = [
               "nikitabobko/tap/aerospace" # Tiling window manager for macOS
+
+              "cap" # Screen recording software
               "macfuse" # File system integration
               "messenger" # Facebook Messenger desktop app
               "steam" # Digital distribution platform for games
               "tailscale-app" # Zero config VPN
+              "transmission" # BitTorrent client
+              "ungoogled-chromium" # Google Chromium, sans integration with Google
               "zoom" # Video conferencing
-              "cap" # Screen recording software
-              "google-chrome@dev" # Web browser
             ];
 
             onActivation = {
@@ -311,6 +311,7 @@
                         linear-linear # Issue tracking and project management
                         notion # All-in-one workspace
                         obsidian # Knowledge management and note-taking
+                        ollama-app # Open-source AI model serving platform
                         orbstack # Fast, light, simple Docker & Linux on macOS
                         raycast # Launcher and productivity tool
                         signal # Private messenger
@@ -320,7 +321,6 @@
                         tableplus # Database management tool
                         tunnelblick # OpenVPN client
                         the-unarchiver # Archive extraction utility
-                        transmission # BitTorrent client
                         vlc # Media player
                         whatsapp_beta # WhatsApp messaging (beta version)
                         protonvpn # VPN service
