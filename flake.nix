@@ -345,12 +345,12 @@
                   # };
 
                   targets.darwin.defaults = {
-                    WindowManager.GloballyEnabled = false;
-                    controlcenter.NowPlaying = false;
-                    LaunchServices.LSQuarantine = false;
-                    SoftwareUpdate.AutomaticallyInstallMacOSUpdates = false;
+                    "com.apple.WindowManager".GloballyEnabled = false;
+                    "com.apple.controlcenter".NowPlaying = false;
+                    "com.apple.LaunchServices".LSQuarantine = false;
+                    "com.apple.SoftwareUpdate".AutomaticallyInstallMacOSUpdates = false;
 
-                    dock = {
+                    "com.apple.dock" = {
                       autohide = true;
                       autohide-delay = 0.0;
                       autohide-time-modifier = 0.5;
@@ -390,22 +390,26 @@
                       showhidden = false;
                     };
 
-                    trackpad = {
+                    "com.apple.AppleMultitouchTrackpad" = {
                       Clicking = true;
                     };
 
-                    menuExtraClock = {
+                    "com.apple.driver.AppleBluetoothMultitouch.trackpad" = {
+                      Clicking = true;
+                    };
+
+                    "com.apple.menuextra.clock" = {
                       FlashDateSeparators = true;
                       Show24Hour = true;
                     };
 
-                    loginwindow = {
+                    "com.apple.loginwindow" = {
                       SHOWFULLNAME = true;
                       GuestEnabled = false;
                       autoLoginUser = user.name;
                     };
 
-                    finder = {
+                    "com.apple.finder" = {
                       AppleShowAllFiles = true;
                       AppleShowAllExtensions = true;
                       ShowStatusBar = true;
