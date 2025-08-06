@@ -300,6 +300,23 @@
                         neofetch # System information tool
                         redis # In-memory data structure store
 
+                        # System monitoring and performance tools
+                        btop # Resource monitor that shows usage and stats
+                        bandwhich # Display current network utilization by process
+                        iperf3 # Network bandwidth measurement tool
+                        iproute2mac # Linux iproute2 for macOS (includes ss command)
+
+                        # Development utilities
+                        jless # Command-line JSON viewer
+                        yj # Convert between YAML, TOML, JSON, and HCL
+                        git-extras # Extra Git utilities
+                        dive # Tool for exploring Docker image layers
+                        dua # View disk space usage and delete unwanted data
+
+                        # Node.js CLI tools
+                        bumpp # Interactive CLI to bump package.json version
+                        taze # Modern CLI to keep dependencies up-to-date
+
                         kubectl # Kubernetes command-line tool
                         awscli2 # AWS Command Line Interface v2
                         google-cloud-sdk # Google Cloud SDK
