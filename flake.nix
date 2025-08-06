@@ -911,6 +911,24 @@
                           };
                         };
 
+                        "pnodet.m1" = {
+                          hostname = "pnodet-mbp-m1.end-centauri.ts.net";
+                          user = "pnodet";
+                          forwardAgent = true;
+                          setEnv = {
+                            TERM = "xterm-256color";
+                          };
+                        };
+
+                        "pnodet.m4" = {
+                          hostname = "pnodet-mbp-m4.end-centauri.ts.net";
+                          user = "pnodet";
+                          forwardAgent = true;
+                          setEnv = {
+                            TERM = "xterm-256color";
+                          };
+                        };
+
                         "pimpup.nginx" = {
                           hostname = "51.15.210.84";
                           user = "root";
