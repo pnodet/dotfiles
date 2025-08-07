@@ -209,6 +209,7 @@ autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
 
 export PATH="/Users/pnodet/.bun/bin:$PATH"
+export PATH="$(brew --prefix llvm@19)/bin:$PATH"
 
 # fnm
 export PATH="~/Library/Application Support/fnm:$PATH"

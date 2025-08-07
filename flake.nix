@@ -128,6 +128,7 @@
               "cocoapods" # Dependency manager for Swift and Objective-C projects
               "scw" # Scaleway CLI
               "turso" # Turso database CLI
+              "llvm@19" # Next-gen compiler infrastructure
             ];
 
             masApps = {
@@ -262,14 +263,21 @@
                         ruby # Ruby programming language
                         php # PHP programming language
                         zig # General-purpose programming language
+                        openjdk # Development kit for the Java programming language
 
+                        clang # C language family frontend for LLVM
                         cmake # Cross-platform build system
+                        zstd # Fast compression algorithm
                         ninja # Small build system with a focus on speed
                         just # Command runner and build tool
                         meson # Open source build system
                         autoconf # Generate configuration scripts
                         automake # Tool for automatically generating Makefile.in files
                         ccache # Compiler cache for faster rebuilds
+                        icu # International Components for Unicode
+                        libiconv # Character encoding conversion library
+                        libtool # Generic library support script
+                        pkg-config # System for managing library compile/link flags
                         nasm # Netwide Assembler
                         act # Run GitHub Actions locally
                         gofumpt # Stricter gofmt
@@ -291,6 +299,8 @@
                         hyperfine # Command-line benchmarking tool
                         tealdeer # Fast tldr client
                         duti # Select default apps for documents and URL schemes on macOS
+                        graphviz # Graph visualization tools
+                        gnuplot # Portable command-line driven graphing utility for many platforms
 
                         htop # Interactive process viewer
                         lsof # List open files
@@ -324,6 +334,7 @@
                         # Node.js CLI tools
                         bumpp # Interactive CLI to bump package.json version
                         taze # Modern CLI to keep dependencies up-to-date
+                        ni # Use the right package manager
 
                         kubectl # Kubernetes command-line tool
                         awscli2 # AWS Command Line Interface v2
