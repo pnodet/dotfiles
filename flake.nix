@@ -129,6 +129,8 @@
               "scw" # Scaleway CLI
               "turso" # Turso database CLI
               "llvm@19" # Next-gen compiler infrastructure
+              "cmake" # Cross-platform build system (Homebrew version)
+              "ccache" # Compiler cache for faster rebuilds (Homebrew version)
             ];
 
             masApps = {
@@ -265,15 +267,12 @@
                         zig # General-purpose programming language
                         openjdk # Development kit for the Java programming language
 
-                        clang # C language family frontend for LLVM
-                        cmake # Cross-platform build system
                         zstd # Fast compression algorithm
                         ninja # Small build system with a focus on speed
                         just # Command runner and build tool
                         meson # Open source build system
                         autoconf # Generate configuration scripts
                         automake # Tool for automatically generating Makefile.in files
-                        ccache # Compiler cache for faster rebuilds
                         icu # International Components for Unicode
                         libiconv # Character encoding conversion library
                         libtool # Generic library support script

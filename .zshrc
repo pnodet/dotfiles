@@ -211,6 +211,10 @@ complete -o nospace -C /opt/homebrew/bin/terraform terraform
 export PATH="/Users/pnodet/.bun/bin:$PATH"
 export PATH="$(brew --prefix llvm@19)/bin:$PATH"
 
+# Use Homebrew LLVM for C/C++ compilation
+export CC="$(brew --prefix llvm@19)/bin/clang"
+export CXX="$(brew --prefix llvm@19)/bin/clang++"
+
 # fnm
 export PATH="~/Library/Application Support/fnm:$PATH"
 if (( $+commands[fnm] )); then
