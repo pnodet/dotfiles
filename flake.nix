@@ -93,15 +93,20 @@
 
             systemPackages = with pkgs; [
               vim # Fallback editor
+              coreutils # GNU core utilities
               findutils # Collection of GNU find, xargs, and locate
               gnugrep # GNU grep, print lines matching a pattern
               gnused # GNU sed, stream editor for filtering and transforming text
               gawk # GNU awk, pattern scanning and processing language
+              gnutar # GNU tar, archiving utility
+              git # Version control system
+              gnutls # GNU TLS library
+              ncurses # Terminal control library
+              openssh # OpenSSH client and server
               rsync # Fast, versatile, remote (and local) file-copying tool
               which # Shows the full path of shell commands
               file # Determine file type
               less # Terminal pager program
-              coreutils # GNU core utilities
               pciutils # Utilities for inspecting and manipulating PCI devices
               dnsutils # DNS lookup utilities (dig, nslookup, etc.)
             ];
@@ -157,7 +162,8 @@
             ];
 
             onActivation = {
-              autoUpdate = false;
+              autoUpdate = true;
+              upgrade = true;
               cleanup = "zap";
             };
           };
@@ -1140,7 +1146,7 @@
                         };
                         icon_theme = "Catppuccin Mocha";
                         base_keymap = "VSCode";
-                        restore_on_startup = "none";
+                        restore_on_startup = "last_session";
                         show_whitespaces = "none";
                         max_tabs = 5;
                         ensure_final_newline_on_save = true;
