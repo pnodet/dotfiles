@@ -136,9 +136,6 @@
               "llvm@19" # Next-gen compiler infrastructure
               "cmake" # Cross-platform build system (Homebrew version)
               "ccache" # Compiler cache for faster rebuilds (Homebrew version)
-            ]
-            ++ pkgs.lib.optionals (hostname == "${user.name}-mbp-m1") [
-              "tailscale"
             ];
 
             masApps = {
@@ -161,9 +158,7 @@
               "transmission" # BitTorrent client
               "ungoogled-chromium" # Google Chromium, sans integration with Google
               "zoom" # Video conferencing
-            ]
-            ++ pkgs.lib.optionals (hostname == "${user.name}-mbp-m4") [
-              "tailscale-app"
+              "tailscale-app" # VPN client for secure networking
             ];
 
             onActivation = {
