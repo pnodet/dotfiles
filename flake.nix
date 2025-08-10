@@ -918,7 +918,6 @@
                       controlMaster = "auto";
                       controlPersist = "72000";
                       serverAliveInterval = 60;
-                      extraConfig = "UseKeychain yes";
 
                       matchBlocks = {
                         "github.com" = {
@@ -1459,6 +1458,7 @@
                         bl = "branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'";
 
                         c = "commit";
+                        cm = "commit --message";
                         cam = "commit --all --message";
 
                         cl = "clone --recursive";
@@ -1480,12 +1480,13 @@
                         rbs = "rebase --skip";
 
                         o = "switch";
-                        ob = "checkout -b";
                         om = "switch main";
+                        ob = "checkout -b";
 
                         ps = "push";
                         psf = "push --force-with-lease";
                         psff = "push --force";
+
                         pl = "pull --recurse-submodules";
                         pld = "pull --recurse-submodules --depth 1";
 

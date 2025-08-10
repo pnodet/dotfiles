@@ -8,6 +8,7 @@ zstyle ':z4h:fzf-complete'       recurse-dirs           'yes'
 zstyle ':z4h:direnv'             enable                 'no'
 zstyle ':z4h:direnv:success'     notify                 'yes'
 zstyle ':z4h:ssh:*'              enable                 'yes'
+zstyle ':z4h:ssh:pnodet.m1'      enable                 'no'
 # zstyle ':z4h:ssh:*'              send-extra-files       '~/.zsh_docker'
 zstyle ':completion:*'           matcher-list           'm:{a-z}={A-Z}'
 zstyle ':completion::complete:*' gain-privileges        1
@@ -230,3 +231,4 @@ fi
 if [[ -f "$HOME/.local/bin/env" ]]; then
   . "$HOME/.local/bin/env"
 fi
+export PATH="$HOME/.local/bin:$PATH"
