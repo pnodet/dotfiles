@@ -340,6 +340,7 @@
                         bumpp # Interactive CLI to bump package.json version
                         taze # Modern CLI to keep dependencies up-to-date
                         ni # Use the right package manager
+                        nodePackages.vercel
 
                         kubectl # Kubernetes command-line tool
                         awscli2 # AWS Command Line Interface v2
@@ -366,7 +367,7 @@
                         stats # System monitor for the menu bar
                         aldente # Battery charge limiter for MacBooks
                         tableplus # Database management tool
-                        tunnelblick # OpenVPN client
+                        # tunnelblick # OpenVPN client
                         the-unarchiver # Archive extraction utility
                         vlc # Media player
                         whatsapp_beta # WhatsApp messaging (beta version)
