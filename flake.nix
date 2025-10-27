@@ -106,6 +106,7 @@
               ncurses # Terminal control library
               openssh # OpenSSH client and server
               rsync # Fast, versatile, remote (and local) file-copying tool
+              tmux # Terminal multiplexer
               which # Shows the full path of shell commands
               file # Determine file type
               less # Terminal pager program
