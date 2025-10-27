@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,6 +38,7 @@
       self,
       nix-darwin,
       nixpkgs,
+      nixpkgs-unstable,
       nix-casks,
       home-manager,
       nix-homebrew,
@@ -244,6 +246,13 @@
               verbose = true;
               users.${user.name} =
                 { pkgs, ... }:
+                let
+                  pkgs-unstable = import nixpkgs-unstable {
+                    system = "aarch64-darwin";
+                    config.allowUnfree = true;
+                    config.allowBroken = true;
+                  };
+                in
                 {
                   home = {
                     username = user.name;
@@ -259,7 +268,10 @@
                         delta # Syntax-highlighting pager for git and diff
                         cloudflared # Cloudflare tunnel
                         git-lfs # Git Large File Storage
-                        claude-code # Claude AI code editor
+                        pkgs-unstable.claude-code # Claude AI code editor (unstable)
+                        pkgs-unstable.chatgpt # ChatGPT AI assistant (unstable)
+                        pkgs-unstable.codex # Codex AI assistant (unstable)
+                        pkgs-unstable.biome # Fast formatter, linter, bundler, and more for JavaScript, TypeScript, JSON, HTML, Markdown, and CSS (unstable)
 
                         go # Go programming language
                         rustup # Rust toolchain installer
@@ -286,6 +298,7 @@
                         nasm # Netwide Assembler
                         act # Run GitHub Actions locally
                         gofumpt # Stricter gofmt
+                        # pkgs-unstable.valgrind # Memory debugging tool
                         swiftformat # Code formatter for Swift
 
                         eza # Modern replacement for ls
@@ -895,7 +908,7 @@
                       enable = true;
                       package = null;
                       settings = {
-                        theme = "catppuccin-mocha";
+                        theme = "Catppuccin Mocha";
                         scrollback-limit = 10 * 10000000;
 
                         mouse-hide-while-typing = true;
@@ -927,7 +940,7 @@
                         };
 
                         "nivalis.macmini" = {
-                          hostname = "macmini-nivalis.end-centauri.ts.net";
+                          hostname = "100.95.175.85";
                           user = "nivalis";
                           forwardAgent = true;
                           setEnv = {
@@ -936,7 +949,7 @@
                         };
 
                         "pnodet.m1" = {
-                          hostname = "pnodet-mbp-m1.end-centauri.ts.net";
+                          hostname = "100.113.18.33";
                           user = "pnodet";
                           forwardAgent = true;
                           setEnv = {
@@ -945,7 +958,7 @@
                         };
 
                         "pnodet.m4" = {
-                          hostname = "pnodet-mbp-m4.end-centauri.ts.net";
+                          hostname = "100.68.13.52";
                           user = "pnodet";
                           forwardAgent = true;
                           setEnv = {
@@ -1009,17 +1022,24 @@
 
                     zed-editor = {
                       enable = true;
+                      package = pkgs-unstable.zed-editor;
                       extensions = [
+                        "html"
                         "catppuccin"
-                        "nix"
+                        "toml"
+                        "git-firefly"
                         "dockerfile"
                         "sql"
+                        "scss"
                         "terraform"
                         "catppuccin-icons"
-                        "prisma"
-                        "html"
-                        "yaml"
+                        "lua"
                         "zig"
+                        "swift"
+                        "log"
+                        "nix"
+                        "prisma"
+                        "yaml"
                       ];
                       userKeymaps = [
                         {
