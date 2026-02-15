@@ -7,7 +7,7 @@ zstyle ':z4h:autosuggestions'    forward-char           'accept'
 zstyle ':z4h:fzf-complete'       recurse-dirs           'yes'
 zstyle ':z4h:direnv'             enable                 'no'
 zstyle ':z4h:direnv:success'     notify                 'yes'
-zstyle ':z4h:ssh:*'              enable                 'yes'
+zstyle ':z4h:ssh:*'              enable                 'no'
 zstyle ':z4h:ssh:pnodet.m1'      enable                 'no'
 # zstyle ':z4h:ssh:*'              send-extra-files       '~/.zsh_docker'
 zstyle ':completion:*'           matcher-list           'm:{a-z}={A-Z}'
@@ -232,3 +232,16 @@ if [[ -f "$HOME/.local/bin/env" ]]; then
   . "$HOME/.local/bin/env"
 fi
 export PATH="$HOME/.local/bin:$PATH"
+
+# ami
+export AMI_INSTALL="$HOME/.ami"
+export PATH="$AMI_INSTALL/bin:$PATH"
+
+# Added by Yarn Switch
+source "/Users/pnodet/.yarn/switch/env"
+
+# Entire CLI shell completion
+autoload -Uz compinit && compinit && source <(entire completion zsh)
+
+# OpenFang
+export PATH=/Users/pnodet/.openfang/bin:$PATH

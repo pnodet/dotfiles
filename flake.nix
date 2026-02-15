@@ -157,6 +157,7 @@
               "claude" # Anthropic's official Claude AI desktop app
               "macfuse" # File system integration
               "messenger" # Facebook Messenger desktop app
+              "zed" # High-performance code editor
               "steam" # Digital distribution platform for games
               "transmission" # BitTorrent client
               "ungoogled-chromium" # Google Chromium, sans integration with Google
@@ -272,12 +273,13 @@
                         pkgs-unstable.claude-code # Claude AI code editor (unstable)
                         pkgs-unstable.chatgpt # ChatGPT AI assistant (unstable)
                         pkgs-unstable.codex # Codex AI assistant (unstable)
-                        pkgs-unstable.biome # Fast formatter, linter, bundler, and more for JavaScript, TypeScript, JSON, HTML, Markdown, and CSS (unstable)
+                        pkgs-unstable.biome # Fast formatter, linter, bundler, and more (unstable)
+                        pkgs-unstable.opencode # open source CLI agent
 
                         go # Go programming language
                         rustup # Rust toolchain installer
                         deno # Secure runtime for JavaScript and TypeScript
-                        bun # Fast all-in-one JavaScript runtime
+                        pkgs-unstable.bun # Fast all-in-one JavaScript runtime
                         fnm # Fast Node.js version manager
                         uv # Ultra-fast Python package installer
                         pipx # Install and run Python applications in isolated environments
@@ -1023,7 +1025,7 @@
 
                     zed-editor = {
                       enable = true;
-                      package = pkgs-unstable.zed-editor;
+                      package = null;
                       extensions = [
                         "html"
                         "catppuccin"
